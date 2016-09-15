@@ -1,0 +1,53 @@
+---
+- name: install dependencies
+  local_action: pip name=Sphinx virtualenv='~/.venv/fiaasco-sphinx' state=present
+  when: inventory_hostname == play_hosts[0]
+  become: False
+
+# texlive-latex-base texlive-latex-recommended texlive-fonts-recommended texlive-latex-extra
+
+- name: clone docu-repo
+  local_action: git repo={{ docu_repo }} dest={{ docu_root }} accept_hostkey=yes update=yes
+  become: False
+  when: inventory_hostname == play_hosts[0]
+
+- name: prepare directories for documentation
+  local_action: file dest={{ docu_root }}/{{ inventory_hostname }}/source/{{ item }} state=directory
+  with_items:
+    - _static
+    - _templates
+  become: False
+  notify: commitdocu
+
+- name: place makefile
+  local_action: copy src=../templates/Makefile dest={{ docu_root }}/{{ inventory_hostname }}/
+  become: False
+  notify: commitdocu
+
+- name: copy over sources
+  local_action: copy src=../templates/source/{{ item }} dest={{ docu_root }}/{{ inventory_hostname }}/source/{{ item }} 
+  with_items:
+    - _static
+    - _templates
+  become: False
+  notify: commitdocu
+
+- name: generate templates
+  local_action: template src=source/{{ item }} dest={{ docu_root }}/{{ inventory_hostname }}/source/
+  with_items: 
+    - conf.py
+    - index.rst
+    - solr.rst
+    - redis.rst
+    - memcached.rst
+    - backup.rst
+    - general.rst
+    - virtualhost.rst
+  become: False
+  notify: commitdocu
+
+- name: build the docu
+  local_action: shell source ~/.venv/fiaasco-sphinx/bin/activate && make html chdir={{ docu_root }}/{{ inventory_hostname }}/
+  changed_when: False
+  become: False
+  when: docu_build == "yes"

@@ -1,0 +1,6 @@
+---
+- name: start mysql
+  service: name=mysql state=started enabled=yes
+
+- name: restart mysql
+  service: name=mysql state=restarted enabled=yes

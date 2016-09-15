@@ -1,0 +1,10 @@
+object Service "attic-backup" {
+  import "generic-service"
+  check_command = "file_age"
+
+  host_name = "{{ inventory_hostname }}"
+
+  vars.file_age_warning_time = "100000"
+  vars.file_age_critical_time = "140000"
+  vars.file_age_file = "/var/log/attic-backup.log"
+}

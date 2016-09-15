@@ -1,0 +1,34 @@
+---
+#
+# Work in progress...
+#
+
+- vsphere_guest:
+    vcenter_hostname: "{{ vcenter_hostname }}"
+    username: "{{ vmware_admin_user }}"
+    password: "{{ vmware_admin_pass }}"
+    guest: "{{ vm_name }}"
+    state: powered_off
+    vm_extra_config:
+      vcpu.hotadd: yes
+      mem.hotadd:  yes
+      notes: "created with Ansible" 
+    vm_disk:
+      disk1:
+        size_gb: "{{ vm_disk_disk1_size }}"
+        type: "{{ vm_disk_disk1_type }}"
+        datastore: "{{ vm_datastore }}"
+    vm_nic:
+      nic1:
+        type: vmxnet3
+        network: "{{ vm_network }}"
+        network_type: standard
+    vm_hardware:
+      memory_mb: "{{ vm_memory_mb }}"
+      num_cpus: "{{ vm_num_cpus }}"
+      osid: "{{ vm_osid }}"
+      scsi: paravirtual
+    esxi:
+      datacenter: "{{ vm_datacenter }}"
+      hostname: "{{ vm_esxi_host }}"
+  connection: local

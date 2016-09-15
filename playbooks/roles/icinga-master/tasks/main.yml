@@ -1,0 +1,6 @@
+---
+- include: install.yml
+
+- include: configure-master.yml
+
+- include: users.yml

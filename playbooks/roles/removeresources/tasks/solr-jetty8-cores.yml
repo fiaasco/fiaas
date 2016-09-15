@@ -1,0 +1,14 @@
+---
+- name: solr-jetty8 | remove core data
+  file: dest=/var/lib/solr/{{ item.name }} state=absent
+  with_items: "{{ solr_cores }}"
+  when: item.delete|default(False)
+  notify: restart solr-jetty8
+  tags: ['solr']
+
+- name: solr-jetty8 | remove link
+  file: path=/usr/share/solr/{{ item.name }} state=absent
+  with_items: "{{ solr_cores }}"
+  when: item.delete|default(False)
+  notify: restart solr-jetty8
+  tags: ['solr']

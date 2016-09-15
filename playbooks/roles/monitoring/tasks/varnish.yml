@@ -1,0 +1,21 @@
+---
+- name: Enable varnish plugins
+  file: src=/usr/share/munin/plugins/varnish_ dest=/etc/munin/plugins/varnish_{{ item }} state=link
+  with_items:
+    - threads
+    - expunge
+    - transfer_rates
+    - objects
+    - request_rate
+    - memory_usage
+    - hit_rate
+    - backend_traffic
+  notify: restart munin-node
+
+- name: place check_varnish.pl
+  copy: src=varnish/check_varnish.pl dest=/usr/lib/nagios/plugins/check_varnish.pl mode=0755 owner=root group=root
+
+# TODO
+#- name: place check_mk script for varnish
+#  template: src=varnish/check_varnish.j2 dest=/usr/lib/check_mk_agent/local/check_varnish mode=0755 owner=root group=root
+#  notify: inventory the new host

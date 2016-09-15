@@ -1,0 +1,8 @@
+---
+- name: phptools | install extra packages
+  apt: name={{ item }} state=installed cache_valid_time=3600 update_cache=yes
+  with_items:
+    - "{{ phptools_pkgs }}"
+
+- name: phptools | copy www-data-shell.sh script
+  copy: src=www-data-shell.sh dest=/usr/local/bin/www-data-shell owner=root group=root mode=0755

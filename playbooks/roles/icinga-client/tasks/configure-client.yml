@@ -1,0 +1,46 @@
+---
+# Documentation: Client Setup for Remote Monitoring - Icinga2 manual setup withou wizard
+
+- name: request ticket on master
+  shell: icinga2 pki ticket --cn {{ ansible_fqdn }} --salt {{ ticketsalt }} creates=/etc/icinga2/pki/ca.crt
+  register: ticket
+
+- name: prepare pki directory
+  file: path=/etc/icinga2/pki state=directory owner=nagios group=nagios mode=0755
+
+- name: Generate a new local self-signed certificate.
+  shell: icinga2 pki new-cert --cn {{ ansible_fqdn }} --key /etc/icinga2/pki/{{ ansible_fqdn }}.key --cert /etc/icinga2/pki/{{ ansible_fqdn }}.crt creates=/etc/icinga2/pki/{{ ansible_fqdn }}.crt
+  notify: restart icinga2
+
+- name: Request the master certificate from the master host and store it as trusted-master.crt
+  shell: icinga2 pki save-cert --key /etc/icinga2/pki/{{ ansible_fqdn }}.key --cert /etc/icinga2/pki/{{ ansible_fqdn }}.crt --trustedcert /etc/icinga2/pki/trusted-master.crt --host {{ item }} creates=/etc/icinga2/pki/trusted-master.crt
+  with_items: "{{ groups.icingaservers }}"
+  notify: restart icinga2
+
+- name: Send self-signed certificate to the master using the ticket number and receive a CA signed certificate and the master's ca.crt certificate
+  shell: icinga2 pki request --host {{ item }} --port 5665 --ticket {{ ticket.stdout }} --key /etc/icinga2/pki/{{ ansible_fqdn }}.key --cert /etc/icinga2/pki/{{ ansible_fqdn }}.crt --trustedcert /etc/icinga2/pki/trusted-master.crt --ca /etc/icinga2/pki/ca.key creates=/etc/icinga2/pki/ca.key
+  with_items: "{{ groups.icingaservers }}"
+  notify: restart icinga2
+
+- name: Continue with the additional node setup steps
+  shell: icinga2 node setup --ticket {{ ticket.stdout }} --endpoint {{ item }},{{ item }},5665 --zone {{ ansible_fqdn }} --master_host {{ item }} --master_zone master --trustedcert /etc/icinga2/pki/trusted-master.crt --accept-config --accept-commands creates=/etc/icinga2/pki/ca.crt
+  with_items: "{{ groups.icingaservers }}"
+  notify: restart icinga2
+
+- name: add node on master
+  shell: icinga2 node add {{ ansible_fqdn }} creates=/etc/icinga2/repository.d/zones/{{ ansible_fqdn }}.conf
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups.icingaservers }}"
+  notify: restart master icinga2
+
+- name: enable feature api
+  shell: icinga2 feature enable api creates=/etc/icinga2/features-enabled/api.conf
+  notify: restart icinga2
+
+- meta: flush_handlers
+
+- name: node update-config on master
+  shell: icinga2 node update-config creates=/etc/icinga2/repository.d/hosts/{{ ansible_fqdn }}/ping4.conf
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups.icingaservers }}"
+  notify: restart master icinga2

@@ -1,0 +1,26 @@
+---
+- name: install ufw
+  apt: package=ufw state=installed
+  notify: enable ufw
+
+- name: ufw default deny
+  ufw: state=enabled policy=deny
+  notify: reload ufw
+
+- name: allow ssh from everywhere
+  ufw: rule=allow direction=in proto=tcp to_port=22
+
+- name: allow tcp inbound ports
+  ufw: rule=allow interface={{ public_interface }} direction=in proto=tcp to_port={{ item }}
+  with_items: "{{allow_tcp_input}}"
+  notify: reload ufw
+
+- name: allow tcp outbound ports
+  ufw: rule=allow interface={{ public_interface }} direction=out proto=tcp to_port={{ item }}
+  with_items: "{{allow_tcp_output}}"
+  notify: reload ufw
+
+- name: allow udp outbound ports
+  ufw: rule=allow interface={{ public_interface }} direction=out proto=udp to_port={{ item }}
+  with_items: "{{allow_udp_output}}"
+  notify: reload ufw

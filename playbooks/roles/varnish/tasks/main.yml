@@ -1,0 +1,3 @@
+---
+- include: varnish.yml
+  when: varnish_required == True

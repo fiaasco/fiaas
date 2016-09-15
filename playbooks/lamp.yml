@@ -1,0 +1,51 @@
+- name: Install LAMP env.
+  hosts: all:!infra
+  become: True
+  become_method: sudo
+
+  pre_tasks:
+    - include_vars: "./os_vars/{{ ansible_distribution_release }}.yml"
+      tags: ['always']
+    - include_vars: "./../inventory/{{ platform }}/group_vars/{{ item }}"
+      with_items:
+        - owners
+      tags: ['resources','sshkeys']
+    - apt: update_cache=yes cache_valid_time=3600
+
+  roles:
+    - role: fail2ban
+      tags: ['fail2ban']
+    - role: system
+      tags: ['system']
+    - role: users
+      tags: ['users']
+    - role: ufw
+      tags: ['ufw']
+    - role: ntp
+      tags: ['ntp']
+    - role: postfix
+      tags: ['postfix']
+    - role: httpd
+      tags: ['httpd']
+    - role: varnish
+      tags: ['varnish']
+    - role: letsencrypt
+      tags: ['letsencrypt', 'acme']
+    - role: fastcgi
+      tags: ['php','httpd']
+    - role: mysql
+      tags: ['mysql']
+    - role: php
+      tags: ['php']
+    - role: php-pecl
+      tags: ['php']
+    - role: phpdevtools
+      tags: ['phpdevtools']
+    - role: solr
+      tags: ['solr']
+    - role: redis
+      tags: ['redis']
+    - role: memcached
+      tags: ['memcached']
+    - role: vsftpd
+      tags: ['vsftpd']

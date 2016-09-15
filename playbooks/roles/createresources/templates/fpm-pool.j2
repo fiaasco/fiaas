@@ -1,0 +1,56 @@
+; {{ ansible_managed }}
+
+{% set factor = 2 %}
+
+{% if groups["shared_servers"] is defined and ansible_fqdn in groups["shared_servers"] %}
+{% set factor = 1 %}
+; shared server, scaling-factor forced to 1
+{% endif %}
+; Scaling factor: {{ factor }}
+
+[{{ item.name }}]
+
+
+listen = /var/run/php_fpm_{{ item.name }}.sock
+
+user = {{ item.user|default("www-data") }}
+group = {{ item.group|default("www-data") }}
+
+listen.owner = www-data
+listen.group = www-data
+; must be 0660 ! https://bugs.php.net/bug.php?id=67060
+listen.mode = 0660
+
+{% if item.pm == 'dynamic' %}
+pm = dynamic
+pm.start_servers = {{ 1*factor }}
+pm.min_spare_servers = {{ 1*factor }}
+pm.max_spare_servers = {{ 1*factor }}
+pm.max_children = {% if item.max_children is defined %}{{ item.max_children }}{% else %}{{ 4*factor + 2 }}
+{% endif %}
+{% else %}
+pm = ondemand
+pm.max_children = {% if item.max_children is defined %}{{ item.max_children }}{% else %}{{ 2*factor + 2 }}
+{% endif %}
+pm.process_idle_timeout = 60
+{% endif %}
+
+rlimit_files = 1000
+
+chdir = /
+
+; kill hanging processes
+request_terminate_timeout = 300
+
+; custom options for this pool
+{% if item.php_flags is defined %}
+{% for flag in item.php_flags %}
+php_flag[{{ flag.name }}] = {{ flag.val }}
+{% endfor %}
+{% endif %}
+
+{% if item.php_values is defined %}
+{% for value in item.php_values %}
+php_value[{{ value.name }}] = {{ value.val }}
+{% endfor %}
+{% endif %}

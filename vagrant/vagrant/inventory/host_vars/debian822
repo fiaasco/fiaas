@@ -1,0 +1,21 @@
+varnish_required: False
+redis_required: False
+solr_required: False
+install_vsftpd: False
+memcached_required: False
+
+backup_required: False
+
+users: []
+directories: []
+symlinks: []
+
+databases: []
+solr_cores: []
+phppools: []
+vhosts: []
+
+extra_pkgs: []
+php_extra_pkg: []
+php_pecl_inactive_extensions: []
+php_pecl_extra_extensions: []

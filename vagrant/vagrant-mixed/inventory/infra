@@ -1,0 +1,11 @@
+[infra]
+debian822 ansible_ssh_host=192.168.131.192 public_interface=eth1 external_ip="7.6.5.4"
+
+[muninservers]
+debian822
+
+[icingaservers]
+debian822
+
+[backupservers]
+debian822

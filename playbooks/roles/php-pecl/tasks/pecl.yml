@@ -1,0 +1,25 @@
+---
+
+- name: install pecl package {{ item }} from repository
+  apt: name={{ item }} state=present force=yes cache_valid_time=3600 update_cache=yes
+  with_items: "{{ package }}"
+  notify: reload php
+
+#
+# See template for more information
+# item|replace("php5-", "")  : filters php5- from the name, so that we can use 'php5enmod zendopcache' for example.
+#
+
+- name: Create PECL extensions .ini file for extension {{ item }}
+  template: src=extension.ini.j2 dest=/etc/php5/mods-available/{{ item|replace("php5-", "") }}.ini owner=root group=root mode=0644
+  with_items: "{{ package }}"
+  notify: reload php
+  when: ansible_distribution_release != "precise"
+
+# Enable the extension
+
+- name: run php5enmod for extension {{ item }}
+  shell: php5enmod {{ item|replace("php5-", "") }} creates=/etc/php5/fpm/conf.d/20-{{ item|replace("php5-", "") }}.ini
+  with_items: "{{ package }}"
+  notify: reload php
+  when: ansible_distribution_release != "precise"

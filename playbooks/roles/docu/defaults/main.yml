@@ -1,0 +1,5 @@
+---
+docu_repo: "git@git.werus.be:0host/docu.git"
+docu_root: "/tmp/docu"
+docu_commit: "yes"
+docu_build: "no"

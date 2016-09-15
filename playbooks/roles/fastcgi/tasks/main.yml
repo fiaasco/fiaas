@@ -1,0 +1,6 @@
+---
+- include: apache22.yml
+  when: apache.version == "2.2"
+
+- include: apache24.yml
+  when: apache.version == "2.4"

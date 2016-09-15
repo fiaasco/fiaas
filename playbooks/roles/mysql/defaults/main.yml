@@ -1,0 +1,9 @@
+mysql:
+  backup:
+    user: backup
+    pass: 998lkznSADF
+    script: /home/backup/automysqlbackup
+    config: /home/backup/automysqlbackup.conf
+    path: /home/backup/mysql
+
+mysql_remote: False

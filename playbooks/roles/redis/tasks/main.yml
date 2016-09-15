@@ -1,0 +1,3 @@
+---
+- include: redis.yml
+  when: redis_required == True

@@ -1,0 +1,4 @@
+---
+- name: put users template
+  template: src=users.conf.j2 dest=/etc/icinga2/conf.d/users.conf owner=root group=root mode=0644
+  notify: restart icinga

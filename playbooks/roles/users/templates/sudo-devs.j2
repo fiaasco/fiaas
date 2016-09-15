@@ -1,0 +1,6 @@
+Cmnd_Alias CRON = /usr/bin/sudoedit /etc/cron.d/drupal
+Cmnd_Alias F2B = /usr/sbin/service fail2ban*
+Cmnd_Alias WWWDATA = /usr/local/bin/www-data-shell
+Cmnd_Alias CHOWN = /bin/chown -R www-data*
+
+%developers     ALL = (root) NOPASSWD: CRON,F2B,WWWDATA,CHOWN

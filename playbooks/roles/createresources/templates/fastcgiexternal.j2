@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+# define FastCGIExternalServer for every php pool here
+{% for pool in phppools %}
+{% if not pool.delete|default(False) %}
+FastCGIExternalServer /usr/sbin/php-fpm-{{ pool.name }} -socket /var/run/php_fpm_{{ pool.name }}.sock -idle-timeout 600 -pass-header Authorization
+{% endif %}
+{% endfor %}

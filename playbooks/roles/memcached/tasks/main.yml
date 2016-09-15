@@ -1,0 +1,3 @@
+---
+- include: memcached.yml
+  when: memcached_required == True

@@ -1,0 +1,3 @@
+---
+mailname: "{{ ansible_fqdn }}"
+relayhost: ""

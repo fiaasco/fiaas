@@ -1,0 +1,104 @@
+#jinja2: lstrip_blocks: True
+DATABASES 
+---------
+{% for db in databases %}
+  {% if db.owner is defined %}
+    {% if db.owner == item[0].name %}
+database={{ db.name }}
+user={{ db.name }}
+password={{ db.pass }}
+    {% endif %}
+  {% else %} 
+    {% if item[0].name == vm_owner %}
+database={{ db.name }}
+user={{ db.name }}
+password={{ db.pass }}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+
+
+SOLR CORES
+----------
+{% if solr_cores is defined %}
+{% for core in solr_cores %}
+  {% if core.owner is defined %}
+    {% if core.owner == item[0].name %}
+
+core={{ core.name }}
+user={{ core.name }}
+password={{ core.pass }}
+    {% endif %}
+  {% else %} 
+    {% if item[0].name == vm_owner %}
+
+core={{ core.name }}
+user={{ core.name }}
+password={{ core.pass }}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+{% endif %}
+
+
+
+VHOSTS
+----------
+{% for vh in vhosts %}
+  {% if vh.owner is defined %}
+    {% if vh.owner == item[0].name %}
+
+{{ vh.url }}
+basedir: {{ vh.basedir }}
+web dir: {{ vh.basedir }}/web
+private files dir: {{ vh.basedir }}/private
+tmp dir: {{ vh.basedir }}/tmp
+log dir: {{ vh.basedir }}/logs (apache access logs and php logged errors)
+{% if vh.phppool is defined %}
+php pool: {{ vh.phppool }}
+{% endif %}
+    {% endif %}
+  {% else %} 
+    {% if item[0].name == vm_owner %}
+
+{{ vh.url }}
+
+basedir: {{ vh.basedir }}
+web dir: {{ vh.basedir }}/web
+private files dir: {{ vh.basedir }}/private
+tmp dir: {{ vh.basedir }}/tmp
+php pool: {{ vh.phppool }}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{% if item[0].name == vm_owner %}
+
+--------
+| SUDO |
+--------
+Your user in the group developers has sudo rights for:
+$ sudo sudoedit /etc/cron.d/drupal
+  Put your drupal crons in there if you want te be sure they run as the PHP user (www-data)
+
+$ sudo service fail2ban restart
+  Because some people manage to lockout their account too easy :-)
+
+$ sudo www-data-shell
+  Execute commando's as www-data, eg to delete private files etc
+
+$ sudo chown -R www-data*
+  Eg: sudo chown -R www-data:www-data private/
+{% endif %}
+
+---------
+| DRUSH |
+---------
+Drush 7 is the system default Drush in your path (/usr/bin/drush)
+Drush 8 is available in /usr/local/bin/drush8
+
+If you want to use drush8 by default, execute
+echo 'alias drush=/usr/local/bin/drush8' >> ~/.bashrc
+
+Use drush8 init to add Drush aliasses and bash completion to your account.

@@ -1,0 +1,13 @@
+---
+- name: put fpm-pool.d file for defined pools
+  template: src=fpm-pool.j2 dest=/etc/php5/fpm/pool.d/{{ item.name }}.conf owner=root group=root mode=0644
+  with_items: "{{ phppools }}"
+  when: not item.delete|default(False)
+  notify: reload php
+  tags: ['phppools']
+
+- name: define fastcgiexternal servers in apache
+  template: src=fastcgiexternal.j2 dest=/etc/apache2/conf.d/fastcgiexternal.conf owner=root group=root mode=0644
+  notify: reload apache2
+  when: apache.version == "2.2"
+  tags: ['phppools']

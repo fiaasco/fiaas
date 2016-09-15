@@ -1,0 +1,10 @@
+---
+- hosts: all
+  gather_facts: no
+  serial: 1
+  pre_tasks:
+    - fail: msg="You should limit the hosts you're running on."
+      when: play_hosts == groups.all
+      run_once: yes
+  roles:
+    - {role: createvm, tags: [vm]}

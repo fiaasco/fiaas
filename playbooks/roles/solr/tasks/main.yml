@@ -1,0 +1,13 @@
+---
+###
+### single core install, but roughly based on suggestions on
+### https://www.drupal.org/node/967628
+### 
+### Fiaas.co resources-role turns this into multicore later
+###
+
+- include: solr.yml
+  when: solr_required == True and ansible_distribution == 'Debian' and ansible_distribution_major_version == "7"
+
+- include: solr-jetty8.yml
+  when: solr_required == True and ansible_distribution == 'Debian' and ansible_distribution_major_version == "8"

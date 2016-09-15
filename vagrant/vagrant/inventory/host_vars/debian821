@@ -1,0 +1,149 @@
+memcached_required: True
+solr_required: True
+varnish_required: False
+install_vsftpd: True
+redis_required: False
+default_vhost: "www.svhost1.com"
+vsftpd_listen_port: 21
+vsftpd_tls_only: "no"
+
+backup_required: True
+
+vm_owner: devuser1
+
+# defaults = no homedir, no password
+users:
+  - name: devuser1
+
+  - name: svhost1
+    home: /var/www/sites/svhost1
+    authorized_keys:
+      - 'ssh-rsa kieken ik@vhost1'
+      - 'ssh-rsa nogeenkieken gij@daar'
+
+  - name: svhost2
+    home: /var/www/sites/svhost2
+    pass:
+      plain: sah6Ii1xah2eephi
+      crypted: "$6$u6XLvPLf03a9Z$xgA3sWR6A1jOh10ExZZ/LrbOgojK2AgPsrKclJCLt7xoDpWuWPoGu6S4FRMuOki76eE9dUXgbPzcb0CMGyUVk/"
+
+  - name: svhost3
+    home: /var/www/sites/svhost3
+    shell: /bin/sh
+    authorized_keys:
+      - 'ssh-rsa kieken ik@vhost3'
+
+  - name: ftpuser
+    home: /home/ftpuser
+    shell: /bin/false
+    pass:
+      plain: sah6Ii1xah2eephi
+      crypted: "$6$u6XLvPLf03a9Z$xgA3sWR6A1jOh10ExZZ/LrbOgojK2AgPsrKclJCLt7xoDpWuWPoGu6S4FRMuOki76eE9dUXgbPzcb0CMGyUVk/"
+
+  - name: vhostftpuser
+    home: /var/www/sites/svhost3/private/vhostftpuser
+    shell: /bin/false
+    pass:
+      plain: vei2ooSailooHooL
+      crypted: "$6$KFGd6huqgElURi/0$8P3zkWd7ESB74RLUOr4zjEYUZ1EJ9lOBRGrwD2IBECJKkrfRsUJrtOcZW34.GuxNca0HPBhpne0PUII5Qk1a71"
+
+
+directories:
+  - name: /var/www/sites/svhost1
+    owner: svhost1
+    group: svhost1
+    mode: "0775"
+
+  - name: /var/www/sites/svhost2
+    owner: svhost2
+    group: svhost2
+    mode: "0771"
+
+  - name: /var/www/sites/svhost3
+    owner: svhost3
+    group: svhost3
+    mode: "0770"
+
+  - name: /home/ftpuser
+    owner: ftpuser
+    group: devuser1
+    mode: "0775"
+
+  - name: /var/www/sites/svhost3/private/vhostftpuser
+    owner: vhostftpuser
+    group: svhost3
+    mode: "0775"
+
+symlinks: []
+
+solr_cores:
+  - name: svhost1-core
+    pass: QuieC5eoFae7thus
+  - name: svhost2-core
+    pass: reTeech4ao7aGhai
+  - name: svhost3-core
+    pass: NeyieV2shie3ahne
+
+
+databases:
+  - name: svhost1-db
+    pass: QuieC5eoFae7thus
+  - name: svhost2-db
+    pass: reTeech4ao7aGhai
+  - name: svhost3-db
+    pass: NeyieV2shie3ahne
+  - name: testdieter
+    ip: '192.168.131.162'
+    user: dietest
+    pass: diepass
+
+
+phppools:
+  - name: svhost1
+    pm: dynamic
+    user: svhost1
+    group: svhost1
+  - name: svhost2
+    pm: dynamic
+    user: svhost2
+    group: svhost2
+  - name: svhost3
+    pm: dynamic
+    user: svhost3
+    group: svhost3
+
+vhosts:
+  - url: "www.svhost1.com"
+    basedir: /var/www/sites/svhost1
+    admin: "admin9@aladebeste.be"
+    ssl: selfsigned
+    phppool: svhost1
+    owner: svhost1
+    default: yes
+    monitoring: True
+  - url: "www.svhost2.com"
+    basedir: /var/www/sites/svhost2
+    admin: "ain9@aladeessste.be"
+    phppool: svhost2
+    owner: svhost2 
+    monitoring: True
+  - url: "www.svhost3.com"
+    basedir: /var/www/sites/svhost3
+    admin: "ain9@aladeessste.be"
+    ssl: selfsigned
+    alias: ['alias1.svhost3.com','alias2.svhost3.com']
+    phppool: svhost3
+    owner: svhost3
+    monitoring: False
+
+
+php_pecl_extra_extensions:
+  - php5-xhprof
+  - php5-geos
+  - php5-ldap
+
+extra_pkgs: []
+#  - python-pyauthenntlm2
+
+php_extra_pkg: []
+php_pecl_inactive_extensions: []

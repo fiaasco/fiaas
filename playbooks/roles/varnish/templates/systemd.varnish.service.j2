@@ -1,0 +1,33 @@
+{% if ansible_memtotal_mb <= 512 %}
+{%  set VARNISH_MIN_THREADS=15 %}
+{%  set VARNISH_MAX_THREADS=25 %}
+{% elif ansible_memtotal_mb <= 1024 %}
+{%  set VARNISH_MIN_THREADS=25 %}
+{%  set VARNISH_MAX_THREADS=100 %}
+{% elif ansible_memtotal_mb <= 2048 %}
+{%  set VARNISH_MIN_THREADS=50 %}
+{%  set VARNISH_MAX_THREADS=300 %}
+{% elif ansible_memtotal_mb <= 4096 %}
+{%  set VARNISH_MIN_THREADS=50 %}
+{%  set VARNISH_MAX_THREADS=500 %}
+{% elif ansible_memtotal_mb <= 8192 %}
+{%  set VARNISH_MIN_THREADS=50 %}
+{%  set VARNISH_MAX_THREADS=1000 %}
+{% else %}
+{%  set VARNISH_MIN_THREADS=50 %}
+{%  set VARNISH_MAX_THREADS=2000 %}
+{% endif %}
+{% set VARNISH_STORAGE_SIZE=(ansible_memtotal_mb/8)|round|int %}
+[Unit]
+Description=Varnish HTTP accelerator
+
+[Service]
+Type=forking
+LimitNOFILE=131072
+LimitMEMLOCK=82000
+ExecStartPre=/usr/sbin/varnishd -C -f /etc/varnish/default.vcl
+ExecStart=/usr/sbin/varnishd -a :80 -T localhost:6082 -f /etc/varnish/default.vcl -S /etc/varnish/secret -s malloc,{{ VARNISH_STORAGE_SIZE }}m
+ExecReload=/usr/share/varnish/reload-vcl
+
+[Install]
+WantedBy=multi-user.target

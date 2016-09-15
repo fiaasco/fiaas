@@ -1,0 +1,48 @@
+- name: prepare infrastructure when needed
+  hosts: infra
+  become: True
+
+  pre_tasks:
+    - include_vars: "./os_vars/{{ ansible_distribution_release }}.yml"
+      tags: ['always']
+    - apt: update_cache=yes cache_valid_time=3600
+
+  roles:
+    - fail2ban
+    - role: users
+      tags: ['users']
+    - ufw
+    - ntp
+    - postfix
+    - system
+    - role: munin
+      tags: ['monitoring']
+    - role: httpd
+      tags: ['httpd']
+    - role: fastcgi
+      tags: ['php','httpd']
+    - role: php
+      tags: ['php']
+    - role: munin-node
+      tags: ['monitoring']
+    - role: backup
+      tags: ['backup']
+
+- name: icinga2 stuff
+  hosts: icingaservers
+  become: True
+
+  pre_tasks:
+    - include_vars: "./os_vars/{{ ansible_distribution_release }}.yml"
+      tags: ['backup','monitoring']
+    - apt: update_cache=yes cache_valid_time=3600
+
+  roles:
+    - role: mysql
+      tags: ['mysql', 'icinga']
+    - role: icinga-master
+      tags: ['icinga']
+    - role: icinga-classicui
+      tags: ['icinga', 'classic']
+    - role: icingaweb2
+      tags: ['icinga', 'web2']

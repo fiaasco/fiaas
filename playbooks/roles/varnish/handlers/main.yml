@@ -1,0 +1,13 @@
+---
+- name: start varnish
+  service: name=varnish state=running enabled=yes
+
+- name: restart varnish
+  service: name=varnish state=restarted enabled=yes
+
+- name: reload varnish
+  service: name=varnish state=reloaded enabled=yes
+
+- name: reload systemd and varnish
+  shell: systemctl daemon-reload
+  notify: restart varnish

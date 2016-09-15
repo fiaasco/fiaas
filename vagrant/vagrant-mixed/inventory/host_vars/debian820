@@ -1,0 +1,106 @@
+---
+redis_required: True
+varnish_required: True 
+monitoring_over_ssh: True
+solr_required: False
+install_vsftpd: False
+memcached_required: False
+
+backup_required: True
+
+vm_owner: devuser2
+
+users:
+  - name: devuser1
+  - name: devuser2
+  - name: devuser3
+
+directories:
+  - name: "/var/www/sites/www.vhost1.com"
+    mode: "0755"
+    delete: True
+  - name: "/var/www/sites/www.vhost2.com"
+    mode: "0755"
+  - name: "/var/www/sites/www.vhost3.com"
+    mode: "0755"
+
+symlinks:
+  - src: "/var/www/sites/www.vhost3.com"
+    dest: "/var/www/sites/symlink"
+
+databases:
+  - name: vhost1db
+    pass: vhost1pass
+    delete: True
+  - name: vhost2db
+    pass: vhost2pass
+  - name: vhost3db
+    pass: vhost3pass
+  - name: extern1
+    user: extuser1
+    pass: extpass1
+    ip: "37.252.122.240"
+  - name: extern1
+    user: extuser2
+    pass: extpass2
+    ip: "37.252.122.241"
+  - name: extern2
+    user: extuser3
+    pass: extpass3
+    ip: "185.24.220.62"
+  - name: extern3
+    user: extuser2
+    pass: extpass2
+    ip: "185.24.220.62"
+    
+
+phppools:
+  - name: vhost1 
+    pm: dynamic
+    user: www-data
+    group: www-data
+    delete: True
+  - name: vhost2
+    user: www-data
+    group: www-data
+    pm: ondemand
+  - name: vhost3 
+    user: www-data
+    group: www-data
+    pm: ondemand
+
+solr_cores: []
+
+vhosts:
+  - url: "www.vhost1.com"
+    basedir: "/var/www/sites/www.vhost1.com"
+    admin: "admin@vhost1.com"
+    alias: ['alias1.vhost1.com','alias2.vhost1.com']
+    ssl: selfsigned
+    ssl_redirect_http: True
+    phppool: vhost1
+    owner: devuser2
+    delete: True
+    monitoring: True
+  - url: "www.vhost2.com"
+    basedir: "/var/www/sites/www.vhost2.com"
+    admin: "admin@vhost2.com"
+    ssl: selfsigned
+    alias: [ "alias.vhost2.com" ]
+    phppool: vhost2
+    owner: devuser2
+    monitoring: False
+  - url: "static.vhost3.com"
+    basedir: "/var/www/sites/static.vhost3.com"
+    admin: "admin@vhost3.com"
+    ssl: selfsigned
+    ssl_redirect_http: True
+    alias: ['alias1.vhost3.com','alias2.vhost3.com']
+    phppool: vhost3
+    owner: devuser1
+    monitoring: True
+
+extra_pkgs: []
+php_extra_pkg: []
+php_pecl_inactive_extensions: []
+php_pecl_extra_extensions: []

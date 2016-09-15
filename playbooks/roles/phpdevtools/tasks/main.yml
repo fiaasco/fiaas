@@ -1,0 +1,12 @@
+---
+# WARNING: some functions in this role can be harmfull for your system
+# Eg www-data shell and cron sudo are meant for trusted developers on a private server
+
+- include: phptools.yml
+
+- include: drupal.yml
+
+# warning: don't install phpmyadmin before php-fpm or you'll get mod-php with it!
+- include: phpmyadmin.yml
+
+- include: composer.yml

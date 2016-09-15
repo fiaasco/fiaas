@@ -1,0 +1,41 @@
+---
+# Currently no more custom commands necessary
+#- name: put our custom Icinga2 commands
+#  copy: src=commands/ dest=/etc/icinga2/conf.d/commands/ owner=root group=root mode=0775
+#  notify: restart icinga2 and update master config
+
+- name: remove commands we no longer need
+  file: path={{ item }} state=absent
+  with_items:
+    - "/etc/icinga2/conf.d/commands/"
+
+- include: postfix.yml
+
+- include: php.yml
+
+- include: mysql.yml
+  when: databases is defined
+
+- include: backup.yml
+  when: backup_required == True
+
+- include: misc.yml
+
+- include: varnish.yml
+  when: varnish_required == True
+
+- include: solr.yml
+  when: solr_required == True and solr_cores is defined
+
+- include: apache.yml
+  when: vhosts is defined
+
+- include: vsftpd.yml
+  when: install_vsftpd == True
+
+- include: memcached.yml
+  when: memcached_required == True
+
+- include: redis.yml
+  when: redis_required == True
+

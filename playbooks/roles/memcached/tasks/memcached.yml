@@ -1,0 +1,11 @@
+---
+- name: install memcached
+  apt: name={{ item }} state=installed cache_valid_time=3600 update_cache=yes
+  with_items:
+    - memcached
+    - libcache-memcached-perl
+  notify: start memcached
+
+- name: put memcached config file
+  template: src=memcached.conf.j2 dest=/etc/memcached.conf owner=root group=root mode=0644
+  notify: restart memcached

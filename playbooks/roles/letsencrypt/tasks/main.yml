@@ -1,0 +1,7 @@
+---
+- name: put acme.sh
+  copy: src=acme.sh dest=/root/acme.sh owner=root group=root mode=0700
+  notify: install acme.sh
+
+- name: create directory to put ssl request scripts
+  file: path=/root/ssl state=directory owner=root group=root mode=0700

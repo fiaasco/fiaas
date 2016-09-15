@@ -1,0 +1,8 @@
+---
+phptools_pkgs:
+  - ghostscript
+  - git
+  - imagemagick
+  - libjpeg-progs
+  - optipng
+  - patch

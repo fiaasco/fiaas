@@ -1,0 +1,8 @@
+---
+- name: put README with server info
+  template: src=README.j2 dest=~{{ item[0].name }}/README owner={{ item[0].name }} group={{ item[0].name }} mode=0660
+  with_nested:
+    - "{{ users }}"
+    - "{{ vhosts }}"
+  when: item[1].owner == item[0].name
+  tags: ['readme']

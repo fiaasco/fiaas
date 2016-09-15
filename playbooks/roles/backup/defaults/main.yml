@@ -1,0 +1,27 @@
+---
+# Set the default to yes
+backup_required: True
+
+# Server variables
+
+server_backup_dir: "/var/backup-jail"
+server_backup_group: "sshbackup"
+
+
+backup_pre_commands:
+  - '[[ ! -f "/usr/sbin/automysqlbackup" ]] || /usr/sbin/automysqlbackup'
+  - "dpkg --get-selections > /root/.installed-software.log"
+
+backup_include:
+  - "/etc"
+  - "/home"
+  - "/root"
+#  - "/var/lib/automysqlbackup"
+  - "/var/www"
+
+retention:
+  hourly: 12
+  daily: 7
+  weekly: 4
+  monthly: 6
+  yearly: 3

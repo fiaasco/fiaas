@@ -1,0 +1,35 @@
+---
+- name: install default required php packages
+  apt: name={{ item }} state=installed cache_valid_time=3600 update_cache=yes
+  with_items:
+    - "{{ php_default_pkgs }}"
+
+- name: install extra required packages
+  apt: name={{ item }} state=installed cache_valid_time=3600 update_cache=yes
+  when: php_extra_pkg is defined
+  with_items: 
+    - "{{ php_extra_pkg }}"
+
+- name: put php.ini
+  template: src=php.ini.{{ ansible_distribution_release }}.j2 dest=/etc/php5/fpm/php.ini owner=root group=root mode=0644
+  notify: reload php
+
+- name: put php-fpm.conf
+  template: src=php-fpm.conf.j2 dest=/etc/php5/fpm/php-fpm.conf owner=root group=root mode=0644
+  notify: reload php
+
+- name: disable wheezy zendopcache extension for Jessie
+  file: path={{ item }} state=absent
+  with_items:
+    - /etc/php5/fpm/conf.d/20-zendopcache.ini
+    - /etc/php5/mods-available/zendopcache.ini
+  when: ansible_distribution == "Debian" and ansible_distribution_major_version == "8"
+  notify: reload php
+
+- name: enable opcache module
+  shell: php5enmod opcache creates=/etc/php5/fpm/conf.d/05-opcache.ini 
+  when: ansible_distribution == "Debian" and ansible_distribution_major_version == "8"
+
+- name: put www-data pool config-file
+  template: src=www.conf.j2 dest=/etc/php5/fpm/pool.d/www.conf owner=root group=root mode=0644
+  notify: restart php

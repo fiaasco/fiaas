@@ -1,0 +1,14 @@
+#!/bin/sh
+
+memcached_output=`/usr/lib/nagios/plugins/check_memcached -H localhost`
+if [ $? -eq 0 ] ; then
+    status=0
+    statustxt=OK
+elif [ $? -eq 1 ] ; then
+    status=1
+    statustxt=WARNING
+else
+    status=2
+    statustxt=CRITICAL
+fi
+echo "$status Memcached - $memcached_output"

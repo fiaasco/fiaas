@@ -1,0 +1,18 @@
+---
+- name: useraccess | put public keys from group_vars definition
+  authorized_key: user={{ item.name }} key="{{ user[item.name].sshkeys|join('\n') }}" state=present
+  with_items: "{{ users }}"
+  when: user[item.name].sshkeys is defined and not item.delete|default(False)
+  tags: ['users','sshkeys']
+
+- name: useraccess | put public keys from host_vars definition
+  authorized_key: user="{{ item.name }}" key="{{ item.authorized_keys|join('\n') }}" state=present
+  with_items: "{{ users }}"
+  when: item.authorized_keys is defined and not item.delete|default(False)
+  tags: ['users','sshkeys']
+
+- name: useraccess | put vm owner public keys in shared_server users
+  authorized_key: user="{{ item.name }}" key="{{ user[vm_owner].sshkeys|join('\n') }}" state=present
+  with_items: "{{ users }}"
+  when: user[vm_owner] is defined and not item.delete|default(False)
+  tags: ['users','sshkeys']

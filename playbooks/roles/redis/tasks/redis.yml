@@ -1,0 +1,4 @@
+---
+- name: install redis-server
+  apt: name=redis-server state=installed cache_valid_time=3600 update_cache=yes
+  notify: start redis-server

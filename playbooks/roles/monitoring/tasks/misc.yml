@@ -1,0 +1,5 @@
+- name: place icinga2 misc checks
+  template: src=misc/{{ item }}.j2 dest=/etc/icinga2/conf.d/{{ item }} owner=root group=root mode=0755
+  with_items:
+    - ntp.conf
+  notify: restart icinga2 and update master config

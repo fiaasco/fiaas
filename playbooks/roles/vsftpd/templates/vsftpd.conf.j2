@@ -1,0 +1,54 @@
+listen=YES
+anonymous_enable=NO
+local_enable=YES
+write_enable=YES
+local_umask=002
+guest_enable=NO
+
+# deze twee willen we als we een hogere vsftpd versie hebben
+chroot_local_user=YES
+allow_writeable_chroot=YES
+hide_ids=YES
+pam_service_name=vsftp
+
+# Passive
+pasv_enable=YES
+pasv_max_port={{ vsftpd_pasv_max_port }}
+pasv_min_port={{ vsftpd_pasv_min_port }}
+port_enable=YES
+pasv_address={{ ansible_ssh_host }}
+
+# SSL
+# This option specifies the location of the RSA certificate to use for SSL
+# encrypted connections.
+
+listen_port={{ vsftpd_listen_port }}
+
+rsa_cert_file=/etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.crt
+rsa_private_key_file=/etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.key
+
+# Turn on SSL
+ssl_enable=YES
+debug_ssl=YES
+
+# All non-anonymous logins are forced to use a secure SSL connection in order to
+# send and receive data on data connections.
+force_local_data_ssl={{ vsftpd_tls_only|default('YES')|upper }}
+
+# All non-anonymous logins are forced to use a secure SSL connection in order to send the password.
+force_local_logins_ssl={{ vsftpd_tls_only|default('YES')|upper }}
+
+# Permit TLS v1 protocol connections. TLS v1 connections are preferred
+ssl_tlsv1=YES
+
+# Permit SSL v2 protocol connections. TLS v1 connections are preferred
+ssl_sslv2=NO
+
+# permit SSL v3 protocol connections. TLS v1 connections are preferred
+ssl_sslv3=NO
+
+# Disable SSL session reuse (required by WinSCP)
+require_ssl_reuse=NO
+
+# Select which SSL ciphers vsftpd will allow for encrypted SSL connections (required by FileZilla)
+ssl_ciphers=HIGH

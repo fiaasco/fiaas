@@ -1,0 +1,3 @@
+---
+monitoring: yes
+monitoring_over_ssh: false

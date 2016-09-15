@@ -1,0 +1,8 @@
+---
+- name: install fail2ban
+  apt: name=fail2ban state=installed cache_valid_time=3600 update_cache=yes
+  notify: start fail2ban
+
+- name: put /etc/fail2ban/jail.conf
+  template: src=jail.conf.j2 dest=/etc/fail2ban/jail.conf owner=root group=root mode=0644
+  notify: restart fail2ban

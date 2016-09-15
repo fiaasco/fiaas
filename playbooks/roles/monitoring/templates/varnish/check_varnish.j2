@@ -1,0 +1,19 @@
+#!/bin/bash
+
+{% for check in monitor_varnish %}
+
+# {{ check.name }}_output=`/usr/lib/nagios/plugins/check_varnish.pl --spec={{ check.name }},{{ check.warn }},{{ check.crit }}`
+# 
+# if [ $? -eq 0 ] ; then
+#     status=0
+#     statustxt=OK
+# elif [ $? -eq 1 ] ; then
+#     status=1
+#     statustxt=WARNING
+# else
+#     status=2
+#     statustxt=CRITICAL
+# fi
+# echo "$status Varnish_{{ check.name }} - ${{ check.name }}_output"
+
+{% endfor %}

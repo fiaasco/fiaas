@@ -1,0 +1,3 @@
+---
+- include: common.yml
+  when: monitoring == True

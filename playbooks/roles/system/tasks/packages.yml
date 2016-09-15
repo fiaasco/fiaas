@@ -1,0 +1,14 @@
+---
+- name: install extra packages
+  apt: name={{ item }} state=installed cache_valid_time=3600 update_cache=yes
+  with_items:
+    - atop
+    - curl
+    - dstat
+    - lsof
+    - rsync
+    - sudo
+    - sysstat
+    - unzip
+    - vim
+    - zip

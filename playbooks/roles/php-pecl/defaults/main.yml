@@ -1,0 +1,21 @@
+---
+#
+# Pecl extentions installed and loaded by default
+#
+
+php_pecl_default_extensions:
+  - php5-uploadprogress
+
+#
+# Pecl extensions installed by default, but NOT loaded.
+#
+
+#php_pecl_inactive_extensions:
+#  - php5-xdebug
+
+#
+# extra pecl-extensions per customer are to be defined in inventory/*/group_vars/customer in such a way:
+#   php_pecl_extra_extensions:
+#     - php5-snmp
+#
+

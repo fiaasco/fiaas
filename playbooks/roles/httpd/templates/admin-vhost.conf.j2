@@ -1,0 +1,59 @@
+<VirtualHost *:{% if varnish_required == True %}8080{% else %}80{% endif %}>
+	ServerAdmin {{ admin.email }}
+	ServerName {{ inventory_hostname }}
+	ServerAlias {{ ansible_ssh_host }}
+	ServerAlias localhost
+        ServerAlias 127.0.0.1
+
+	DocumentRoot /var/www/sites/adminhost
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /var/www/sites/adminhost>
+		Options FollowSymLinks
+		AllowOverride None
+{% if apache.version == '2.2' %}
+		Order allow,deny
+		allow from all
+{% else %}
+                Require all granted
+{% endif %}
+	</Directory>
+
+{% if apache.version == '2.2' %}
+	<IfModule mod_fastcgi.c>
+	AddHandler php-fastcgi .php .php5
+  	Action php-fastcgi /php-fpm
+  	Alias /php-fpm /usr/sbin/php-fpm-www-data
+  	FastCGIExternalServer /usr/sbin/php-fpm-www-data -socket /var/run/php5-fpm-www-data.sock -idle-timeout 600 -pass-header Authorization
+	</IfModule>
+{% else %}
+        <filesmatch "\.php">
+          SetHandler "proxy:unix:/var/run/php5-fpm-www-data.sock|fcgi://www-data"
+        </filesmatch>
+
+	<IfModule proxy_module>
+        <Proxy "fcgi://www-data/">
+	  ProxySet connectiontimeout=5 timeout=121 acquire=1000
+        </Proxy>
+	</IfModule>
+{% endif %}
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+	{% if 'infra' not in group_names %}
+	{% if apache.version != '2.2' %}
+	IncludeOptional /etc/apache2/admin.d/*.conf
+        {% else %} {# no includeOptional in 2.2 :( #}
+	Include /etc/apache2/admin.d/*.conf
+        {% endif %}
+	{% endif %}
+
+</VirtualHost>

@@ -1,0 +1,39 @@
+---
+- name: install varnish
+  apt: name={{ item }} state=installed cache_valid_time=3600 update_cache=yes
+  with_items:
+    - libxml-parser-perl
+    - varnish
+
+- name: put /etc/default/varnish
+  template: src=v{{ varnish.major_version }}.varnish-default.j2 dest=/etc/default/varnish owner=root group=root mode=0644
+  notify: restart varnish
+
+- name: put varnish.service for systemd
+  template: src=systemd.varnish.service.j2 dest=/etc/systemd/system/varnish.service owner=root group=root mode=0644
+  when: ansible_distribution == "Debian" and ansible_distribution_major_version == "8"
+  notify: reload systemd and varnish
+
+- stat: path=/etc/varnish/extra.vcl
+  register: varnish_extra
+
+- name: make sure /etc/varnish/extra.vcl exists
+  copy: src=extra.vcl dest=/etc/varnish/extra.vcl owner=root group=root mode=0644
+  when: varnish_extra.stat.exists == False
+  notify: restart varnish
+
+- name: put /etc/varnish/default.vcl
+  template: src=v{{ varnish.major_version }}.default.vcl.j2 dest=/etc/varnish/default.vcl owner=root group=root mode=0644
+  notify: reload varnish
+
+- name: grant read-permission for developers to /etc/varnish/secret
+  file: dest=/etc/varnish/secret owner=root group=developers mode=0640
+
+- name: enable modules for apache2 ssl termination
+  apache2_module: name={{ item }} state=present
+  with_items:
+    - proxy
+    - proxy_http
+    - ssl
+    - headers
+  notify: reload apache2

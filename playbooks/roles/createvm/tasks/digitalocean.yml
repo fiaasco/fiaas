@@ -1,0 +1,21 @@
+---
+# if your ansible is complaining about dopy:
+# run: easy_install dopy on your system python!
+# API docs https://developers.digitalocean.com/documentation/v2
+# curl -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer {{ do_api_token }}' "https://api.digitalocean.com/v2/account/keys
+
+- name: create digital ocean VM
+  connection: local
+  digital_ocean: >
+      state=present
+      command=droplet
+      ssh_key_ids={{ do_ssh_key_ids }}
+      name="{{ vm_name }}"
+      api_token="{{ do_api_token }}
+      size_id="{{ vm_size_id }}"
+      region_id="{{ vm_region_id }}"
+      image_id="{{ vm_image_id }}"
+      wait_timeout=500
+  register: my_droplet
+- debug: msg="ID is {{ my_droplet.droplet.id }}"
+- debug: msg="IP is {{ my_droplet.droplet.ip_address }}"

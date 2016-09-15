@@ -1,0 +1,26 @@
+---
+# CREATION:
+- name: databases | create databases
+  mysql_db: name={{ item.name }} state=present
+  with_items: "{{ databases }}"
+  when: not item.delete|default(False)
+  tags: ['databases']
+
+- name: databases | grant local users to the databases
+  mysql_user: name={{ item.name }} password={{ item.pass }} priv={{ item.name }}.*:ALL append_privs=true state=present
+  with_items: "{{ databases }}"
+  when: item.ip is not defined and not item.delete|default(False)
+  tags: ['databases']
+
+- name: databases | grant remote users to the databases
+  mysql_user: name={{ item.name }} password={{ item.pass }} host='%' priv={{ item.name }}.*:ALL state=present append_privs=yes
+  with_items: "{{ databases }}"
+  when: item.ip is defined and not item.delete|default(False)
+  tags: ['databases']
+
+- name: databases | add ufw rules for these special databases
+  ufw: rule=allow interface={{ public_interface }} direction=in proto=tcp src={{ item.ip }} to_port=3306
+  with_items: "{{ databases }}"
+  when: item.ip is defined and not item.delete|default(False)
+  notify: reload ufw
+  tags: ['databases']

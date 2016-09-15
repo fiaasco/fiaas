@@ -1,0 +1,39 @@
+---
+### CLEANUP OLD PLUGINS - TO BE REMOVED AFTER A RUN AGAINST ALL SYSTEMS ###
+# plugins from https://github.com/tjstein/php5-fpm-munin-plugins
+- name: remove old munin plugins
+  file: path=/usr/share/munin/plugins/{{ item }} state=absent
+  with_items:
+    - phpfpm_average
+    - phpfpm_connections
+    - phpfpm_memory
+    - phpfpm_processes
+    - phpfpm_status
+
+- name: disable old phpfpm munin plugins
+  file: path=/etc/munin/plugins/{{ item }} state=absent
+  with_items:
+    - phpfpm_average
+    - phpfpm_connections
+    - phpfpm_memory
+    - phpfpm_processes
+    - phpfpm_status
+  notify: restart munin-node
+
+- name: remove phpfpm munin config
+  file: path=/etc/munin/plugin-conf.d/phpfpm state=absent
+  notify: restart munin-node
+
+### ACTIVATE NEW PLUGIN ###
+
+- name: copy plugin
+  copy: src=php/php-fpm.php dest=/usr/share/munin/plugins/php-fpm owner=root group=root mode=0755
+
+- name: enable munin plugins
+  file: src=/usr/share/munin/plugins/php-fpm dest=/etc/munin/plugins/{{ item }} state=link
+  with_items:
+    - php-fpm-memory
+    - php-fpm-cpu
+    - php-fpm-count
+    - php-fpm-time 
+  notify: restart munin-node

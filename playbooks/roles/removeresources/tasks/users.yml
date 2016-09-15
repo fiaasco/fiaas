@@ -1,0 +1,6 @@
+---
+- name: users | delete users
+  user: name={{ item.name }} state=absent remove=yes
+  with_items: "{{ users }}"
+  when: item.delete|default(False)
+  tags: ['users']

@@ -1,0 +1,60 @@
+---
+- name: Install munin node
+  apt: name={{ item }} state=installed cache_valid_time=3600 update_cache=yes
+  with_items:
+    - libnet-cidr-perl
+    - munin-node
+
+- name: create logdir when needed
+  file: dest=/var/log/munin state=directory owner=munin group=www-data mode=0755
+
+- name: Ensure munin-node running
+  service: name=munin-node state=started enabled=yes
+
+- name: Remove default plugins we do not need
+  file: path=/etc/munin/plugins/{{ item }} state=absent
+  with_items:
+    - exim_mailqueue
+    - exim_mailstats
+    - lpstat
+    - nfs4_client
+    - nfs_client
+    - nfsd
+    - nfsd4
+    - ntp_kernel_err
+    - ntp_kernel_pll_freq
+    - ntp_kernel_pll_off
+    - ntp_offset
+    - ntp_states
+    - sendmail_mailqueue
+    - sendmail_mailstats
+    - sendmail_mailtraffic
+    - uptime
+    - users
+    - yum
+  notify: restart munin-node
+
+- name: allow munin-servers
+  template: src=munin-node.conf.j2 dest=/etc/munin/munin-node.conf
+  notify: restart munin-node
+
+- name: allow munin servers to munin port
+  ufw: rule=allow interface={{ public_interface }} direction=in proto=tcp src={{ hostvars[item].ansible_ssh_host }} to_port=4949
+  with_items: "{{ groups.muninservers }}"
+  notify: reload ufw
+  when: monitoring_over_ssh == False
+
+- name: allow munin servers to munin port through external ip
+  ufw: rule=allow interface={{ public_interface }} direction=in proto=tcp src={{ hostvars[item].external_ip }} to_port=4949
+  with_items: "{{ groups.muninservers }}"
+  notify: reload ufw
+  when: monitoring_over_ssh == False and hostvars[item].external_ip is defined
+
+- include: munin-node-ssh.yml
+  when: monitoring_over_ssh == True
+
+- name: Adapt munin-server config
+  template: src=node.conf.j2 dest=/etc/munin/munin-conf.d/{{ inventory_hostname }}.conf owner=root group=root mode=0755
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups.muninservers }}"
+  when: monitoring == True

@@ -1,0 +1,55 @@
+---
+# Icinga master setup without node wizard
+
+- name: generate ca
+  shell: icinga2 pki new-ca creates=/var/lib/icinga2/ca/ca.key
+  notify: restart icinga
+
+- name: copy ca to /etc/icinga2/pki
+  shell: rsync -a /var/lib/icinga2/ca/{{ item }} /etc/icinga2/pki/{{ item }} creates=/etc/icinga2/pki/{{ item }}
+  with_items:
+    - ca.crt
+    - ca.key
+  notify: restart icinga
+
+- name: prepare pki directory
+  file: path=/etc/icinga2/pki state=directory owner=nagios group=nagios mode=0700
+
+- name: generate csr
+  shell: icinga2 pki new-cert --cn {{ ansible_fqdn }} --key /etc/icinga2/pki/{{ ansible_fqdn }}.key --csr /etc/icinga2/pki/{{ ansible_fqdn }}.csr creates=/etc/icinga2/pki/{{ ansible_fqdn }}.csr
+
+- name: sign csr
+  shell: icinga2 pki sign-csr --csr /etc/icinga2/pki/{{ ansible_fqdn }}.csr --cert /etc/icinga2/pki/{{ ansible_fqdn }}.crt creates=/etc/icinga2/pki/{{ ansible_fqdn }}.crt
+
+# icinga2 node setup --zone master --trustedcert /etc/icinga2/pki/ca.crt --cn icinga2 --master
+# is also possible, but you'll have to set the salt later in that case
+- name: enable api
+  shell: icinga2 feature enable api creates=/etc/icinga2/features-enabled/api.conf
+  notify: restart icinga
+
+- name: configure zones.conf
+  template: src=zones.conf.j2 dest=/etc/icinga2/zones.conf owner=root group=root mode=0644 
+  notify: restart icinga
+
+- name: configure constants.conf
+  template: src=constants.conf.j2 dest=/etc/icinga2/constants.conf owner=root group=root mode=0644
+  notify: restart icinga
+
+- name: create icinga2 database
+  mysql_db: name={{ idodbname }} state=present
+  register: icingadb
+
+- name: create icinga2 database user
+  mysql_user: name={{ idodbuser }} password={{ idodbpass }} priv={{ idodbname }}.*:ALL append_privs=true state=present
+
+- name: load database schema
+  mysql_db: state=import name={{ idodbname }} target=/usr/share/icinga2-ido-mysql/schema/mysql.sql
+  when: icingadb.changed
+
+- name: put ido-mysql.conf
+  template: src=ido-mysql.conf.j2 dest=/etc/icinga2/features-available/ido-mysql.conf
+  notify: restart icinga
+
+- name: enable ido-mysql feature for web
+  shell: icinga2 feature enable ido-mysql creates=/etc/icinga2/features-enabled/ido-mysql.conf
+  notify: restart icinga

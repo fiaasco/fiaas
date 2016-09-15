@@ -1,0 +1,49 @@
+---
+- name: create basedirs for the backup-jail
+  file: dest={{ server_backup_dir }}{{ item }} state=directory owner=root group=root
+  with_items:
+    - "/"
+    - "/bin"
+    - "/dev"
+    - "/etc"
+    - "/home"
+    - "/lib"
+    - "/lib64"
+    - "/usr"
+    - "/usr/bin"
+    - "/usr/lib"
+    - "/usr/local"
+    - "/usr/local/bin"
+    - "/tmp"
+
+- shell: rsync -a {{ item }} {{ server_backup_dir }}/{{ item }}
+  with_items:
+    - "/etc/ld.so.cache"
+    - "/etc/ld.so.conf"
+    - "/etc/nsswitch.conf"
+    - "/etc/hosts"
+    - "/lib/"
+    - "/usr/lib/"
+    - "/usr/local/lib/"
+  changed_when: False
+
+- mount: name={{ server_backup_dir }}/tmp/ src=/tmp fstype=none opts=bind state=present
+
+- shell: mknod -m 666 {{ server_backup_dir }}/dev/{{ item.name }} c 1 {{ item.nr }} creates={{ server_backup_dir }}/dev/{{ item.name }}
+  with_items:
+    - { name: "null", nr: "3" }
+    - { name: "urandom", nr: "9" }
+
+- template: src=l2chroot.j2 dest=/usr/local/bin/l2chroot owner=root group=root mode=0750  
+
+- name: copy over required binaries
+  shell: /usr/local/bin/l2chroot {{ item }} creates={{ server_backup_dir }}/{{ item }}
+  with_items:
+    - "/bin/bash"
+    - "/bin/dash"
+    - "/bin/ls"
+    - "/bin/sh"
+    - "/usr/bin/python2.7"
+    - "{{ python3 }}"
+    - "/usr/local/bin/attic"
+

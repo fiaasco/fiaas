@@ -1,0 +1,5 @@
+# {{ ansible_managed }} 
+
+[apache_*]
+env.url   http://127.0.0.1:%d/server-status?auto
+env.ports {% if varnish_required == "True" %}8080{% else %}80{% endif %}

@@ -1,0 +1,46 @@
+platform: vagrant
+
+public_interface: eth0
+
+admin:
+  email: admin@fiaas.co
+
+# Icinga2
+ticketsalt: fn9bc170b6489aaff4bf2e1c9504f572
+
+idodbname: icinga2
+idodbuser: icinga2
+idodbpass: aquaiYothaGhoo8i
+
+# Icinga web classic
+classicusers:
+  - name: icingaadm
+    pass: $apr1$A9sGbTcc$1vc5AXweNKKOc3R1RqCRR1
+  - name: luc
+    pass: "$apr1$A3WuUqtc$LZ8C26Y4ecZCsZzlq5wFC0"
+
+# Icingaweb2
+webdbname: icingaweb2
+webdbuser: icingaweb2
+webdbpass: aiphaiGhiegie5ko
+
+webusers:
+    # demo user, username = pass
+    # openssl passwd -1 icingaadmin
+  - name: icingaadmin
+    desc: Icinga 2 Admin
+    mail: root@localhost
+    pass: $1$nvfR7TSj$POQPIsM9bBhEb.24AAIV10
+  - name: luc
+    desc: Luc Stroobant
+    mail: luc@fiaas.co
+    pass: "$1$qWQ2ldQ1$.OJlqumvu6GVLVAQ3ZsJR."
+
+# htpasswd users
+htpasswd:
+  - user: dieter
+    hash: "$apr1$PKMmRvK.$A315zWY40Y2f/qh6FGFwX1"
+  - user: luc
+    hash: "$apr1$pXfaBCzo$vgo9tbmuJPOl5x5f.0DKP0"
+  - user: kurt
+    hash: "$apr1$YMc4v/VB$h/doCZFhG.FK/r0q4BNNE1"

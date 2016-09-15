@@ -1,0 +1,31 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+#
+
+DEBIAN7_BOX = "debian76"
+DEBIAN7_BOX_URL = "http://repo.werus.be/vagrant/debian-7.6-amd64.box"
+DEBIAN8_BOX = "debian82"
+DEBIAN8_BOX_URL = "http://repo.werus.be/vagrant/debian-8.2-amd64.box"
+UBUNTU_BOX= "ubuntu1404"
+UBUNTU_BOX_URL = "http://repo.werus.be/vagrant/ubuntu-14.04-amd64.box"
+
+Vagrant.configure("2") do |config|
+
+  config.ssh.insert_key = false
+
+  config.vm.define "debian820" do |v|
+    v.vm.box = DEBIAN8_BOX
+    v.vm.box_url = DEBIAN8_BOX_URL
+    v.vm.hostname = "debian820"
+    v.vm.network :private_network, ip: "192.168.131.190"
+    v.vm.network :forwarded_port, guest: 22, host: 2163, id: 'ssh'
+    v.vm.provision :ansible do |ansible|
+      ansible.inventory_path = "inventory/"
+      ansible.playbook = "../../playbooks/lamp.yml"
+      ansible.sudo = "true"
+      ansible.host_key_checking = "false"
+      ansible.limit = 'all'
+    end
+  end
+end
+

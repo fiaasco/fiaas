@@ -1,0 +1,19 @@
+---
+#- name: make full backup
+#  shell: /usr/local/bin/attic-backup backup 
+  
+- name: install Debian updates
+  apt: upgrade=dist update_cache=yes dpkg_options='force-confold,force-confdef'
+  register: upgrades
+
+- name: restart machine
+  command: shutdown -r now "Fiaas.co dist-update triggered with reboot"
+  async: 0
+  poll: 0
+  ignore_errors: true
+  when: reboot == "yes" and upgrades.changed
+
+- name: waiting for server to come back
+  local_action: wait_for host={{ ansible_ssh_host }} port=22 state=started delay=10 search_regex=OpenSSH
+  become: False
+  when: reboot == "yes"

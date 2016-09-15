@@ -1,0 +1,6 @@
+---
+- name: set pre-defined limits
+  copy: src=limits/{{ item }} dest=/etc/security/limits.d/{{ item }} owner=root group=root mode=0644
+  with_items:
+    - 90-nproc.conf
+    - 90-nfile.conf

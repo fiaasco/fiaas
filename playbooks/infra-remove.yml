@@ -1,0 +1,18 @@
+- name: Configure monitored hosts
+  hosts: all:!infra
+  become: True
+
+  pre_tasks:
+    - include_vars: "./os_vars/{{ ansible_distribution_release }}.yml"
+      tags: ['backup']
+    - apt: update_cache=yes cache_valid_time=3600
+
+  roles:
+    - system
+    - role: infra-remove
+      serial: 1
+      tags: ['icinga']
+    - role: monitoring
+      tags: ['monitoring']
+    - role: backup
+      tags: ['backup']

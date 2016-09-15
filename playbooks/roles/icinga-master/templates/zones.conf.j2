@@ -1,0 +1,52 @@
+/* {{ ansible_managed }} */
+
+/*
+ * Endpoint and Zone configuration for a cluster setup
+ * This local example requires `NodeName` defined in
+ * constants.conf.
+ */
+
+object Endpoint "{{ ansible_fqdn }}" {
+}
+
+object Zone "master" {
+	//this is the local node master named  = "master"
+	endpoints = [ "{{ ansible_fqdn }}" ]
+}
+
+/*
+ * Defines a global zone containing templates,
+ * etc. synced to all nodes, if they accept
+ * configuration. All remote nodes need
+ * this zone configured too.
+ */
+
+/*
+object Zone "global-templates" {
+  global = true
+}
+*/
+
+/*
+ * Read the documentation on how to configure
+ * a cluster setup with multiple zones.
+ */
+
+/*
+object Endpoint "master.example.org" {
+  host = "master.example.org"
+}
+
+object Endpoint "satellite.example.org" {
+  host = "satellite.example.org"
+}
+
+object Zone "master" {
+  endpoints = [ "master.example.org" ]
+}
+
+object Zone "satellite" {
+  parent = "master"
+  endpoints = [ "satellite.example.org" ]
+}
+*/

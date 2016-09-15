@@ -1,0 +1,6 @@
+---
+- include: digitalocean.yml
+  when: vm_type=='digital_ocean'
+
+- include: vmware.yml
+  when: vm_type=='vmware'

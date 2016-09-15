@@ -1,0 +1,30 @@
+---
+- name: install openjdk (necessary for solr and missing dep)
+  apt: name={{ item }} state=installed cache_valid_time=3600 update_cache=yes
+  with_items:
+    - openjdk-7-jdk
+    - solr-jetty
+  notify: start solr-jetty
+
+- name: java
+  alternatives: name=java path=/usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java
+  notify: restart solr-jetty
+
+- name: put /etc/default/jetty
+  template: src=default-jetty.j2 dest=/etc/default/jetty owner=root group=root mode=0644
+  notify: restart solr-jetty
+
+- name: fix stupid bug in solr-jetty package (debian bug 683854 and 701876)
+  shell: "cd /var/lib/jetty/webapps; rm solr; ln -s /usr/share/solr/web solr"
+  args:
+    creates: "/var/lib/jetty/webapps/solr/favicon.ico"
+  notify: restart solr-jetty
+
+- name: put drupal solr config
+  copy: src=drupal-solr-3.x/ dest=/etc/solr/conf/ owner=root group=root
+  notify: restart solr-jetty
+
+- template: src=jetty-{{ item }}.j2 dest=/etc/jetty/{{ item }} owner=root group=root mode=0644
+  with_items:
+    - "jetty.xml"
+  notify: restart solr-jetty

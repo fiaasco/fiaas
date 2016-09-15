@@ -1,0 +1,4 @@
+---
+- name: put vsftp check
+  template: src=vsftpd/vsftpd.conf.j2 dest=/etc/icinga2/conf.d/vsftpd.conf mode=0644
+  notify: restart icinga2 and update master config

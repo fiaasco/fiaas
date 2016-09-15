@@ -1,0 +1,45 @@
+# {{ ansible_managed }}
+
+{% for virtual in vhosts %}
+{% if virtual.delete is not defined %}
+{% if virtual.monitoring == True %}
+object Service "http {{ virtual.url }}" {
+  import "generic-service"
+  check_command = "http"
+
+  host_name = "{{ inventory_hostname }}"
+
+  vars.http_vhost = "{{ virtual.url }}"
+  vars.http_address = "{{ virtual.url }}"
+}
+{% if virtual.ssl is defined %}
+
+object Service "https {{ virtual.url }}" {
+  import "generic-service"
+  check_command = "http"
+
+  host_name = "{{ inventory_hostname }}"
+
+  vars.http_vhost = "{{ virtual.url }}"
+  vars.http_address = "{{ virtual.url }}"
+  vars.http_port = "443"
+  vars.http_ssl = "true"
+}
+
+object Service "ssl cert {{ virtual.url }}" {
+  import "generic-service"
+  check_command = "http"
+
+  host_name = "{{ inventory_hostname }}"
+
+  vars.http_vhost = "{{ virtual.url }}"
+  vars.http_address = "{{ virtual.url }}"
+  vars.http_port = "443"
+  vars.http_certificate = "35"
+  vars.http_ssl = "true"
+}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% endfor %}

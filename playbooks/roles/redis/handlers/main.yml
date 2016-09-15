@@ -1,0 +1,6 @@
+---
+- name: start redis-server
+  service: name=redis-server state=started enabled=yes
+
+- name: restart redis-server
+  service: name=redis-server state=restarted enabled=yes

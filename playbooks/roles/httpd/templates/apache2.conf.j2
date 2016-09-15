@@ -1,0 +1,132 @@
+# Global configuration
+#
+
+{% if apache.version == "2.2" %}
+LockFile ${APACHE_LOCK_DIR}/accept.lock
+{% endif %}
+PidFile ${APACHE_PID_FILE}
+Timeout 300
+KeepAlive On
+MaxKeepAliveRequests 100
+KeepAliveTimeout 5
+
+##
+## Server-Pool Size Regulation (MPM specific)
+## 
+
+# prefork MPM
+# StartServers: number of server processes to start
+# MinSpareServers: minimum number of server processes which are kept spare
+# MaxSpareServers: maximum number of server processes which are kept spare
+# MaxClients: maximum number of server processes allowed to start
+# MaxRequestsPerChild: maximum number of requests a server process serves
+<IfModule mpm_prefork_module>
+    # we use worker!
+    StartServers          5
+    MinSpareServers       5
+    MaxSpareServers      10
+    MaxClients           50
+    MaxRequestsPerChild 512 
+</IfModule>
+
+# worker MPM
+# StartServers: initial number of server processes to start
+# MinSpareThreads: minimum number of worker threads which are kept spare
+# MaxSpareThreads: maximum number of worker threads which are kept spare
+# ThreadLimit: ThreadsPerChild can be changed to this maximum value during a
+#              graceful restart. ThreadLimit can only be changed by stopping
+#              and starting Apache.
+# ThreadsPerChild: constant number of worker threads in each server process
+# MaxClients: maximum number of simultaneous client connections
+# MaxRequestsPerChild: maximum number of requests a server process serves
+<IfModule mpm_worker_module>
+{% if ansible_memtotal_mb <= 1024 %}
+    StartServers          1
+{% else %}
+    StartServers          2
+{% endif %}
+    MinSpareThreads      25
+    MaxSpareThreads      75 
+    ThreadLimit          64
+    ThreadsPerChild      25
+{% if ansible_memtotal_mb <= 1024 %}
+    MaxClients           25
+{% elif ansible_memtotal_mb <= 3072 %}
+    MaxClients           50
+{% elif ansible_memtotal_mb <= 8192 %}
+    MaxClients           75
+{% else %}
+    MaxClients          100 
+{% endif %}
+    MaxRequestsPerChild 666
+</IfModule>
+
+# event MPM
+# StartServers: initial number of server processes to start
+# MinSpareThreads: minimum number of worker threads which are kept spare
+# MaxSpareThreads: maximum number of worker threads which are kept spare
+# ThreadsPerChild: constant number of worker threads in each server process
+# MaxClients: maximum number of simultaneous client connections
+# MaxRequestsPerChild: maximum number of requests a server process serves
+<IfModule mpm_event_module>
+    StartServers          2
+    MinSpareThreads      25
+    MaxSpareThreads      75 
+    ThreadLimit          64
+    ThreadsPerChild      25
+    MaxClients          150
+    MaxRequestsPerChild   0
+</IfModule>
+
+# These need to be set in /etc/apache2/envvars
+User ${APACHE_RUN_USER}
+Group ${APACHE_RUN_GROUP}
+
+AccessFileName .htaccess
+
+#
+# The following lines prevent .htaccess and .htpasswd files from being 
+# viewed by Web clients. 
+#
+<Files ~ "^\.ht">
+    Order allow,deny
+    Deny from all
+    Satisfy all
+</Files>
+
+DefaultType None
+HostnameLookups Off
+
+ErrorLog ${APACHE_LOG_DIR}/error.log
+LogLevel warn
+
+# Include module configuration:
+Include mods-enabled/*.load
+Include mods-enabled/*.conf
+
+# Include list of ports to listen on and which to use for name based vhosts
+Include ports.conf
+
+LogFormat "%v:%p %h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" vhost_combined
+{% if apache.version == "2.4" and varnish_required == True %}
+<IfModule remoteip_module>
+RemoteIPHeader X-Forwarded-For
+RemoteIPInternalProxy 127.0.0.1
+</IfModule>
+LogFormat "%a %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combined_xfwded
+{% endif %}
+LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combined
+LogFormat "%h %l %u %t \"%r\" %>s %O" common
+LogFormat "%{Referer}i -> %U" referer
+LogFormat "%{User-agent}i" agent
+
+# Include generic snippets of statements
+{% if apache.version == "2.2" %}
+Include conf.d/
+{% else %}
+Include conf-enabled/
+{% endif %}
+
+# Include the virtual host configurations:
+Include sites-enabled/
+

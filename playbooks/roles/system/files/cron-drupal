@@ -1,0 +1,3 @@
+# cron jobs editable by developers for drupal
+# example:
+#* *     * * *     www-data   drush -r /var/www/sites/www.yoursite.com/web/ elysia-cron --uri=http://www.yoursite.com

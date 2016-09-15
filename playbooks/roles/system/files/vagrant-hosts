@@ -1,0 +1,13 @@
+127.0.0.1       localhost
+192.168.131.190 debian820
+192.168.131.191 debian821
+192.168.131.192 debian822
+
+192.168.131.160 debian760
+192.168.131.161 debian761
+192.168.131.162 debian762
+   
+# The following lines are desirable for IPv6 capable hosts 
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters

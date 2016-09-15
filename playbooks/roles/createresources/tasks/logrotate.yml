@@ -1,0 +1,10 @@
+---
+- name: logrotate | enable per-site logrotation for apache 2.2
+  template: src=vhost_logrotate.j2 dest=/etc/logrotate.d/apache2-vhosts owner=root group=root mode=0644
+  when: apache.version == "2.2"
+  tags: ['vhosts', 'logrotate']
+
+- name: logrotate | enable per-site logrotation for apache 2.4
+  template: src=vhost_logrotate24.j2 dest=/etc/logrotate.d/apache2-vhosts owner=root group=root mode=0644
+  when: apache.version == "2.4"
+  tags: ['vhosts', 'logrotate']
