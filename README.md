@@ -167,7 +167,7 @@ php_pecl_extra_extensions: []
 
 Support
 =======
-Fiaas.co is available for support contracts and consultancy services to setup your own environment, add continious integrate etc. Don't hesitate to contact use on sales@fiaas.co for any questions.
+Fiaas.co is available for support contracts and consultancy services to setup your own environment, add continuous integration etc. Contact sales@fiaas.co for any questions.
 
 License
 =======
