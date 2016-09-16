@@ -56,12 +56,12 @@ $ ansible-playbook -i inventory/production/ playbooks/createresources.yml -l cus
 $ ansible-playbook -i inventory/production/ playbooks/infra-client.yml -l customer1
 ```
 
-The infra plays are optional, but without that you want have monitoring and backups.
+The infra plays are optional, but without that you won't have monitoring and backups.
 
 Host vars
 =========
 
-The configuration for a hosts allows to set plenty of options. There is not much hierarchie in the yaml because we found out it blocks flexibility.
+The configuration for a hosts allow to set plenty of options. There's not much hierarchie in the yaml because we found out it blocks flexibility.
 
 An example host_vars file:
 
@@ -177,4 +177,5 @@ Authors
 =======
 
 Dieter Verhelst -- dieter@fiaas.co
+
 Luc Stroobant   -- luc@fiaas.co
