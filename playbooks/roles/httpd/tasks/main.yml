@@ -69,8 +69,14 @@
 - name: add our hostname-vhost config
   template: src=admin-vhost.conf.j2 dest=/etc/apache2/sites-available/admin-vhost.conf owner=root group=root mode=0644
 
-- name: disable default default
+- name: disable default default for 2.2
   shell: a2dissite 000-default removes=/etc/apache2/sites-enabled/000-default
+  when: apache.version == "2.2"
+  notify: reload apache2
+
+- name: disable default default for 2.4
+  shell: a2dissite 000-default removes=/etc/apache2/sites-enabled/000-default.conf
+  when: apache.version == "2.4"
   notify: reload apache2
 
 - name: Enable admin vhost
