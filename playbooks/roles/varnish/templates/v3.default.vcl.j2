@@ -2,13 +2,13 @@
 # man page for details on VCL syntax and semantics.
 #
  
-# TODO: Update internal subnet ACL and security.
- 
 # Define the internal network subnet.
 # These are used below to allow internal access to certain files while not
 # allowing access from the public internet.
 acl internal {
-  "10.2.1.0"/24;
+{% for subnet in acl_internal %}
+  "{{ subnet }}";
+{% endfor %}
 }
  
 # Default backend definition.  Set this to point to your content
