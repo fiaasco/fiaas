@@ -6,9 +6,7 @@
 # These are used below to allow internal access to certain files while not
 # allowing access from the public internet.
 acl internal {
-{% for subnet in acl_internal %}
-  "{{ subnet }}";
-{% endfor %}
+  "localhost";
 }
  
 # Default backend definition.  Set this to point to your content
