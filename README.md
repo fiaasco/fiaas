@@ -1,7 +1,7 @@
 FIAAS "Full Install as a Service"
 =================================
 
-This is a collection of Ansible roles and playbooks to setup an configure a full LAMP stack on Debian with additional services like Varnish, Memcached or Redis where required. The FIAAS playbooks generate more than just the standard service on your VM.
+This is a collection of Ansible roles and playbooks to setup and configure a full LAMP stack on Debian with additional services like Varnish, Memcached or Redis where required. The FIAAS playbooks generate more than just the standard service on your VM.
 FIAAS includes:
   * creation of users, vhosts, php-fpm pools, databases and solr cores
   * firewall and fail2ban enabled
@@ -29,7 +29,7 @@ Executing (vagrant)
 ===================
 
   * source ansible-2.1.1/bin/activate
-  * cd inventory/somevagrantsetup/
+  * cd vagrant/somevagrantsetup/
   * vagrant up --no-provision
   * provisioning:
     * OR: vagrant provision
@@ -47,7 +47,7 @@ $ source ansible-2.1.1/bin/activate
 
 Assign 2 infra VMs in your inventory for monitoring and backups and run:
 ```
-$ ansible-playbook -i inventory/production/ playbooks/infra-setup.yml -l customer1
+$ ansible-playbook -i inventory/production/ playbooks/infra-setup.yml
 ```
 
 Create a LAMP VM:
@@ -62,7 +62,7 @@ The infra plays are optional, but without that you won't have monitoring and bac
 Host vars
 =========
 
-The configuration for a hosts allow to set plenty of options. There's not much hierarchie in the yaml because we found out it blocks flexibility.
+The configuration for a host allows to set plenty of options. There's not much hierarchy in the yaml because we found out it blocks flexibility.
 
 An example host_vars file:
 
@@ -166,10 +166,11 @@ php_pecl_inactive_extensions: []
 php_pecl_extra_extensions: []
 ```
 Define a host in the inventory, create a similar host_vars file, run the lamp and createresources playbook against your VM and you'll be ready to go.
+To delete something you created, set delete: True and use the deleteresources playbook to remove them. 
 
 Support
 =======
-Fiaas.co is available for support contracts and consultancy services to setup your own environment, add continuous deployments etc. Contact sales@fiaas.co for any questions.
+FiaasCo is available for support and consultancy services to setup your own environment, add continuous deployments etc. Contact sales@fiaas.co for any questions.
 
 License
 =======
