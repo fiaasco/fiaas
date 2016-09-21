@@ -170,7 +170,9 @@ To delete something you created, set delete: True and use the deleteresources pl
 
 Support
 =======
-FiaasCo is available for support and consultancy services to setup your own environment, add continuous deployments etc. Contact sales@fiaas.co for any questions.
+Feel free to open an issue or create a pull request in case you have questions or proposals to improve the project.
+
+FiaasCo is available for commercial support and consultancy services to setup your own environment, add continuous deployments etc. Contact sales@fiaas.co or check https://www.fiaas.co for more information.
 
 License
 =======
@@ -179,6 +181,6 @@ This software is licensed under the terms of the MIT License, included in the CO
 Authors
 =======
 
-Dieter Verhelst -- dieter@fiaas.co
+Dieter Verhelst
 
-Luc Stroobant   -- luc@fiaas.co
+Luc Stroobant
