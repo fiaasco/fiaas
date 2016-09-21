@@ -9,7 +9,7 @@
   file: dest=~munin/.ssh owner=munin group=munin mode=0700 state=directory
 
 - name: copy over private key for munin-checks over ssh
-  copy: src=id_munin dest=~munin/.ssh/id_dsa owner=munin group=munin mode=0600
+  template: src=id_rsa_munin.j2 dest=~munin/.ssh/id_rsa owner=munin group=munin mode=0600
 
 - name: place munin-config
   template: src={{ item }}.j2 dest=/etc/munin/{{ item }} owner=root group=root mode=0644

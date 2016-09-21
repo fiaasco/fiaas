@@ -6,6 +6,7 @@ redis_required: False
 default_vhost: "www.svhost1.com"
 vsftpd_listen_port: 21
 vsftpd_tls_only: "no"
+monitoring_over_ssh: True
 
 backup_required: True
 

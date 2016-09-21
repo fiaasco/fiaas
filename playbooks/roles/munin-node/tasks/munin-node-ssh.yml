@@ -6,7 +6,7 @@
   user: name=munin createhome=yes shell=/bin/false
 
 - name: secure the munin-user
-  lineinfile: dest=~munin/.ssh/authorized_keys line='command="/bin/false",from="{{ hostvars[item].external_ip|default(hostvars[item].ansible_ssh_host) }}",no-agent-forwarding,no-pty,no-user-rc,no-X11-forwarding,permitopen="localhost:4949" ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5nCphsLLnVl8XF+GiwIhn3CXplW1QE63Vpmcavrg8MeLKtcIbtfhlmpcSWr3foFgWPY4e+4/Hh0lX2b3qjlZLxyTxtSi5OKNJ3tPgyg2oorlPTvLVWDqD1d1osAnpqG/D2fy1nwLbE399TtaBS3NILSYlwr0Jlha/vpC0nVLrZHaHYjdhPsaQ3qeiRq4qAsMXtYLWmb4T71OkrPn2d1tIO+/CDyUNJp2Vb2QGz46ExySNNpt2McdnlWae13B1XUfRi09F04WeT1lMwk8mwvjyqNaVRjixqEbwvZ/7hO2r1rLe1f/ytQl6F50sLZvie37Cg+lwR5LRzfgGowKfJxIt munin' state=present create=yes 
+  lineinfile: dest=~munin/.ssh/authorized_keys line='command="/bin/false",from="{{ hostvars[item].external_ip|default(hostvars[item].ansible_ssh_host) }}",no-agent-forwarding,no-pty,no-user-rc,no-X11-forwarding,permitopen="localhost:4949" {{ monitoring_over_ssh_pubkey }}' owner=munin group=munin mode=0600 state=present create=yes
   with_items: "{{ groups.muninservers }}"
 
 - name: fetch ssh-pub-key for this host

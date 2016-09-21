@@ -1,1 +1,2 @@
 munin_install: no
+monitoring_over_ssh_privkey: ''

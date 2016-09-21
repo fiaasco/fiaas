@@ -1,3 +1,4 @@
 ---
 monitoring: yes
 monitoring_over_ssh: false
+monitoring_over_ssh_pubkey: ''
