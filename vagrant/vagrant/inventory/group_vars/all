@@ -1,5 +1,6 @@
 platform: vagrant
 
+
 # system ssh user
 systemusers:
   - name: nimda
@@ -19,6 +20,9 @@ public_interface: eth0
 
 admin:
   email: admin@mail.invalid
+
+# your custom repo | only necessary if you want to include custom build packages
+custom_repo_url: 'http://repo.werus.be/apt/debian'
 
 # Icinga2
 ticketsalt: fn9bc170b6489aaff4bf2e1c9504f572
