@@ -20,7 +20,7 @@ Environment setup
 
 Ansible = 2.1.1(.0) is used for this setup. (1.9.x still appears to work too)
 
-  * sudo apt-get -y install python-dev libffi-dev libssl-dev
+  * sudo apt-get -y install python-dev libffi-dev libssl-dev python-virtualenv
   * virtualenv ansible-2.1.1
   * source ansible-2.1.1/bin/activate
   * pip install ansible==2.1.1.0
