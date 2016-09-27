@@ -1,0 +1,6 @@
+---
+backup_required: True
+
+borg_version: "1.0.7"
+borg_checksum: "sha256:e1b5370bc55ce00eecbac459bc9751b540d48b7ba42168ad4e4505db175aa471"
+borg_download_url: "https://github.com/borgbackup/borg/releases/download/{{ borg_version }}/borg-linux64"
