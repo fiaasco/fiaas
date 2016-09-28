@@ -15,7 +15,7 @@ if [ "$1" = "info" ]
   then
     if [ -z "$2" ]; then printf "run $0 with list and use the backup-tag to request information\n"; exit 1; fi
 {% for host in groups.backupservers %}
-    REPOSITORY={{ borg_user }}@{{ hostvars[host].ansible_ssh_host }}:backup.borg
+    REPOSITORY={{ borg_user }}@{{ hostvars[host].ansible_ssh_host }}:{{ borg_pool }}/{{ inventory_hostname }}
     /usr/local/bin/borg info $REPOSITORY::$2
 {% endfor %}
     exit 0
@@ -27,7 +27,7 @@ if [ "$1" = "mount" ]
     if [ -z "$3" ]; then printf "Select the backup to mount\n"; exit 1; fi
     if [ -z "$4" ]; then printf "Select the path to mount the backup on\n"; exit 1; fi
 {% for host in groups.backupservers %}
-    REPOSITORY={{ borg_user }}@{{ hostvars[host].ansible_ssh_host }}:backup.borg
+    REPOSITORY={{ borg_user }}@{{ hostvars[host].ansible_ssh_host }}:{{ borg_pool }}/{{ inventory_hostname }}
     /usr/local/bin/borg mount $REPOSITORY::$3 $4
     if [ "$?" = "0" ]; then printf "Backup mounted on $4, do not forget to unmount!\n"; fi
     exit 0
@@ -37,7 +37,7 @@ fi
 if [ "$1" = "list" ]
   then
 {% for host in groups.backupservers %}
-    REPOSITORY={{ borg_user }}@{{ hostvars[host].ansible_ssh_host }}:backup.borg
+    REPOSITORY={{ borg_user }}@{{ hostvars[host].ansible_ssh_host }}:{{ borg_pool }}/{{ inventory_hostname }}
     printf "Archives on {{ host }} ( {{ hostvars[host].ansible_ssh_host }} ):\n"
     /usr/local/bin/borg list -v $REPOSITORY
 {% endfor %}
@@ -47,7 +47,7 @@ fi
 if [ "$1" = "init" ]
   then
 {% for host in groups.backupservers %}
-    REPOSITORY={{ borg_user }}@{{ hostvars[host].ansible_ssh_host }}:backup.borg
+    REPOSITORY={{ borg_user }}@{{ hostvars[host].ansible_ssh_host }}:{{ borg_pool }}/{{ inventory_hostname }}
     borg init $REPOSITORY
 {% endfor %}
     exit 0
@@ -64,7 +64,7 @@ if [ "$1" = "backup" ]
 
 {% for host in groups.backupservers %}
     printf "Backing up to {{ host }} ( {{ hostvars[host].ansible_ssh_host }} ):\n"
-    REPOSITORY={{ borg_user }}@{{ hostvars[host].ansible_ssh_host }}:backup.borg
+    REPOSITORY={{ borg_user }}@{{ hostvars[host].ansible_ssh_host }}:{{ borg_pool }}/{{ inventory_hostname }}
     
     /usr/local/bin/borg create --stats $REPOSITORY::$date {% for dir in backup_include %}{{ dir }} {% endfor %}{% if automysql.stat.isdir is defined and automysql.stat.isdir == True %}/var/lib/automysqlbackup{% endif %}
 
