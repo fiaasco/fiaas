@@ -9,6 +9,7 @@ vsftpd_tls_only: "no"
 monitoring_over_ssh: True
 
 backup_required: True
+borg_passphrase: jout3tiChe0keetae0Ietei0ohsh3ol8
 
 vm_owner: devuser1
 
