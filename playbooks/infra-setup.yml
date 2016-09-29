@@ -21,6 +21,8 @@
       tags: ['httpd']
     - role: fastcgi
       tags: ['php','httpd']
+    - role: letsencrypt
+      tags: ['letsencrypt', 'acme']
     - role: php
       tags: ['php']
     - role: munin-node
