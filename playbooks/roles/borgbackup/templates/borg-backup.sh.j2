@@ -66,7 +66,7 @@ if [ "$1" = "backup" ]
     printf "Backing up to {{ host }} ( {{ hostvars[host].ansible_ssh_host }} ):\n"
     REPOSITORY={{ borg_user }}@{{ hostvars[host].ansible_ssh_host }}:{{ borg_pool }}/{{ inventory_hostname }}
     
-    /usr/local/bin/borg create --stats $REPOSITORY::$date {% for dir in backup_include %}{{ dir }} {% endfor %}{% if automysql.stat.isdir is defined and automysql.stat.isdir == True %}/var/lib/automysqlbackup{% endif %}
+    /usr/local/bin/borg create --compression zlib,6 --stats $REPOSITORY::$date {% for dir in backup_include %}{{ dir }} {% endfor %}{% if automysql.stat.isdir is defined and automysql.stat.isdir == True %}/var/lib/automysqlbackup{% endif %}
 
     if [ "$?" -eq "0" ]; then printf "Backup succeeded on $date\n" >> /var/log/borg-backup.log; fi
   
