@@ -11,3 +11,4 @@ php_default_pkgs:
   - php5-mysql
   - php5-mcrypt
 
+php_extra_pkg: []

@@ -15,7 +15,4 @@ php_pecl_default_extensions:
 
 #
 # extra pecl-extensions per customer are to be defined in inventory/*/group_vars/customer in such a way:
-#   php_pecl_extra_extensions:
-#     - php5-snmp
-#
-
+php_pecl_extra_extensions: []
