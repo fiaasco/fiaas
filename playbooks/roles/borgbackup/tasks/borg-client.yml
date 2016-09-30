@@ -1,6 +1,6 @@
 ---
 - name: client | generate ssh key for this machine
-  shell: if [ -f ~/.ssh/id_rsa ]; then rm -f ~/.ssh/id_rsa; fi && ssh-keygen -q -t rsa -f ~/.ssh/id_rsa -N "" creates=~/.ssh/id_rsa.pub
+  shell: if [ -f ~/.ssh/id_rsa ]; then rm -f ~/.ssh/id_rsa; fi && ssh-keygen -q -t rsa -b 4096 -f ~/.ssh/id_rsa -N "" creates=~/.ssh/id_rsa.pub
 
 - name: fetch ssh-key
   shell: cat /root/.ssh/id_rsa.pub
