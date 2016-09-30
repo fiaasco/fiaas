@@ -1,5 +1,17 @@
-- name: place icinga2 checks for attic
-  template: src=backup/{{ item }}.j2 dest=/etc/icinga2/conf.d/{{ item }} owner=root group=root mode=0755
+---
+- name: place icinga2 checks for borg backups
+  template:
+    src: "backup/{{ item }}.j2"
+    dest: "/etc/icinga2/conf.d/{{ item }}"
+    owner: "root"
+    group: "root"
+    mode: "0755"
   with_items:
-    - attic-backup.conf
+    - backup.conf
   notify: restart icinga2 and update master config
+
+# migration
+- name: remove icinga2 checks for attic
+  file:
+    path: "/etc/icinga2/conf.d/attic-backup.conf"
+    state: "absent"

@@ -1,4 +1,4 @@
-object Service "attic-backup" {
+object Service "borg-backup" {
   import "generic-service"
   check_command = "file_age"
 
@@ -6,5 +6,5 @@ object Service "attic-backup" {
 
   vars.file_age_warning_time = "100000"
   vars.file_age_critical_time = "140000"
-  vars.file_age_file = "/var/log/attic-backup.log"
+  vars.file_age_file = "/var/log/borg-backup.log"
 }
