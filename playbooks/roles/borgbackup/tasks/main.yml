@@ -1,6 +1,7 @@
 ---
 
 - include: install.yml
+  when: backup_required == True or inventory_hostname in groups.backupservers
 
 - include: borg-server.yml
   when: inventory_hostname in groups.backupservers
