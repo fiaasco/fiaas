@@ -2,7 +2,7 @@
 - name: client | generate ssh key for this machine
   shell: if [ -f ~/.ssh/id_rsa ]; then rm -f ~/.ssh/id_rsa; fi && ssh-keygen -q -t rsa -b 4096 -f ~/.ssh/id_rsa -N "" creates=~/.ssh/id_rsa.pub
 
-- name: fetch ssh-key
+- name: client | fetch ssh-key
   shell: cat /root/.ssh/id_rsa.pub
   register: sshkey
   changed_when: False
@@ -13,21 +13,6 @@
     state: "present"
     line: 'export BORG_PASSPHRASE="{{ borg_passphrase }}"'
     create: "yes"
-
-# put backup pass in host_vars now
-#- name: client | fetch passphrase
-#  shell: grep BORG_PASSPHRASE /root/.borg.passphrase | cut -d '"' -f 2
-#  register: borg_passphrase
-#  changed_when: False
-
-#- name: client | write passphrase to backupserver
-#  lineinfile:
-#    dest: "{{ server_backup_dir }}/home/{{ inventory_hostname }}/.borg.passphrase"
-#    line: 'export BORG_PASSPHRASE="{{ borg_passphrase.stdout }}"'
-#    create: "yes" 
-#  delegate_to: "{{ item }}"
-#  with_items: "{{ groups.backupservers }}"
-#  when: initpass.changed
 
 - name: client | place sshpubkey on the backupserver
   authorized_key:
@@ -40,7 +25,7 @@
 - name: client | template sshconfig for backup-hosts (no strick key checking)
   template: src=ssh.config.j2 dest=/root/.ssh/config owner=root group=root
 
-- name: check for mysql
+- name: client | check for mysql
   stat: path=/var/lib/automysqlbackup
   register: automysql
 
@@ -52,7 +37,7 @@
     group: "root"
     mode: "0744"
 
-- name: create backup-directory on remote server
+- name: client | create backup-directory on backup server
   shell: /usr/local/bin/borg-backup init
   register: backup_init
   changed_when: "'Remember your passphrase' in backup_init.stderr"
@@ -66,7 +51,7 @@
     hour: 1
     job: "/usr/local/bin/borg-backup backup"
 
-- name: disable automysqlbackup cronjob, it's in our pre-backup-tasks 
+- name: client | disable automysqlbackup cronjob, it's in our pre-backup-tasks 
   lineinfile:
     dest: "/etc/cron.daily/automysqlbackup"
     regexp: "^/usr/sbin/automysqlbackup$"
