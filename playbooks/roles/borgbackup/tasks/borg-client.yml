@@ -47,8 +47,8 @@
     cron_file: "borg-backup"
     user: "root"
     name: "borg-backup"
-    minute: 1
-    hour: 1
+    minute: "{{ 59|random }}"
+    hour: "{{ 5|random }}"
     job: "/usr/local/bin/borg-backup backup"
 
 - name: client | disable automysqlbackup cronjob, it's in our pre-backup-tasks 
@@ -68,4 +68,4 @@
     state: "absent"
   with_items:
     - "/etc/cron.d/attic-backup"
-    - "/usr/local/bin/attic-backup"
+#    - "/usr/local/bin/attic-backup"
