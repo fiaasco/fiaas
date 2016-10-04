@@ -14,6 +14,13 @@
     line: 'export BORG_PASSPHRASE="{{ borg_passphrase }}"'
     create: "yes"
 
+- name: client | template sshconfig for backup-hosts (no strict key checking)
+  template:
+    src: "ssh.config.j2"
+    dest: "/root/.ssh/config"
+    owner: "root"
+    group: "root"
+
 - name: client | place sshpubkey on the backupserver
   authorized_key:
     user: "{{ borg_user }}"
@@ -21,9 +28,6 @@
     key_options: 'command="cd {{ borg_pool }}/{{ inventory_hostname }};borg serve --restrict-to-path {{ borg_pool }}/{{ inventory_hostname }}",no-port-forwarding,no-X11-forwarding,no-pty,no-agent-forwarding,no-user-rc'
   delegate_to: "{{ item }}"
   with_items: "{{ groups.backupservers }}"
-
-- name: client | template sshconfig for backup-hosts (no strick key checking)
-  template: src=ssh.config.j2 dest=/root/.ssh/config owner=root group=root
 
 - name: client | check for mysql
   stat: path=/var/lib/automysqlbackup
