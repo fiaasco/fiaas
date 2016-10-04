@@ -5,9 +5,9 @@ This is a collection of Ansible roles and playbooks to setup and configure a ful
 FIAAS includes:
   * creation of users, vhosts, php-fpm pools, databases and solr cores
   * firewall and fail2ban enabled
-  * monitoring with Icinga2
-  * backups with Attic backup
-  * automatic generation of Letsencrypt certificates with acme.sh
+  * monitoring with [Icinga2](https://www.icinga.org/)
+  * backups with [Borg backup](https://github.com/borgbackup)
+  * automatic generation of Letsencrypt certificates with [acme.sh](https://github.com/Neilpang/acme.sh)
   * services are not left with default configuration values, but are dynamically resized according to the size of the VM.
   * PHP-FPM with worker mode Apache 2.4 and mod proxy fcgi for best performance
   * optional "extra" configs to configure those few annoying exceptions which can't be added in default roles
