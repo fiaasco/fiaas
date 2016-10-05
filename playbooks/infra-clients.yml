@@ -14,5 +14,5 @@
       tags: ['icinga']
     - role: monitoring
       tags: ['monitoring']
-    - role: backup
+    - role: borgbackup
       tags: ['backup']

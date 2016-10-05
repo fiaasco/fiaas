@@ -1,0 +1,75 @@
+---
+- name: client | generate ssh key for this machine
+  shell: if [ -f ~/.ssh/id_rsa ]; then rm -f ~/.ssh/id_rsa; fi && ssh-keygen -q -t rsa -b 4096 -f ~/.ssh/id_rsa -N "" creates=~/.ssh/id_rsa.pub
+
+- name: client | fetch ssh-key
+  shell: cat /root/.ssh/id_rsa.pub
+  register: sshkey
+  changed_when: False
+
+- name: client | write passphrase
+  lineinfile:
+    dest: "/root/.borg.passphrase"
+    state: "present"
+    line: 'export BORG_PASSPHRASE="{{ borg_passphrase }}"'
+    create: "yes"
+
+- name: client | template sshconfig for backup-hosts (no strict key checking)
+  template:
+    src: "ssh.config.j2"
+    dest: "/root/.ssh/config"
+    owner: "root"
+    group: "root"
+
+- name: client | place sshpubkey on the backupserver
+  authorized_key:
+    user: "{{ borg_user }}"
+    key: "{{ sshkey.stdout }}"
+    key_options: 'command="cd {{ borg_pool }}/{{ inventory_hostname }};borg serve --restrict-to-path {{ borg_pool }}/{{ inventory_hostname }}",no-port-forwarding,no-X11-forwarding,no-pty,no-agent-forwarding,no-user-rc'
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups.backupservers }}"
+
+- name: client | check for mysql
+  stat: path=/var/lib/automysqlbackup
+  register: automysql
+
+- name: client | put wrapper script
+  template:
+    src: "borg-backup.sh.j2"
+    dest: "/usr/local/bin/borg-backup"
+    owner: "root"
+    group: "root"
+    mode: "0744"
+
+- name: client | create backup-directory on backup server
+  shell: /usr/local/bin/borg-backup init
+  register: backup_init
+  changed_when: "'Remember your passphrase' in backup_init.stderr"
+
+- name: client | create backup cronjob
+  cron:
+    cron_file: "borg-backup"
+    user: "root"
+    name: "borg-backup"
+    minute: "{{ 59|random }}"
+    hour: "{{ 5|random }}"
+    job: "/usr/local/bin/borg-backup backup"
+
+- name: client | disable automysqlbackup cronjob, it's in our pre-backup-tasks 
+  lineinfile:
+    dest: "/etc/cron.daily/automysqlbackup"
+    regexp: "^/usr/sbin/automysqlbackup$"
+    line: "#/usr/sbin/automysqlbackup"
+    state: "present"
+    backrefs: "yes"
+    create: "no"
+  when: automysql.stat.isdir is defined and automysql.stat.isdir == True
+
+# cleanup tasks for attic role
+- name: client | remove attic files
+  file:
+    path: "{{ item }}"
+    state: "absent"
+  with_items:
+    - "/etc/cron.d/attic-backup"
+#    - "/usr/local/bin/attic-backup"

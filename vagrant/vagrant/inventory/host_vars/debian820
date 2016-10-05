@@ -7,6 +7,7 @@ install_vsftpd: False
 memcached_required: False
 
 backup_required: True
+borg_passphrase: eewooP0sivu5eiNop1thoaquah9ahhee
 
 vm_owner: devuser2
 

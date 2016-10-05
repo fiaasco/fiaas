@@ -1,0 +1,24 @@
+---
+- name: server | install borg backup
+  get_url:
+    dest: "/usr/local/bin/borg"
+    checksum: "{{ borg_checksum }}"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    url: "{{ borg_download_url }}"
+
+- name: server | create user
+  user:
+    name: "{{ borg_user }}"
+    shell: "/bin/bash"
+    home: "{{ borg_home }}"
+    createhome: "yes"
+
+- name: server | create directories
+  file:
+    path: "{{ borg_pool }}"
+    state: "directory"
+    owner: "{{ borg_user }}"
+    group: "{{ borg_group }}"
+    mode: "0770"

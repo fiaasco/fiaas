@@ -27,7 +27,7 @@
       tags: ['php']
     - role: munin-node
       tags: ['monitoring']
-    - role: backup
+    - role: borgbackup
       tags: ['backup']
 
 - name: icinga2 stuff

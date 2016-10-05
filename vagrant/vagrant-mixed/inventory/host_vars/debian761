@@ -8,6 +8,7 @@ vsftpd_listen_port: 21
 vsftpd_tls_only: "no"
 
 backup_required: True
+borg_passphrase: eewooP0sivu5eiNop1thoaquah9ahhee
 
 vm_owner: devuser1
 
