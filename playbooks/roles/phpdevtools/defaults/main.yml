@@ -6,3 +6,7 @@ phptools_pkgs:
   - libjpeg-progs
   - optipng
   - patch
+
+composer_version: "1.2.1"
+composer_url: "https://getcomposer.org/download/{{ composer_version }}/composer.phar"
+composer_checksum: "sha256:c2e04040b807a8530e5c83de56bdaaf63a0f183f8fd449bbe6e41f660e647427"
