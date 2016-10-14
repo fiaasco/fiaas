@@ -1,5 +1,5 @@
 - name: Configure monitored hosts
-  hosts: all:!infra
+  hosts: all:!backupservers
   become: True
 
   pre_tasks:

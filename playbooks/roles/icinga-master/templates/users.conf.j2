@@ -15,3 +15,20 @@ object User "{{ user.name }}" {
 object UserGroup "icingaadmins" {
   display_name = "Icinga 2 Admin Group"
 }
+
+{% if slack_notifications == True %}
+object User "slack_alerts" {
+  import "generic-user"
+
+  display_name = "slack alerts"
+  groups = [ "slack" ]
+  states = [ OK, Warning, Critical ]
+  types = [ Problem, Recovery ]
+
+  email = "invalid@fiaas.co"
+}
+
+object UserGroup "slack" {
+  display_name = "slack"
+}
+{% endif %}

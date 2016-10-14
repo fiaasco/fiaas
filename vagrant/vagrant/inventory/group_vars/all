@@ -54,6 +54,11 @@ htpasswd:
   - user: user1
     hash: "$apr1$A9sGbTcc$1vc5AXweNKKOc3R1RqCRR1"
 
+# icinga slack notifications
+slack_notifications: True
+slack_webhook: "https://hooks.slack.com/YOUR-URL-HERE"
+slack_channel: "#alerts"
+
 # ssh keys for monitoring over ssh
 # (only useful for clients behind firewall)
 monitoring_over_ssh_privkey: |

@@ -1,0 +1,28 @@
+---
+- name: put slack notification script
+  template:
+    src: "notifications/slack/slack-service-notification.sh.j2"
+    dest: "/etc/icinga2/scripts/slack-service-notification.sh"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+- name: create slack config dir
+  file:
+    path: "/etc/icinga2/conf.d/slack"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+- name: put slack Icinga templates
+  template:
+    src: "notifications/slack/{{ item }}.j2"
+    dest: "/etc/icinga2/conf.d/slack/{{ item }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  with_items:
+    - slack-service-notification-command.conf
+    - slack-service-notification.conf
+  notify: restart icinga
