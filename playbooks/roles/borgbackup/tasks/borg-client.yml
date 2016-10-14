@@ -64,12 +64,3 @@
     backrefs: "yes"
     create: "no"
   when: automysql.stat.isdir is defined and automysql.stat.isdir == True
-
-# cleanup tasks for attic role
-- name: client | remove attic files
-  file:
-    path: "{{ item }}"
-    state: "absent"
-  with_items:
-    - "/etc/cron.d/attic-backup"
-#    - "/usr/local/bin/attic-backup"
