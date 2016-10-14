@@ -9,10 +9,3 @@
   with_items:
     - backup.conf
   notify: restart icinga2 and update master config
-
-# migration
-- name: remove icinga2 checks for attic
-  file:
-    path: "/etc/icinga2/conf.d/attic-backup.conf"
-    state: "absent"
-  notify: restart icinga2 and update master config
