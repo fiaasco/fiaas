@@ -1,7 +1,4 @@
 ---
-#- name: make full backup
-#  shell: /usr/local/bin/attic-backup backup 
-  
 - name: install Debian updates
   apt: upgrade=dist update_cache=yes dpkg_options='force-confold,force-confdef'
   register: upgrades

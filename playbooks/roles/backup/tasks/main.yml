@@ -1,6 +1,0 @@
----
-- include: backup-server.yml
-  when: inventory_hostname in groups.backupservers
-
-- include: backup-client.yml
-  when: backup_required == True
