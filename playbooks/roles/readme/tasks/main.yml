@@ -4,5 +4,5 @@
   with_nested:
     - "{{ users }}"
     - "{{ vhosts }}"
-  when: item[1].owner == item[0].name
+  when: item[1].owner == item[0].name and not item[0].delete|default(False)
   tags: ['readme']
