@@ -55,6 +55,7 @@
     --batch --skip-column-names
     --execute="INSERT INTO icingaweb_user (name, active, password_hash) VALUES ('{{ item.name }}', 1, '{{ item.pass }}') ON DUPLICATE KEY UPDATE name='{{ item.name }}', password_hash='{{ item.pass }}'"
   with_items: "{{ webusers }}"
+  tags: ['users']
 
 - name: put configuration templates
   template: src={{ item }}.j2 dest=/etc/icingaweb2/{{ item }} owner=www-data group=icingaweb2 mode=0660

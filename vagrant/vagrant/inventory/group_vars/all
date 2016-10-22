@@ -31,10 +31,17 @@ idodbname: icinga2
 idodbuser: icinga2
 idodbpass: aquaiYothaGhoo8i
 
-# Icinga web classic
-classicusers:
-  - name: icingaadm
-    pass: $apr1$A9sGbTcc$1vc5AXweNKKOc3R1RqCRR1
+# Icinga2 api users
+icinga2_api_users:
+  - name: root
+    pass: dahxoh8ahghoh1eY
+    permissions:
+      - "*"
+  - name: anag
+    pass: cekeiF2aj1cee8nu
+    permissions:
+      - "objects/query/*"
+      - "actions/*"
 
 # Icingaweb2
 webdbname: icingaweb2

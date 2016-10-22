@@ -44,7 +44,5 @@
       tags: ['mysql', 'icinga']
     - role: icinga-master
       tags: ['icinga']
-    - role: icinga-classicui
-      tags: ['icinga', 'classic']
     - role: icingaweb2
       tags: ['icinga', 'web2']
