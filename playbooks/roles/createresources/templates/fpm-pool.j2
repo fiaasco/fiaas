@@ -2,7 +2,7 @@
 
 {% set factor = 2 %}
 
-{% if groups["shared_servers"] is defined and ansible_fqdn in groups["shared_servers"] %}
+{% if ansible_fqdn in groups["shared_servers"]|default(False) %}
 {% set factor = 1 %}
 ; shared server, scaling-factor forced to 1
 {% endif %}
@@ -23,14 +23,14 @@ listen.mode = 0660
 
 {% if item.pm == 'dynamic' %}
 pm = dynamic
-pm.start_servers = {{ 1*factor }}
-pm.min_spare_servers = {{ 1*factor }}
-pm.max_spare_servers = {{ 1*factor }}
-pm.max_children = {% if item.max_children is defined %}{{ item.max_children }}{% else %}{{ 4*factor + 2 }}
+pm.start_servers = {{ item.start_servers|default(1*factor) }}
+pm.min_spare_servers = {{ item.min_spare_servers|default(1*factor) }}
+pm.max_spare_servers = {{ item.max_spare_servers|default(1*factor) }}
+pm.max_children = {{ item.max_children|default(4*factor + 2) }}
 {% endif %}
 {% else %}
 pm = ondemand
-pm.max_children = {% if item.max_children is defined %}{{ item.max_children }}{% else %}{{ 2*factor + 2 }}
+pm.max_children = {{ item.max_children|default(2*factor + 2) }}
 {% endif %}
 pm.process_idle_timeout = 60
 {% endif %}
@@ -43,13 +43,13 @@ chdir = /
 request_terminate_timeout = 300
 
 ; custom options for this pool
-{% if item.php_flags is defined %}
+{% if item.php_flags|default(False) %}
 {% for flag in item.php_flags %}
 php_flag[{{ flag.name }}] = {{ flag.val }}
 {% endfor %}
 {% endif %}
 
-{% if item.php_values is defined %}
+{% if item.php_values|default(False) %}
 {% for value in item.php_values %}
 php_value[{{ value.name }}] = {{ value.val }}
 {% endfor %}
