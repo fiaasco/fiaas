@@ -27,13 +27,11 @@ pm.start_servers = {{ item.start_servers|default(1*factor) }}
 pm.min_spare_servers = {{ item.min_spare_servers|default(1*factor) }}
 pm.max_spare_servers = {{ item.max_spare_servers|default(1*factor) }}
 pm.max_children = {{ item.max_children|default(4*factor + 2) }}
-{% endif %}
 {% else %}
 pm = ondemand
 pm.max_children = {{ item.max_children|default(2*factor + 2) }}
 {% endif %}
 pm.process_idle_timeout = 60
-{% endif %}
 
 rlimit_files = 1000
 
