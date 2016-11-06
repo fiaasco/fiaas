@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 <VirtualHost *:{% if varnish_required == True %}8080{% else %}80{% endif %}>
   ServerName {{ item.url }}
-{% if item.alias is defined %}
+{% if item.alias|default(False) %}
 {% for alias in item.alias %}
   ServerAlias {{ alias }}
 {% endfor %}
@@ -10,7 +10,7 @@
   ServerAdmin {{ item.admin }}
   DocumentRoot {{ item.basedir }}/web
 
-{% if item.phppool is defined %}
+{% if item.phppool|default(False) %}
   AddHandler php-fastcgi .php .php5
   Action php-fastcgi /php-fpm
   Alias /php-fpm /usr/sbin/php-fpm-{{ item.phppool }}
@@ -20,8 +20,8 @@
   CustomLog {{ item.basedir }}/logs/{{ item.url }}-access.log combined
 
   include extra.d/extra.{{ item.url }}.conf
-{% if item.ssl is defined %}
-{% if item.ssl_redirect_http is defined %}
+{% if item.ssl|default(False) %}
+{% if item.ssl_redirect_http|default(False) %}
   RewriteEngine On
   RewriteCond %{HTTP:X-Forwarded-Proto} !^https$
   RewriteRule ^(.*)$	https://{{ item.url }}$1 [R=301,L]
@@ -30,11 +30,11 @@
 
 </VirtualHost>
 
-{% if item.ssl is defined %}
+{% if item.ssl|default(False) %}
 
 <VirtualHost *:443>
   ServerName {{ item.url }}
-{% if item.alias is defined %}
+{% if item.alias|default(False) %}
 {% for alias in item.alias %}
   ServerAlias {{ alias }}
 {% endfor %}
@@ -48,7 +48,7 @@
   ProxyPassReverse / http://127.0.0.1:80/
 
 {% else %}  # Normal Apache vhost
-{% if item.phppool is defined %}
+{% if item.phppool|default(False) %}
   AddHandler php-fastcgi .php .php5
   Action php-fastcgi /php-fpm
   Alias /php-fpm /usr/sbin/php-fpm-{{ item.phppool }}
@@ -73,7 +73,7 @@
 {% endif %}
   SSLCertificateKeyFile     /etc/ssl/{{ item.url }}/{{ item.url }}.key
 
-{% if item.hsts is defined %}
+{% if item.hsts|default(False) %}
   # HSTS (mod_headers is required) (15768000 seconds = 6 months)
   Header always set Strict-Transport-Security "max-age=15768000"
 {% endif %}

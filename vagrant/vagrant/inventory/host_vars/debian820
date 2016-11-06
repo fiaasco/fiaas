@@ -9,6 +9,12 @@ memcached_required: False
 backup_required: True
 borg_passphrase: eewooP0sivu5eiNop1thoaquah9ahhee
 
+mysql_table_open_cache: 600
+mysql_max_connections: 50
+mysql_query_cache_size: 32
+mysql_innodb_buffer_pool_size: 64
+mysql_innodb_thread_concurrency: 2
+
 vm_owner: devuser2
 
 users:

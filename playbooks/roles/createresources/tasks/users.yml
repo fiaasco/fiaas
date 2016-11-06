@@ -2,19 +2,19 @@
 - name: users | create users with standard homedir
   user: name={{ item.name }} shell={{ item.shell|default("/bin/bash") }} comment="{{ item.full|default(omit) }}"
   with_items: "{{ users }}"
-  when: item.home is not defined and not item.delete|default(False)
+  when: not item.home|default(False) and not item.delete|default(False)
   tags: ['users']
 
 - name: users | create users with custom homedir
   user: name={{ item.name }} shell={{ item.shell|default("/bin/bash") }} home={{ item.home }} createhome=no comment="{{ item.full|default(omit) }}"
   with_items: "{{ users }}"
-  when: item.home is defined and not item.delete|default(False)
+  when: item.home|default(False) and not item.delete|default(False)
   tags: ['users']
 
 - name: users | set user password
   user: name={{ item.name }} password={{ item.pass.crypted }}
   with_items: "{{ users }}"
-  when: item.pass is defined and not item.delete|default(False)
+  when: item.pass|default(False) and not item.delete|default(False)
   tags: ['users']
 
 - name: users | set owner groups

@@ -1,5 +1,5 @@
 {% for core in solr_cores %}
-{% if core.name is defined %}
+{% if core.name|default(False) %}
 {{ core.name }}: {{ core.pass }}, {{ core.name }}-role
 {% endif %}
 {% endfor %}

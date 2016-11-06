@@ -1,3 +1,10 @@
 ---
 - name: restart icinga
   service: name=icinga2 state=restarted
+
+- name: restart apache2
+  service: name=apache2 state=restarted enabled=yes
+  listen: restart apache2
+
+- name: reload apache2
+  service: name=apache2 state=reloaded enabled=yes

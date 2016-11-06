@@ -3,33 +3,33 @@
 - name: vhosts | create certificates directory for selfsigned/commercial
   file: dest=/etc/ssl/{{ item.url }} state=directory
   with_items: "{{ vhosts }}"
-  when: item.ssl is defined and item.ssl != "letsencrypt" and not item.delete|default(False)
+  when: item.ssl|default(False) != "letsencrypt" and not item.delete|default(False)
   tags: ['vhosts']
 
 - name: vhosts | generate self signed certificates
   command: openssl req -new -nodes -x509 -subj "/C=BE/ST=BXL/L=Belgium/O=IT/CN={{ ansible_fqdn }}" -days 3650 -keyout /etc/ssl/{{ item.url }}/{{ item.url }}.key -out /etc/ssl/{{ item.url }}/{{ item.url }}.crt -extensions v3_ca creates=/etc/ssl/{{ item.url }}/{{ item.url }}.crt
-  when: item.ssl is defined and item.ssl == "selfsigned" and not item.delete|default(False)
+  when: item.ssl|default(False) == "selfsigned" and not item.delete|default(False)
   with_items: "{{ vhosts }}"
   tags: ['vhosts']
 
 # letsencrypt
 - name: vhosts | generate letsencrypt certificates
   shell: /root/ssl/request-{{ item.url }}.sh  creates=/root/.acme.sh/{{ item.url }}/{{ item.url }}.cer
-  when: item.ssl is defined and item.ssl == "letsencrypt" and not item.delete|default(False)
+  when: item.ssl|default(False) == "letsencrypt" and not item.delete|default(False)
   with_items: "{{ vhosts }}"
   tags: ['vhosts']
 
 - name: vhosts | symlink directory
   file: src=/root/.acme.sh/{{ item.url }} dest=/etc/ssl/{{ item.url }} state=link
   with_items: "{{ vhosts }}"
-  when: item.ssl is defined and item.ssl == "letsencrypt" and not item.delete|default(False)
+  when: item.ssl|default(False) == "letsencrypt" and not item.delete|default(False)
   tags: ['vhosts']
 
 # halt playbook on current host when commercial certificate is not found
 - name: vhosts | check for commercial certificate
   shell: file /etc/ssl/{{ item.url }}/{{ item.url }}.crt /etc/ssl/{{ item.url }}/{{ item.url }}.key
   with_items: "{{ vhosts }}"
-  when: item.ssl is defined and item.ssl == "commercial" and not item.delete|default(False)
+  when: item.ssl|default(False) == "commercial" and not item.delete|default(False)
   register: sslpaths
   changed_when: False
   failed_when: "'No such file or directory' in sslpaths.stdout"
@@ -52,7 +52,7 @@
 - name: vhosts | enable site when it's not default
   shell: a2ensite {{ item.url }}.conf creates=/etc/apache2/sites-enabled/{{ item.url }}.conf
   with_items: "{{ vhosts }}"
-  when: item.default is not defined and not item.delete|default(False)
+  when: not item.default|default(False) and not item.delete|default(False)
   notify: reload apache2
   tags: ['vhosts']
 
@@ -60,7 +60,7 @@
   file: src=/etc/apache2/sites-available/{{ item.url }}.conf dest=/etc/apache2/sites-enabled/001-default.conf state=link
   with_items: "{{ vhosts }}"
   notify: reload apache2
-  when: item.default is defined and not item.delete|default(False)
+  when: item.default|default(False) and not item.delete|default(False)
   tags: ['vhosts']
 
 - name: vhosts | place extras file
@@ -74,7 +74,7 @@
   with_nested:
     - "{{ vhosts }}"
     - "{{ phppools }}"
-  when: not item.0.delete|default(False) and item.0.phppool is defined and item.0.phppool == item.1.name
+  when: not item.0.delete|default(False) and item.0.phppool|default(False) == item.1.name
   tags: ['vhosts']
 
 - name: vhosts | create tmp dir outside web root
@@ -82,7 +82,7 @@
   with_nested:
     - "{{ vhosts }}"
     - "{{ phppools }}"
-  when: not item.0.delete|default(False) and item.0.phppool is defined and item.0.phppool == item.1.name
+  when: not item.0.delete|default(False) and item.0.phppool|default(False) == item.1.name
   tags: ['vhosts']
 
 - name: vhosts | create web dirs
@@ -108,11 +108,11 @@
 - name: vhosts | create index.html for vagrant 
   lineinfile: dest={{ item.basedir }}/web/index.html line='^<html><body><p>yes</p></body></html>' state=present create=yes
   with_items: "{{ vhosts }}"
-  when: not item.delete|default(False) and ansible_user is defined and ansible_user == "vagrant" and item.phppool is not defined
+  when: not item.delete|default(False) and ansible_user|default(False) == "vagrant" and item.phppool is not defined
   tags: ['vhosts']
 
 - name: vhosts | create index.php for vagrant 
   lineinfile: dest={{ item.basedir }}/web/index.php line='^<?php phpinfo(); ?>' state=present create=yes
   with_items: "{{ vhosts }}"
-  when: not item.delete|default(False) and ansible_user is defined and ansible_user == "vagrant" and item.phppool is defined
+  when: not item.delete|default(False) and ansible_user|default(False) == "vagrant" and item.phppool|default(False)
   tags: ['vhosts']
