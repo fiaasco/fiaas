@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 <VirtualHost *:{% if varnish_required == True %}8080{% else %}80{% endif %}>
   ServerName {{ item.url }}
-{% if item.alias|default(False) %}
+{% if item.alias is defined %}
 {% for alias in item.alias %}
   ServerAlias {{ alias }}
 {% endfor %}
@@ -10,7 +10,7 @@
   ServerAdmin {{ item.admin }}
   DocumentRoot {{ item.basedir }}/web
 
-{% if item.phppool|default(False) %}
+{% if item.phppool is defined %}
   <filesmatch "\.php">
     SetHandler "proxy:unix:/var/run/php_fpm_{{ item.phppool }}.sock|fcgi://{{ item.phppool }}"
   </filesmatch>
@@ -31,8 +31,8 @@
 _xfwded{% endif %}
 
   include extra.d/extra.{{ item.url }}.conf
-{% if item.ssl|default(False) %}
-{% if item.ssl_redirect_http|default(False) %}
+{% if item.ssl is defined %}
+{% if item.ssl_redirect_http is defined %}
   RewriteEngine On
   RewriteCond %{HTTP:X-Forwarded-Proto} !^https$
   RewriteRule ^(.*)$	https://{{ item.url }}$1 [R=301,L]
@@ -41,11 +41,11 @@ _xfwded{% endif %}
 
 </VirtualHost>
 
-{% if item.ssl|default(False) %}
+{% if item.ssl is defined %}
 
 <VirtualHost *:443>
   ServerName {{ item.url }}
-{% if item.alias|default(False) %}
+{% if item.alias is defined %}
 {% for alias in item.alias %}
   ServerAlias {{ alias }}
 {% endfor %}
@@ -63,7 +63,7 @@ _xfwded{% endif %}
   </Location>
 
 {% else %}  # Normal Apache vhost
-{% if item.phppool|default(False) %}
+{% if item.phppool is defined %}
   <filesmatch "\.php">
     SetHandler "proxy:unix:/var/run/php_fpm_{{ item.phppool }}.sock|fcgi://{{ item.phppool }}"
   </filesmatch>
@@ -97,7 +97,7 @@ _xfwded{% endif %}
 {% endif %}
   SSLCertificateKeyFile     /etc/ssl/{{ item.url }}/{{ item.url }}.key
 
-{% if item.hsts|default(False) %}
+{% if item.hsts is defined %}
   # HSTS (mod_headers is required) (15768000 seconds = 6 months)
   Header always set Strict-Transport-Security "max-age=15768000"
 {% endif %}

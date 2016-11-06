@@ -18,17 +18,17 @@ Everything is currently built to run all services in one VM.
 Environment setup
 =================
 
-Ansible = 2.2.0 is used for this setup. (1.9.x still appears to work too)
+Ansible = 2.1.1(.0) is used for this setup. (1.9.x still appears to work too)
 
   * sudo apt-get -y install python-dev libffi-dev libssl-dev python-virtualenv virtualenv
-  * virtualenv ansible-2.2.0
-  * source ansible-2.2.0/bin/activate
-  * pip install ansible==2.2.0.0
+  * virtualenv ansible-2.1.1
+  * source ansible-2.1.1/bin/activate
+  * pip install ansible==2.1.1.0
 
 Executing (vagrant)
 ===================
 
-  * source ansible-2.2.0/bin/activate
+  * source ansible-2.1.1/bin/activate
   * cd vagrant/somevagrantsetup/
   * vagrant up --no-provision
   * provisioning:
@@ -42,7 +42,7 @@ Executing
 =========
 
 ```
-$ source ansible-2.2.0/bin/activate
+$ source ansible-2.1.1/bin/activate
 ```
 
 Assign 2 infra VMs in your inventory for monitoring and backups and run:

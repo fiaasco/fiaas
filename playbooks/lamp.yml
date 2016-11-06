@@ -6,7 +6,7 @@
   pre_tasks:
     - include_vars: "./os_vars/{{ ansible_distribution_release }}.yml"
       tags: ['always']
-    - include_vars: "./../inventory/{{ platform }}/group_vars/{{ item }}.yml"
+    - include_vars: "./../inventory/{{ platform }}/group_vars/{{ item }}"
       with_items:
         - owners
       tags: ['resources','sshkeys']
