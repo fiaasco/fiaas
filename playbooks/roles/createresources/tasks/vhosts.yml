@@ -52,7 +52,7 @@
 - name: vhosts | enable site when it's not default
   shell: a2ensite {{ item.url }}.conf creates=/etc/apache2/sites-enabled/{{ item.url }}.conf
   with_items: "{{ vhosts }}"
-  when: item.default|default(False) and not item.delete|default(False)
+  when: not item.default|default(False) and not item.delete|default(False)
   notify: reload apache2
   tags: ['vhosts']
 
@@ -114,5 +114,5 @@
 - name: vhosts | create index.php for vagrant 
   lineinfile: dest={{ item.basedir }}/web/index.php line='^<?php phpinfo(); ?>' state=present create=yes
   with_items: "{{ vhosts }}"
-  when: not item.delete|default(False) and ansible_user|default(False) == "vagrant" and item.phppool is defined
+  when: not item.delete|default(False) and ansible_user|default(False) == "vagrant" and item.phppool|default(False)
   tags: ['vhosts']
