@@ -5,7 +5,7 @@
   pre_tasks:
     - include_vars: "./os_vars/{{ ansible_distribution_release }}.yml"
       tags: ['owncloud']
-    - include_vars: "./../inventory/{{ platform }}/inventory/group_vars/{{ item }}"
+    - include_vars: "./../inventory/{{ platform }}/inventory/group_vars/{{ item }}.yml"
       with_items:
         - owners
       tags: ['glue','glue_owner_keys']
