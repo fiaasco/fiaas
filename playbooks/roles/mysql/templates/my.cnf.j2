@@ -66,13 +66,13 @@ thread_cache_size       = 8
 # the first time they are touched
 myisam-recover         = BACKUP
 max_connections        = {{ mysql_max_connections|default((ansible_memtotal_mb/128)|round|int) }}
-table_open_cache       = {{ mysql_table_open_cache|default(2000) }}
+#table_cache            = 64
 #thread_concurrency     = 10
 #
 # * Query Cache Configuration
 #
 query_cache_limit	= 2M
-query_cache_size        = {{ mysql_query_cache_size|default((ansible_memtotal_mb/32)|round|int) }}M
+query_cache_size        = {{ (ansible_memtotal_mb/32)|round|int }}M
 
 #
 # * Logging and Replication

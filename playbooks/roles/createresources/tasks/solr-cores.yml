@@ -16,6 +16,6 @@
 - name: solr | link core
   file: src=/var/lib/solr/{{ item.name }} dest=/usr/share/solr/{{ item.name }} state=link
   with_items: "{{ solr_cores }}"
-  when: item.name|default(False) and not item.delete|default(False)
+  when: item.name is defined and not item.delete|default(False)
   notify: restart solr-jetty
   tags: ['solr']
