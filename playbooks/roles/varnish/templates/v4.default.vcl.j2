@@ -68,7 +68,7 @@ sub vcl_recv {
       req.url ~ "^.*/ahah/.*$" ||
       req.url ~ "^.*/system/files/.*$" ||
       req.url ~ "^.*/node/.*/edit$" ) {
-       return (pass);
+      return (pipe);
   }
  
   # Do not allow outside access to cron.php or install.php.
