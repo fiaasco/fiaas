@@ -106,7 +106,7 @@ sub vcl_recv {
     else {
       # If there is any cookies left (a session or NO_CACHE cookie), do not
       # cache the page. Pass it on to Apache directly.
-      return (pass);
+      return (pipe);
     }
   }
 }
