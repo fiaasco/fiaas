@@ -67,7 +67,8 @@ sub vcl_recv {
       req.url ~ "^.*/ajax/.*$" ||
       req.url ~ "^.*/ahah/.*$" ||
       req.url ~ "^.*/system/files/.*$" ||
-      req.url ~ "^.*/node/.*/edit$" ) {
+      req.url ~ "^.*/node/.*/edit$" ||
+      req.url ~ "^.*/node/add/.*$" ) {
       return (pipe);
   }
  
