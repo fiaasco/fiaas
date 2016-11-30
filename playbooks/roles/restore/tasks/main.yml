@@ -1,0 +1,12 @@
+---
+#- name: make sure nothing is mounted
+#  shell: umount /mnt
+
+- name: mount last backup
+  shell: /usr/local/bin/borg-restore-from mount 192.168.131.192 20161129-1841 /mnt
+
+- name: restore backed up items, exclude /etc
+  shell: rsync -a "/mnt{{ item }}" "{{ item }}"
+  when: item != "/etc"
+  with_items:
+    - "{{ backup_include }}"

@@ -36,7 +36,7 @@
 - name: client | put wrapper script
   template:
     src: "borg-restore-from.sh.j2"
-    dest: "/usr/local/bin/borg-restore-from.sh"
+    dest: "/usr/local/bin/borg-restore-from"
     owner: "root"
     group: "root"
     mode: "0744"
