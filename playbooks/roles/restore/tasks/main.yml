@@ -3,7 +3,10 @@
 #  shell: umount /mnt
 
 - name: mount last backup
-  shell: /usr/local/bin/borg-restore-from mount 192.168.131.192 20161129-1841 /mnt
+  shell: /usr/local/bin/borg-restore-from mount "{{ backup_server }}" "{{ backup_archive }}" /mnt
+
+- name: mount is slow... give it 30s...
+  pause: seconds=30
 
 - name: restore backed up items, exclude /etc
   shell: rsync -a "/mnt{{ item }}" "{{ item }}"
