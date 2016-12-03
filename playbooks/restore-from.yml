@@ -5,9 +5,9 @@
 # 2) add restore: True and restore_from: <name_of_vm_to_restore> variables
 #     Eg:
 #     restore: True
-#     restore_from: debian820
-#     backup_server: 192.168.131.192
-#     backup_archive: 20161129-1841
+#     restore_from_vm: debian820
+#     restore_backup_server: 192.168.131.192
+#     restore_archive: 20161129-1841
 # 3) run the normal lamp.yml playbook to install the base software
 # 4) run this playbook, make sure to limit the run to just your new VM name
 

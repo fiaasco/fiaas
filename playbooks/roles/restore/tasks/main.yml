@@ -1,15 +1,17 @@
 ---
-#- name: make sure nothing is mounted
-#  shell: umount /mnt
+- name: make sure nothing is mounted
+  file: 
+    dest: "{{ restore_mount }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
 
 - name: mount last backup
-  shell: /usr/local/bin/borg-restore-from mount "{{ backup_server }}" "{{ backup_archive }}" /mnt
+  shell: /usr/local/bin/borg-restore-from mount "{{ restore_backup_server }}" "{{ restore_archive }}" "{{ restore_mount }}"
 
-- name: mount is slow... give it 30s...
-  pause: seconds=30
-
-- name: restore backed up items, exclude /etc
-  shell: rsync -a "/mnt{{ item }}" "{{ item }}"
+- name: restore backed up items, always exclude /etc
+  shell: rsync -a "{{ restore_mount }}{{ item }}" "{{ item }}"
   when: item != "/etc"
   with_items:
     - "{{ backup_include }}"

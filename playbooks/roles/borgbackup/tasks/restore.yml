@@ -25,7 +25,7 @@
   authorized_key:
     user: "{{ borg_user }}"
     key: "{{ sshkey.stdout }}"
-    key_options: 'command="cd {{ borg_pool }}/{{ restore_from }};borg serve --restrict-to-path {{ borg_pool }}/{{ restore_from }}",no-port-forwarding,no-X11-forwarding,no-pty,no-agent-forwarding,no-user-rc'
+    key_options: 'command="cd {{ borg_pool }}/{{ restore_from_vm }};borg serve --restrict-to-path {{ borg_pool }}/{{ restore_from_vm }}",no-port-forwarding,no-X11-forwarding,no-pty,no-agent-forwarding,no-user-rc'
   delegate_to: "{{ item }}"
   with_items: "{{ groups.backupservers }}"
 
