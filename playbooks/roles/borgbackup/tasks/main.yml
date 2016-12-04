@@ -10,4 +10,4 @@
   when: backup_required == True and inventory_hostname not in groups.backupservers
 
 - include: restore.yml
-  when: restore|default(False) == True and inventory_hostname not in groups.backupservers
+  when: restore == True and inventory_hostname not in groups.backupservers
