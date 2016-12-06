@@ -7,3 +7,4 @@
     group: "root"
     mode: "0755"
     url: "{{ borg_download_url }}"
+  tags: borginstall
