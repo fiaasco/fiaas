@@ -10,8 +10,13 @@
 - name: mount last backup
   shell: /usr/local/bin/borg-restore-from mount "{{ restore_backup_server }}" "{{ restore_archive }}" "{{ restore_mount }}"
 
-- name: restore backed up items, always exclude /etc
-  shell: rsync -a "{{ restore_mount }}{{ item }}" "{{ item }}"
-  when: item != "/etc"
-  with_items:
-    - "{{ backup_include }}"
+- name: the backup is now mounted in /mnt/restore
+
+# TODO: add /stable/ auto restore + database dumps
+#
+#- name: restore backed up items, exclude /etc and /var/log
+#  shell: rsync -a "{{ restore_mount }}{{ item }}" "{{ item }}"
+#  when: item != "/etc" or item != "/var/log"
+#  with_items:
+#    - "{{ backup_include }}"
+
