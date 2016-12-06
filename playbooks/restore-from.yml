@@ -1,5 +1,5 @@
 ---
-# This playbook allow you to restore everything in an existing VM to a new VM.
+# This playbook allows you to restore everything in an existing VM to a new VM.
 # Steps to get this done:
 # 1) add new VM to your inventory, copy the host_vars file from the existing VM
 # 2) add restore: True and restore_from: <name_of_vm_to_restore> variables
@@ -8,26 +8,27 @@
 #     restore_from_vm: debian820
 #     restore_backup_server: 192.168.131.192
 #     restore_archive: 20161129-1841
-# 3) run the normal lamp.yml playbook to install the base software
-# 4) run this playbook, make sure to limit the run to just your new VM name
+# 4) run this playbook, make sure to limit the play to just your new VM name
 
-- name: Restore one VM to another VM
+- name: check host limit
   hosts: all:!backupservers
-  become: True
-
   pre_tasks:
-    - name: host limit check
-      action: fail
-      args:
-        msg: "You should limit the hosts you're running on!"
-      when: play_hosts == groups.all
+    - name: Check for single host
+      fail: msg="you should limit this play to one host"
+      when: "{{ play_hosts|length }} != 1"
       run_once: yes
       tags: always
-    - include_vars: "./os_vars/{{ ansible_distribution_release }}.yml"
-      tags: ['backup']
-    - apt: update_cache=yes cache_valid_time=3600
 
+- name: run lamp setup playbook
+  include: lamp.yml
+
+- name: create resources before restore
+  include: createresources.yml
+
+- name: Restore backup from other VM
+  hosts: all:!backupservers
+  become: True
+  
   roles:
-    - system
     - borgbackup
     - restore
