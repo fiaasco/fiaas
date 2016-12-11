@@ -11,3 +11,11 @@
   notify: reload apache2
   when: apache.version == "2.2"
   tags: ['phppools']
+
+- name: make sure fastcgiexternal config is absent in newer apache versions
+  file:
+    dest: /etc/apache2/conf.d/fastcgiexternal.conf
+    state: absent
+  notify: reload apache2
+  when: apache.version != "2.2"
+  tags: ['phppools']

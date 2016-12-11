@@ -1,6 +1,20 @@
 ---
 - name: enable required modules
-  shell: a2enmod {{ item }} creates=/etc/apache2/mods-enabled/{{ item }}.load
+  apache2_module:
+    name: "{{ item }}"
+    state: present
   with_items:
     - proxy
     - proxy_fcgi
+  notify: reload apache2
+
+- name: Apache 2.4 | make sure fastcgi is disabled (upgraded wheezy hosts)
+  apache2_module:
+    name: fastcgi
+    state: absent
+  notify: reload apache2
+
+- name: Apache 2.4 | uninstall unused fastcgi module
+  apt:
+    name: libapache2-mod-fastcgi
+    state: absent
