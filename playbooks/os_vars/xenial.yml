@@ -1,0 +1,7 @@
+pip_exec: "pip3"
+apache:
+  version: "2.4"
+  defaultsite: "default.conf"
+  confdir: "conf-available"
+python3:
+  - "/usr/bin/python3.5"
