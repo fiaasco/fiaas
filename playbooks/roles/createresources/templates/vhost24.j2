@@ -31,8 +31,8 @@
 _xfwded{% endif %}
 
   include extra.d/extra.{{ item.url }}.conf
-{% if item.ssl is defined %}
-{% if item.ssl_redirect_http is defined %}
+{% if item.ssl|default(False|bool) != False %}
+{% if item.ssl_redirect_http|default(False|bool) == True %}
   RewriteEngine On
   RewriteCond %{HTTP:X-Forwarded-Proto} !^https$
   RewriteRule ^(.*)$	https://{{ item.url }}$1 [R=301,L]
@@ -41,7 +41,7 @@ _xfwded{% endif %}
 
 </VirtualHost>
 
-{% if item.ssl is defined %}
+{% if item.ssl|default(False|bool) != False %}
 
 <VirtualHost *:443>
   ServerName {{ item.url }}

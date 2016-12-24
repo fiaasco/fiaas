@@ -3,33 +3,33 @@
 - name: vhosts | create certificates directory for selfsigned/commercial
   file: dest=/etc/ssl/{{ item.url }} state=directory
   with_items: "{{ vhosts }}"
-  when: item.ssl is defined and item.ssl != "letsencrypt" and not item.delete|default(False)
+  when: item.ssl|default(False) != "letsencrypt" and not item.delete|default(False)
   tags: ['vhosts']
 
 - name: vhosts | generate self signed certificates
   command: openssl req -new -nodes -x509 -subj "/C=BE/ST=BXL/L=Belgium/O=IT/CN={{ ansible_fqdn }}" -days 3650 -keyout /etc/ssl/{{ item.url }}/{{ item.url }}.key -out /etc/ssl/{{ item.url }}/{{ item.url }}.crt -extensions v3_ca creates=/etc/ssl/{{ item.url }}/{{ item.url }}.crt
-  when: item.ssl is defined and item.ssl == "selfsigned" and not item.delete|default(False)
+  when: item.ssl|default(False) == "selfsigned" and not item.delete|default(False)
   with_items: "{{ vhosts }}"
   tags: ['vhosts']
 
 # letsencrypt
 - name: vhosts | generate letsencrypt certificates
   shell: /root/ssl/request-{{ item.url }}.sh  creates=/root/.acme.sh/{{ item.url }}/{{ item.url }}.cer
-  when: item.ssl is defined and item.ssl == "letsencrypt" and not item.delete|default(False)
+  when: item.ssl|default(False) == "letsencrypt" and not item.delete|default(False)
   with_items: "{{ vhosts }}"
   tags: ['vhosts']
 
 - name: vhosts | symlink directory
   file: src=/root/.acme.sh/{{ item.url }} dest=/etc/ssl/{{ item.url }} state=link
   with_items: "{{ vhosts }}"
-  when: item.ssl is defined and item.ssl == "letsencrypt" and not item.delete|default(False)
+  when: item.ssl|default(False) == "letsencrypt" and not item.delete|default(False)
   tags: ['vhosts']
 
 # halt playbook on current host when commercial certificate is not found
 - name: vhosts | check for commercial certificate
   shell: file /etc/ssl/{{ item.url }}/{{ item.url }}.crt /etc/ssl/{{ item.url }}/{{ item.url }}.key
   with_items: "{{ vhosts }}"
-  when: item.ssl is defined and item.ssl == "commercial" and not item.delete|default(False)
+  when: item.ssl|default(False) == "commercial" and not item.delete|default(False)
   register: sslpaths
   changed_when: False
   failed_when: "'No such file or directory' in sslpaths.stdout"
