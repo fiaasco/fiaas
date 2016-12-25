@@ -2,13 +2,13 @@
 - name: vhosts | remove certificates directory for selfsigned/commercial
   file: dest=/etc/ssl/{{ item.url }} state=absent
   with_items: "{{ vhosts }}"
-  when: item.ssl is defined and item.ssl != "letsencrypt" and item.delete|default(False)
+  when: item.ssl|default(False) != "letsencrypt" and item.delete|default(False)
   tags: ['vhosts']
 
 - name: vhosts | unlink letsencrypt cert directory
   file: path=/etc/ssl/{{ item.url }} state=absent
   with_items: "{{ vhosts }}"
-  when: item.ssl is defined and item.ssl == "letsencrypt" and item.delete|default(False)
+  when: item.ssl|default(False) == "letsencrypt" and item.delete|default(False)
   tags: ['vhosts']
 
 - name: vhosts | disable site when it's not default
