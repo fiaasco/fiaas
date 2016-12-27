@@ -3,7 +3,7 @@
 - name: vhosts | create certificates directory for selfsigned/commercial
   file: dest=/etc/ssl/{{ item.url }} state=directory
   with_items: "{{ vhosts }}"
-  when: item.ssl|default(False) != "letsencrypt" and not item.delete|default(False)
+  when: item.ssl|default('letsencrypt') != "letsencrypt" and not item.delete|default(False)
   tags: ['vhosts']
 
 - name: vhosts | generate self signed certificates
