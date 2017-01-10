@@ -2,21 +2,6 @@
 - name: restart icinga2
   service: name=icinga2 state=restarted
 
-- name: restart icinga2 and update master config
-  service: name=icinga2 state=restarted
-  notify: pause 2 seconds
-
-- name: pause 2 seconds
-  pause: seconds=2
-  notify: update master config
-
-- name: update master config
-  shell: icinga2 node update-config
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups.icingaservers }}"
-  notify: restart master icinga2
-  run_once: yes
-
 - name: restart master icinga2
   service: name=icinga2 state=restarted
   delegate_to: "{{ item }}"
