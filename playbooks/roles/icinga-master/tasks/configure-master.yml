@@ -27,13 +27,18 @@
   shell: icinga2 feature enable api creates=/etc/icinga2/features-enabled/api.conf
   notify: restart icinga
 
-- name: configure zones.conf
-  template: src=zones.conf.j2 dest=/etc/icinga2/zones.conf owner=root group=root mode=0644 
+- name: put config templates
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/icinga2/{{ item }}"
+    owner: root
+    group: root
+    mode: "0644"
   notify: restart icinga
-
-- name: configure constants.conf
-  template: src=constants.conf.j2 dest=/etc/icinga2/constants.conf owner=root group=root mode=0644
-  notify: restart icinga
+  with_items:
+    - zones.conf
+    - constants.conf
+    - icinga2.conf
 
 - name: create icinga2 database
   mysql_db: name={{ idodbname }} state=present
