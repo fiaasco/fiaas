@@ -1,2 +1,3 @@
 ---
 mysql_remote: False
+high_performance_mysql_server: False
