@@ -42,7 +42,7 @@ tmpdir		= /tmp
 language	= /usr/share/mysql/english
 skip-external-locking
 
-wait_timeout = 900
+wait_timeout = 600
 interactive_timeout = 28800
 
 open-files-limit = 32000
@@ -67,6 +67,7 @@ thread_cache_size       = 10
 myisam-recover         = BACKUP
 max_connections        = {{ mysql_max_connections|default((ansible_memtotal_mb/128)|round|int) }}
 table_open_cache       = {{ mysql_table_open_cache|default(2000) }}
+join_buffer_size       = 8M
 #thread_concurrency     = 10
 #
 # * Query Cache Configuration
