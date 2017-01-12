@@ -73,6 +73,9 @@ table_open_cache       = {{ mysql_table_open_cache|default(2000) }}
 #
 query_cache_limit	= 2M
 query_cache_size        = {{ mysql_query_cache_size|default((ansible_memtotal_mb/32)|round|int) }}M
+{% if mysql_query_cache_size|default(1) == 0 %}
+query_cache_type        = 0
+{% endif %}
 
 #
 # * Logging and Replication
