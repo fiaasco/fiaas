@@ -32,9 +32,16 @@
   notify: restart apache2
   when: apache.version == "2.4"
 
-- name: Apache | Enable modules
+- name: disable modules
+  apache2_module: name={{ item }} state=absent
+  with_items:
+    - mpm_prefork
+    - mpm_worker
+
+- name: enable modules
   apache2_module: name={{ item }} state=present
   with_items:
+    - mpm_event
     - actions
     - deflate
     - rewrite
