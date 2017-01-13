@@ -57,7 +57,7 @@ KeepAliveTimeout 5
 {% else %}
     MaxClients          100 
 {% endif %}
-    MaxRequestsPerChild 666
+    MaxRequestsPerChild 999
 </IfModule>
 
 # event MPM
@@ -86,7 +86,7 @@ KeepAliveTimeout 5
 {% else %}
     MaxClients          150
 {% endif %}
-    MaxRequestsPerChild   0
+    MaxRequestsPerChild 999
 </IfModule>
 
 # These need to be set in /etc/apache2/envvars
