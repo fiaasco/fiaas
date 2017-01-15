@@ -32,7 +32,18 @@
   notify: restart apache2
   when: apache.version == "2.4"
 
-- name: Apache | Enable modules
+- name: disable modules (impossible with apache2_module till ansible 2.3)
+  shell: a2dismod {{ item }} removes=/etc/apache2/mods-enabled/{{ item }}.load
+  with_items:
+    - mpm_prefork
+    - mpm_worker
+  notify: restart apache2
+
+- name: enable mpm_event (impossible with apache2_module till ansible 2.3)
+  shell: a2enmod mpm_event creates=/etc/apache2/mods-enabled/mpm_event.load
+  notify: restart apache2
+
+- name: enable modules
   apache2_module: name={{ item }} state=present
   with_items:
     - actions

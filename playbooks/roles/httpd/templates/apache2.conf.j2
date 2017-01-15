@@ -21,7 +21,6 @@ KeepAliveTimeout 5
 # MaxClients: maximum number of server processes allowed to start
 # MaxRequestsPerChild: maximum number of requests a server process serves
 <IfModule mpm_prefork_module>
-    # we use worker!
     StartServers          5
     MinSpareServers       5
     MaxSpareServers      10
@@ -58,7 +57,7 @@ KeepAliveTimeout 5
 {% else %}
     MaxClients          100 
 {% endif %}
-    MaxRequestsPerChild 666
+    MaxRequestsPerChild 999
 </IfModule>
 
 # event MPM
@@ -69,13 +68,25 @@ KeepAliveTimeout 5
 # MaxClients: maximum number of simultaneous client connections
 # MaxRequestsPerChild: maximum number of requests a server process serves
 <IfModule mpm_event_module>
+{% if ansible_memtotal_mb <= 1024 %}
+    StartServers          1
+{% else %}
     StartServers          2
+{% endif %}
     MinSpareThreads      25
     MaxSpareThreads      75 
     ThreadLimit          64
     ThreadsPerChild      25
+{% if ansible_memtotal_mb <= 1024 %}
+    MaxClients           25
+{% elif ansible_memtotal_mb <= 3072 %}
+    MaxClients           50
+{% elif ansible_memtotal_mb <= 8192 %}
+    MaxClients          100
+{% else %}
     MaxClients          150
-    MaxRequestsPerChild   0
+{% endif %}
+    MaxRequestsPerChild 999
 </IfModule>
 
 # These need to be set in /etc/apache2/envvars

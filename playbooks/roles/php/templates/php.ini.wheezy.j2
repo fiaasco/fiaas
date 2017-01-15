@@ -342,12 +342,14 @@ disable_classes =
 ; the file operations performed.
 ; http://php.net/realpath-cache-size
 ;realpath_cache_size = 16k
+realpath_cache_size = 128k
 
 ; Duration of time, in seconds for which to cache realpath information for a given
 ; file or directory. For systems with rarely changing files, consider increasing this
 ; value.
 ; http://php.net/realpath-cache-ttl
 ;realpath_cache_ttl = 120
+realpath_cache_ttl = 3600
 
 ; Enables or disables the circular reference collector.
 ; http://php.net/zend.enable-gc
@@ -876,6 +878,7 @@ cli_server.color = On
 ; Defines the default timezone used by the date functions
 ; http://php.net/date.timezone
 ;date.timezone =
+date.timezone = 'Europe/Brussels'
 
 ; http://php.net/date.default-latitude
 ;date.default_latitude = 31.7667
