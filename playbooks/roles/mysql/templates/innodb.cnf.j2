@@ -10,6 +10,7 @@ innodb_file_per_table
 innodb_large_prefix=true
 innodb_file_format=barracuda
 
+innodb_flush_log_at_trx_commit = 2
 innodb_flush_method = O_DIRECT
 binlog_format = MIXED
 
@@ -19,4 +20,5 @@ innodb_read_io_threads = 16
 innodb_write_io_threads = 16
 innodb_sync_spin_loops = 200
 innodb_lock_wait_timeout = 25
+innodb_buffer_pool_instances = 8
 {% endif %}
