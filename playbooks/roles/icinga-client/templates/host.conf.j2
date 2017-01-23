@@ -1,0 +1,20 @@
+object Host "{{ ansible_fqdn }}" {
+  /* Import the default host template defined in `templates.conf`. */
+  import "generic-host"
+
+  /* Specify the address attributes for checks e.g. `ssh` or `http`. */
+  address = "{{ hostvars[inventory_hostname]['ansible_'+public_interface]['ipv4']['address'] }}"
+  address6 = "{{ hostvars[inventory_hostname]['ansible_'+public_interface]['ipv6']['address'] }}"
+
+  /* Set custom attribute `os` for hostgroup assignment in `groups.conf`. */
+  vars.os = "{{ ansible_system }}"
+
+  /* Define disks and attributes for service apply rules in `services.conf`. */
+  vars.disks["disk"] = {
+    /* No parameters. */
+  }
+  vars.disks["disk /"] = {
+    disk_partitions = "/"
+  }
+
+}
