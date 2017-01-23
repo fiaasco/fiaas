@@ -10,8 +10,6 @@
 - name: mount last backup
   shell: /usr/local/bin/borg-restore-from mount "{{ restore_backup_server }}" "{{ restore_archive }}" "{{ restore_mount }}"
 
-- name: the backup is now mounted in /mnt/restore
-
 # TODO: add /stable/ auto restore + database dumps
 #
 #- name: restore backed up items, exclude /etc and /var/log
