@@ -4,7 +4,9 @@ object Host "{{ ansible_fqdn }}" {
 
   /* Specify the address attributes for checks e.g. `ssh` or `http`. */
   address = "{{ hostvars[inventory_hostname]['ansible_'+public_interface]['ipv4']['address'] }}"
+  {% if hostvars[inventory_hostname]['ansible_'+public_interface]['ipv6']['address'] is defined %}
   address6 = "{{ hostvars[inventory_hostname]['ansible_'+public_interface]['ipv6']['address'] }}"
+  {% endif %}
 
   /* Set custom attribute `os` for hostgroup assignment in `groups.conf`. */
   vars.os = "{{ ansible_system }}"
@@ -12,9 +14,6 @@ object Host "{{ ansible_fqdn }}" {
   /* Define disks and attributes for service apply rules in `services.conf`. */
   vars.disks["disk"] = {
     /* No parameters. */
-  }
-  vars.disks["disk /"] = {
-    disk_partitions = "/"
   }
 
 }

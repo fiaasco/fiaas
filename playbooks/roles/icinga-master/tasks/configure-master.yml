@@ -21,11 +21,31 @@
 - name: sign csr
   shell: icinga2 pki sign-csr --csr /etc/icinga2/pki/{{ ansible_fqdn }}.csr --cert /etc/icinga2/pki/{{ ansible_fqdn }}.crt creates=/etc/icinga2/pki/{{ ansible_fqdn }}.crt
 
-# icinga2 node setup --zone master --trustedcert /etc/icinga2/pki/ca.crt --cn icinga2 --master
-# is also possible, but you'll have to set the salt later in that case
 - name: enable api
   shell: icinga2 feature enable api creates=/etc/icinga2/features-enabled/api.conf
   notify: restart icinga
+
+- name: create zones.d config dirs
+  file:
+   path: "/etc/icinga2/zones.d/{{ item }}"
+   state: directory
+   owner: nagios
+   group: nagios
+   mode: "0755"
+  with_items:
+    - global-templates
+    - master
+
+- name: create zones.d config dirs
+  file:
+   path: "/etc/icinga2/zones.d/master/{{ item }}"
+   state: directory
+   owner: nagios
+   group: nagios
+   mode: "0755"
+  with_items:
+    - hosts
+    - services
 
 - name: put config templates
   template:
@@ -34,11 +54,23 @@
     owner: root
     group: root
     mode: "0644"
-  notify: restart icinga
   with_items:
     - zones.conf
     - constants.conf
     - icinga2.conf
+  notify: restart icinga
+
+- name: put global templates
+  template:
+    src: "{{ item.src }}"
+    dest: "/etc/icinga2/zones.d/global-templates/{{ item.path }}"
+    owner: nagios
+    group: nagios
+    mode: "0644"
+  with_filetree:
+    - ../templates/global-templates/
+  when: item.state == 'file'
+  notify: restart icinga
 
 - name: create icinga2 database
   mysql_db: name={{ idodbname }} state=present

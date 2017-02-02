@@ -2,3 +2,5 @@
 - include: install.yml
 
 - include: configure-client.yml
+
+- include: define-on-master.yml

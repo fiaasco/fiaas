@@ -1,0 +1,24 @@
+---
+- name: create services directories
+  file:
+    dest: "/etc/icinga2/zones.d/master/services/{{ item.path }}"
+    state: directory
+    owner: nagios
+    group: nagios
+    mode: "{{ item.mode }}"
+  with_filetree:
+    - services/
+  when: item.state == 'directory'
+  notify: restart icinga2
+
+- name: copy service definitions to nagios primary master
+  copy:
+    src: "{{ item.src }}"
+    dest: "/etc/icinga2/zones.d/master/services/{{ item.path }}"
+    owner: nagios
+    group: nagios
+    mode: "{{ item.mode }}"
+  with_filetree:
+    - services/
+  when: item.state == 'file'
+  notify: restart icinga2

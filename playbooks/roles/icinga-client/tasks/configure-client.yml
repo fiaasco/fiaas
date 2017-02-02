@@ -15,11 +15,6 @@
   with_items: "{{ groups.icingaservers|first }}"
   notify: restart icinga2
 
-#- name: Send self-signed certificate to the master using the ticket number and receive a CA signed certificate and the master's ca.crt certificate
-#  shell: icinga2 pki request --host {{ item }} --port 5665 --ticket {{ ticket.stdout }} --key /etc/icinga2/pki/{{ ansible_fqdn }}.key --cert /etc/icinga2/pki/{{ ansible_fqdn }}.crt --trustedcert /etc/icinga2/pki/trusted-master.crt --ca /etc/icinga2/pki/ca.key creates=/etc/icinga2/pki/ca.key
-#  with_items: "{{ groups.icingaservers|first }}"
-#  notify: restart icinga2
-
 - name: Continue with the additional node setup steps
   shell: icinga2 node setup --ticket {{ ticket.stdout }} --endpoint {{ item }},{{ item }},5665 --zone {{ ansible_fqdn }} --master_host {{ item }} --master_zone master --trustedcert /etc/icinga2/pki/trusted-master.crt --accept-config --accept-commands creates=/etc/icinga2/zones.conf.orig
   with_items: "{{ groups.icingaservers|first }}"
@@ -39,17 +34,3 @@
   notify: restart icinga2
   with_items:
     - icinga2.conf
-
-- debug: var="{{ hostvars[inventory_hostname]['ansible_'+public_interface]['ipv4']['address'][0] }}"
-
-- name: put host config on master
-  template:
-    src: host.conf.j2
-    dest: "/etc/icinga2/hosts.d/{{ ansible_fqdn }}.conf"
-    owner: root
-    group: root
-    mode: "0644"
-  notify: restart master icinga2
-  delegate_to: "{{ groups.icingaservers|first }}"
-
-- meta: flush_handlers
