@@ -1,9 +1,0 @@
-object Service "mysql" {
-  import "generic-service"
-  check_command = "mysql"
-
-  host_name = "{{ inventory_hostname }}"
-
-  vars.mysql_username = "{{ monitor_mysql.user }}"
-  vars.mysql_password = "{{ monitor_mysql.pass }}"
-}

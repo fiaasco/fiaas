@@ -1,4 +1,0 @@
----
-dependencies:
-  - munin-node
-  - icinga-client
