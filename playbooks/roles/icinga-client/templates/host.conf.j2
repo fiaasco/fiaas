@@ -1,3 +1,6 @@
+#jinja2: trim_blocks: "true", lstrip_blocks: "true"
+# {{ ansible_managed }}
+
 object Host "{{ ansible_fqdn }}" {
   /* Import the default host template defined in `templates.conf`. */
   import "generic-host"
@@ -10,6 +13,29 @@ object Host "{{ ansible_fqdn }}" {
 
   /* Set custom attribute `os` for hostgroup assignment in `groups.conf`. */
   vars.os = "{{ ansible_system }}"
+
+  /* Services based on host_vars */
+  vars.varnish = "{{ varnish_required }}"
+  vars.redis = "{{ redis_required }}"
+  vars.memcached = "{{ memcached_required }}"
+  vars.solr = "{{ solr_required }}"
+  vars.vsftpd = "{{ install_vsftpd }}"
+  vars.vsftpd_port = "{{ vsftpd_listen_port|default(21) }}"
+  vars.backup = "{{ backup_required }}"
+
+  {% for v in vhosts %}
+  {% if v.delete is not defined %}
+  {% if v.monitoring == True %}
+  {% if v.ssl|default(True) != "False" %}
+  vars.vhosts_http["{{ v.url }}"] = {
+  }
+  {% else %}
+  vars.vhosts_https["{{ v.url }}"] = {
+  }
+  {% endif %}
+  {% endif %}
+  {% endif %}
+  {% endfor %}
 
   /* Define disks and attributes for service apply rules in `services.conf`. */
   vars.disks["disk"] = {
