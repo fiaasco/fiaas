@@ -1,0 +1,13 @@
+---
+- name: copy over munin plugins
+  copy: src=solr/{{ item }} dest=/usr/share/munin/plugins/{{ item }} mode=0755 owner=root group=root
+  with_items:
+    - solr
+    - solrmulticore
+
+- name: enable munin plugin {{ item }}
+  file: src=/usr/share/munin/plugins/{{ item }} dest=/etc/munin/plugins/{{ item }} state=link
+  with_items:
+    - solr
+    - solrmulticore
+  notify: restart munin-node

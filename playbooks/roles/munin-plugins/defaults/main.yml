@@ -1,0 +1,8 @@
+---
+monitor_varnish:
+  - name: cache_hit_percent
+    warn: 70
+    crit: 80
+  - name: cache_miss
+    warn: 50
+    crit: 90

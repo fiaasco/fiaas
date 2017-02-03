@@ -1,0 +1,8 @@
+---
+- name: enable memcached munin plugins
+  file: src=/usr/share/munin/plugins/memcached_ dest=/etc/munin/plugins/memcached_{{ item }} state=link
+  with_items:
+    - rates
+    - bytes
+    - counters
+  notify: restart munin-node

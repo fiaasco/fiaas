@@ -1,0 +1,13 @@
+---
+- name: Enable varnish plugins
+  file: src=/usr/share/munin/plugins/varnish_ dest=/etc/munin/plugins/varnish_{{ item }} state=link
+  with_items:
+    - threads
+    - expunge
+    - transfer_rates
+    - objects
+    - request_rate
+    - memory_usage
+    - hit_rate
+    - backend_traffic
+  notify: restart munin-node

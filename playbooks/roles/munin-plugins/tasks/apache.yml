@@ -1,0 +1,12 @@
+---
+- name: enable Apache munin plugins
+  file: src=/usr/share/munin/plugins/{{ item }} dest=/etc/munin/plugins/{{ item }} state=link
+  with_items:
+    - apache_accesses
+    - apache_processes
+    - apache_volume
+  notify: restart munin-node
+
+- name: adapt munin-config for apache
+  template: src=apache/munin-conf.j2 dest=/etc/munin/plugin-conf.d/apache mode=0644
+  notify: restart munin-node
