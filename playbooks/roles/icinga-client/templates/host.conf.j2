@@ -22,6 +22,8 @@ object Host "{{ ansible_fqdn }}" {
   vars.vsftpd = "{{ install_vsftpd }}"
   vars.vsftpd_port = "{{ vsftpd_listen_port|default(21) }}"
   vars.backup = "{{ backup_required }}"
+  vars.mysql_user = "{{ monitor_mysql.user }}"
+  vars.mysql_pass = "{{ monitor_mysql.pass }}"
 
   {% for v in vhosts %}
   {% if v.delete is not defined %}
