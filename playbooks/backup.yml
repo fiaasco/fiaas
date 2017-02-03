@@ -9,10 +9,5 @@
 
   roles:
     - system
-    - role: icinga-client
-      serial: 1
-      tags: ['icinga']
-    - role: monitoring
-      tags: ['monitoring']
     - role: borgbackup
       tags: ['backup']
