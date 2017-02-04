@@ -2,14 +2,13 @@
 # Icingaweb2 manual setup steps taken from
 # https://github.com/Icinga/icingaweb2/blob/master/doc/installation.md
 
-- name: install required packages
+- name: make sure required packages are installed
   apt: name={{ item }} state=installed
   with_items:
     - php5-common
-    - libapache2-mod-php5
     - php5
     - php-pear
-    - php5-cli
+    - php5-fpm
     - php5-curl
     - php5-dev
     - php5-gd
@@ -25,10 +24,6 @@
   with_items:
     - imagick
     - intl
-  notify: restart apache2
-
-- name: configure php timezone (mod_php)
-  lineinfile: dest=/etc/php5/apache2/php.ini regexp="^date.timezone" insertafter="^;date.timezone " line="date.timezone = Europe/Brussels"
   notify: restart apache2
 
 - name: enable ido-mysql and command feature for web
