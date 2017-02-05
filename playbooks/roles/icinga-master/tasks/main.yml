@@ -3,7 +3,5 @@
 
 - include: configure-master.yml
 
-- include: users.yml
-
 - include: slack.yml
   when: slack_notifications == True
