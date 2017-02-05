@@ -9,7 +9,7 @@
 
 - name: create slack config dir
   file:
-    path: "/etc/icinga2/conf.d/slack"
+    path: "/etc/icinga2/zones.d/master/notifications/slack"
     state: "directory"
     owner: "root"
     group: "root"
@@ -18,7 +18,7 @@
 - name: put slack Icinga templates
   template:
     src: "notifications/slack/{{ item }}.j2"
-    dest: "/etc/icinga2/conf.d/slack/{{ item }}"
+    dest: "/etc/icinga2/zones.d/master/notifications/slack/{{ item }}"
     owner: "root"
     group: "root"
     mode: "0644"

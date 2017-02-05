@@ -1,0 +1,9 @@
+---
+- name: enable Mysql munin plugins
+  file: src=/usr/share/munin/plugins/{{ item }} dest=/etc/munin/plugins/{{ item }} state=link
+  with_items:
+    - mysql_bytes
+    - mysql_queries
+    - mysql_slowqueries
+    - mysql_threads
+  notify: restart munin-node

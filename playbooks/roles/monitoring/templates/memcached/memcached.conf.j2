@@ -1,9 +1,0 @@
-object Service "memcached" {
-  import "generic-service"
-
-  check_command = "procs"
-  host_name = "{{ inventory_hostname }}"
-
-  vars.procs_argument = "/usr/bin/memcached"
-  vars.procs_critical = "1:1"
-}
