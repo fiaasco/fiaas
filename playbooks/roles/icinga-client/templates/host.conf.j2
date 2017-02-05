@@ -14,6 +14,8 @@ object Host "{{ ansible_fqdn }}" {
   /* Set custom attribute `os` for hostgroup assignment in `groups.conf`. */
   vars.os = "{{ ansible_system }}"
 
+  vars.client_endpoint = name
+
   /* Services based on host_vars */
   vars.monitoring_over_ssh = "{{ monitoring_over_ssh }}"
   vars.varnish = "{{ varnish_required }}"
@@ -50,4 +52,12 @@ object Host "{{ ansible_fqdn }}" {
     /* No parameters. */
   }
 
+}
+
+object Endpoint "{{ ansible_fqdn }}" {
+}
+
+object Zone "{{ ansible_fqdn }}"  {
+	endpoints = [ "{{ ansible_fqdn }}" ];
+	parent = "master";
 }
