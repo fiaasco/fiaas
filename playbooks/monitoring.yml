@@ -1,5 +1,5 @@
 - name: Configure monitored hosts
-  hosts: all:!backupservers
+  hosts: all:!icingaservers
   become: True
 
   pre_tasks:
