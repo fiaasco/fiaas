@@ -9,7 +9,7 @@
 
 - name: create slack config dir
   file:
-    path: "/etc/icinga2/zones.d/master/notifiactions/slack"
+    path: "/etc/icinga2/zones.d/master/notifications/slack"
     state: "directory"
     owner: "root"
     group: "root"
