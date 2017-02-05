@@ -15,6 +15,7 @@ object Host "{{ ansible_fqdn }}" {
   vars.os = "{{ ansible_system }}"
 
   /* Services based on host_vars */
+  vars.monitoring_over_ssh = "{{ monitoring_over_ssh }}"
   vars.varnish = "{{ varnish_required }}"
   vars.redis = "{{ redis_required }}"
   vars.memcached = "{{ memcached_required }}"
@@ -28,11 +29,11 @@ object Host "{{ ansible_fqdn }}" {
   {% for v in vhosts %}
   {% if v.delete is not defined %}
   {% if v.monitoring == True %}
-  {% if v.ssl|default(True) != "False" %}
-  vars.vhosts_http["{{ v.url }}"] = {
+  {% if v.ssl is defined and v.ssl != "False" %}
+  vars.vhosts_https["{{ v.url }}"] = {
   }
   {% else %}
-  vars.vhosts_https["{{ v.url }}"] = {
+  vars.vhosts_http["{{ v.url }}"] = {
   }
   {% endif %}
   {% endif %}
