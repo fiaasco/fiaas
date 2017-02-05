@@ -46,6 +46,7 @@
   with_items:
     - hosts
     - services
+    - notifications
 
 - name: put config templates
   template:
