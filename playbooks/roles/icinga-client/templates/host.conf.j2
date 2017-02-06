@@ -3,7 +3,11 @@
 
 object Host "{{ ansible_fqdn }}" {
   /* Import the default host template defined in `templates.conf`. */
+  {% if monitoring_over_ssh|default(False) == True %}
+  import "generic-host-no-ping"
+  {% else %}
   import "generic-host"
+  {% endif %}
 
   /* Specify the address attributes for checks e.g. `ssh` or `http`. */
   address = "{{ hostvars[inventory_hostname]['ansible_'+public_interface]['ipv4']['address'] }}"
