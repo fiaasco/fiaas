@@ -18,17 +18,17 @@ Everything is currently built to run all services in one VM.
 Environment setup
 =================
 
-Ansible = 2.2.0(.0) is used for this setup. (1.9.x still appears to work too)
+Ansible = 2.2.1(.0) is used for this setup. (1.9.x still appears to work too)
 
   * sudo apt-get -y install python-dev libffi-dev libssl-dev python-virtualenv virtualenv
-  * virtualenv ansible-2.2.0
-  * source ansible-2.2.0/bin/activate
-  * pip install ansible==2.2.0.0
+  * virtualenv ansible-2.2.1
+  * source ansible-2.2.1/bin/activate
+  * pip install ansible==2.2.1.0
 
 Executing (vagrant)
 ===================
 
-  * source ansible-2.2.0/bin/activate
+  * source ansible-2.2.1/bin/activate
   * cd vagrant/somevagrantsetup/
   * vagrant up --no-provision
   * provisioning:
@@ -42,7 +42,7 @@ Executing
 =========
 
 ```
-$ source ansible-2.2.0/bin/activate
+$ source ansible-2.2.1/bin/activate
 ```
 
 Assign 2 infra VMs in your inventory for monitoring and backups and run:
@@ -54,10 +54,11 @@ Create a LAMP VM:
 ```
 $ ansible-playbook -i inventory/production/ playbooks/lamp.yml -l customer1
 $ ansible-playbook -i inventory/production/ playbooks/createresources.yml -l customer1
-$ ansible-playbook -i inventory/production/ playbooks/infra-client.yml -l customer1
+$ ansible-playbook -i inventory/production/ playbooks/backup.yml -l customer1
+$ ansible-playbook -i inventory/production/ playbooks/monitoring -l customer1
 ```
 
-The infra plays are optional, but without that you won't have monitoring and backups.
+You can ommit the monitoring and backup plays if you need just the LAMP VM.
 
 Host vars
 =========
