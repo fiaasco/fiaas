@@ -19,8 +19,12 @@
   tags: ['databases']
 
 - name: databases | add ufw rules for these special databases
-  ufw: rule=allow interface={{ public_interface }} direction=in proto=tcp src={{ item.ip }} to_port=3306
-  with_items: "{{ databases }}"
-  when: item.ip is defined and not item.delete|default(False)
+  ufw: rule=allow interface={{ public_interface }} direction=in proto=tcp src={{ item.1 }} to_port=3306
+  with_subelements:
+    - "{{ databases }}"
+    - ip
+    - flags:
+      skip_missing: true
+  when: not item.0.delete|default(False)
   notify: reload ufw
   tags: ['databases']
