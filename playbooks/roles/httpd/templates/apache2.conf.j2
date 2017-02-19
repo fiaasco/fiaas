@@ -6,9 +6,9 @@ LockFile ${APACHE_LOCK_DIR}/accept.lock
 {% endif %}
 PidFile ${APACHE_PID_FILE}
 Timeout 300
-KeepAlive On
+KeepAlive Off
 MaxKeepAliveRequests 100
-KeepAliveTimeout 5
+KeepAliveTimeout 1
 
 ##
 ## Server-Pool Size Regulation (MPM specific)

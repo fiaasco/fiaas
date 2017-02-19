@@ -39,3 +39,6 @@
 
 - name: configure automysqlbackup
   template: src=automysqlbackup.j2 dest=/etc/default/automysqlbackup
+
+- name: grant usage for monitor user
+  mysql_user: name={{ monitor_mysql.user }} password={{ monitor_mysql.pass }} priv=*.*:USAGE state=present append_privs=yes

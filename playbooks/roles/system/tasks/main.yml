@@ -10,4 +10,6 @@
 
 - include: limits.yml
 
+- include: sysctl.yml
+
 - include: extras.yml

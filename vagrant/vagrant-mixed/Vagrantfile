@@ -10,6 +10,10 @@ DEBIAN7_BOX_URL = "http://repo.werus.be/vagrant/debian-7.6-amd64.box"
 
 Vagrant.configure("2") do |config|
 
+  config.vm.provider "virtualbox" do |v|
+    v.customize ["modifyvm", :id, "--nictype1", "virtio"]
+  end
+
   config.ssh.insert_key = false
 
   config.vm.define "debian820" do |v|

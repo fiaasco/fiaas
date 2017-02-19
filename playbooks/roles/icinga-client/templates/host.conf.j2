@@ -1,0 +1,67 @@
+#jinja2: trim_blocks: "true", lstrip_blocks: "true"
+# {{ ansible_managed }}
+
+object Host "{{ ansible_fqdn }}" {
+  /* Import the default host template defined in `templates.conf`. */
+  {% if monitoring_over_ssh|default(False) == True %}
+  import "generic-host-no-ping"
+  {% else %}
+  import "generic-host"
+  {% endif %}
+
+  /* Specify the address attributes for checks e.g. `ssh` or `http`. */
+  address = "{{ hostvars[inventory_hostname]['ansible_'+public_interface]['ipv4']['address'] }}"
+  {% if hostvars[inventory_hostname]['ansible_'+public_interface]['ipv6']['address'] is defined %}
+  address6 = "{{ hostvars[inventory_hostname]['ansible_'+public_interface]['ipv6']['address'] }}"
+  {% endif %}
+
+  /* Set custom attribute `os` for hostgroup assignment in `groups.conf`. */
+  vars.os = "{{ ansible_system }}"
+
+  vars.client_endpoint = name
+
+  /* Services based on host_vars */
+  vars.monitoring_over_ssh = "{{ monitoring_over_ssh }}"
+  vars.varnish = "{{ varnish_required }}"
+  vars.redis = "{{ redis_required }}"
+  vars.memcached = "{{ memcached_required }}"
+  vars.solr = "{{ solr_required }}"
+  vars.vsftpd = "{{ install_vsftpd }}"
+  vars.vsftpd_port = "{{ vsftpd_listen_port|default(21) }}"
+  vars.backup = "{{ backup_required }}"
+  vars.mysql_user = "{{ monitor_mysql.user }}"
+  vars.mysql_pass = "{{ monitor_mysql.pass }}"
+
+  {% for v in vhosts %}
+  {% if v.delete is not defined %}
+  {% if v.monitoring == True %}
+  {% if v.ssl is defined and v.ssl != "False" %}
+  vars.vhosts_https["{{ v.url }}"] = {
+  }
+  {% else %}
+  vars.vhosts_http["{{ v.url }}"] = {
+  }
+  {% endif %}
+  {% endif %}
+  {% endif %}
+  {% endfor %}
+
+  {% if solr_required == True %}
+  vars.solr_uri = "/solr/{{ solr_cores[0].name }}/admin/ping"
+  vars.solr_auth_pair = "{{ solr_cores[0].name }}:{{ solr_cores[0].pass }}"
+  {% endif %}
+
+  /* Define disks and attributes for service apply rules in `services.conf`. */
+  vars.disks["disk"] = {
+    /* No parameters. */
+  }
+
+}
+
+object Endpoint "{{ ansible_fqdn }}" {
+}
+
+object Zone "{{ ansible_fqdn }}"  {
+	endpoints = [ "{{ ansible_fqdn }}" ];
+	parent = "master";
+}

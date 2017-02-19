@@ -1,0 +1,7 @@
+---
+- name: enable postfix munin plugins
+  file: src=/usr/share/munin/plugins/{{ item }} dest=/etc/munin/plugins/{{ item }} state=link
+  with_items:
+    - postfix_mailqueue
+    - postfix_mailvolume
+  notify: restart munin-node

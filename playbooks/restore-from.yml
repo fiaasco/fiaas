@@ -31,4 +31,5 @@
   
   roles:
     - borgbackup
-    - restore
+    - role: restore
+      tags: restore
