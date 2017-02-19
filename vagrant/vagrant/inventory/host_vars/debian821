@@ -95,7 +95,10 @@ databases:
   - name: svhost3-db
     pass: NeyieV2shie3ahne
   - name: testdieter
-    ip: '192.168.131.162'
+    ip:
+      - '192.168.131.162'
+      - '192.168.131.164'
+      - '2a00:1450:400e:803::200e'
     user: dietest
     pass: diepass
 
