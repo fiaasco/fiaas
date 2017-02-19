@@ -50,7 +50,7 @@ open-files-limit = 32000
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
 {% if mysql_remote == True %}
-bind-address = 0.0.0.0
+bind-address = ::
 {% else %}
 bind-address = 127.0.0.1
 {% endif %}
