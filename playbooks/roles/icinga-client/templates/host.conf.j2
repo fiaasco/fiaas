@@ -27,7 +27,7 @@ object Host "{{ ansible_fqdn }}" {
   vars.memcached = "{{ memcached_required }}"
   vars.solr = "{{ solr_required }}"
   vars.vsftpd = "{{ install_vsftpd }}"
-  vars.vsftpd_port = "{{ vsftpd_listen_port|default(21) }}"
+  vars.vsftpd_port = "{{ vsftpd_listen_port|default(990) }}"
   vars.backup = "{{ backup_required }}"
   vars.mysql = "{{ mysql_required }}"
   vars.mysql_user = "{{ monitor_mysql.user }}"
