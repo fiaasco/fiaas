@@ -96,14 +96,12 @@ Group ${APACHE_RUN_GROUP}
 AccessFileName .htaccess
 
 #
-# The following lines prevent .htaccess and .htpasswd files from being 
-# viewed by Web clients. 
+# The following lines prevent .htaccess and .htpasswd files from being
+# viewed by Web clients.
 #
-<Files ~ "^\.ht">
-    Order allow,deny
-    Deny from all
-    Satisfy all
-</Files>
+<FilesMatch "^\.ht">
+        Require all denied
+</FilesMatch>
 
 DefaultType None
 HostnameLookups Off
@@ -112,8 +110,8 @@ ErrorLog ${APACHE_LOG_DIR}/error.log
 LogLevel warn
 
 # Include module configuration:
-Include mods-enabled/*.load
-Include mods-enabled/*.conf
+IncludeOptional mods-enabled/*.load
+IncludeOptional mods-enabled/*.conf
 
 # Include list of ports to listen on and which to use for name based vhosts
 Include ports.conf
@@ -135,9 +133,9 @@ LogFormat "%{User-agent}i" agent
 {% if apache.version == "2.2" %}
 Include conf.d/
 {% else %}
-Include conf-enabled/
+IncludeOptional conf-enabled/
 {% endif %}
 
 # Include the virtual host configurations:
-Include sites-enabled/
+IncludeOptional sites-enabled/
 
