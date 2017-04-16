@@ -1,0 +1,33 @@
+---
+- hosts: all
+  serial: 1
+  become: true
+  vars:
+    - current_release: jessie
+    - next_release: stretch
+  pre_tasks:
+    - name: update sources list
+      replace:
+        dest: "{{ item }}"
+        regexp: "{{ current_release }}"
+        replace: "{{ next_release }}"
+        backup: yes
+      with_items:
+        - /etc/apt/sources.list
+    - name: remove absolete repo files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /etc/apt/sources.list.d/debmon_org_debmon.list
+        - /etc/apt/sources.list.d/repo_werus_be_apt_debian.list
+    - name: remove packages breaking the update, will be reinstalled later
+      apt:
+        name: "{{ item }}"
+        state: absent
+        purge: yes
+      with_items:
+        - phpmyadmin
+
+  roles:
+    - role: dist-upgrade

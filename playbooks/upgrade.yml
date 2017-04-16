@@ -1,5 +1,6 @@
+---
 - hosts: all
   become: true
 
   roles:
-    - dist-upgrade
+    - role: dist-upgrade
