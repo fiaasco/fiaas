@@ -1,0 +1,49 @@
+---
+- name: Install Debian updates
+  apt:
+    upgrade: dist
+    update_cache: yes
+    dpkg_options: "{{ dpkg_options }}"
+  register: upgrades
+
+- name: Check changes
+  set_fact:
+    updated: true
+  when: not upgrades.stdout | search("0 upgraded, 0 newly installed")
+
+- name: Display changes
+  debug:
+    msg: "{{ upgrades.stdout_lines }}"
+  when: verbose or updated is defined
+
+- block:
+    - name: "Make sure log directory exists"
+      file:
+        path: "{{ log_dir }}"
+        state: directory
+        owner: root
+        group: root
+        mode: 0750
+      changed_when: false
+
+    - name: "Write changes to logfile"
+      copy:
+        content: "{{ upgrades.stdout }}"
+        dest: "{{ log_dir }}/dist-upgrade_{{ ansible_date_time.iso8601 }}.log"
+        owner: root
+        group: root
+        mode: 0660
+      changed_when: false
+  when: updated is defined
+
+- name: Restart machine
+  command: shutdown -r now "Fiaas.co dist-update triggered with reboot"
+  async: 0
+  poll: 0
+  ignore_errors: true
+  when: reboot == "yes" and upgrades.changed
+
+- name: Wait for server to come back
+  local_action: wait_for host={{ ansible_ssh_host }} port=22 state=started delay=10 search_regex=OpenSSH
+  become: False
+  when: reboot == "yes"
