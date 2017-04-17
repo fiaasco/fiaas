@@ -1,11 +1,21 @@
 ---
-- hosts: all
+- name: Execute a dist-upgrade between major releases
+  hosts: all
   serial: 1
   become: true
+
   vars:
+      # vars for dist-upgrade
+      # always set maintainer config to ease the upgrade process
+      # the config should be overwritten by the lamp playbook later
+    - dpkg_options: force-confnew
     - current_release: jessie
     - next_release: stretch
+
   pre_tasks:
+    - name: Ask confirmation
+      pause:
+        prompt: 'Please confirm you want to upgrade to a new Debian Release! Press return to continue. Press Ctrl+c and then "a" to abort'
     - name: update sources list
       replace:
         dest: "{{ item }}"
@@ -30,4 +40,4 @@
         - phpmyadmin
 
   roles:
-    - role: dist-upgrade
+    - role: upgrade
