@@ -1,4 +1,5 @@
-php_default_pkgs:
+---
+jessie_php_default_pkgs:
   - php-pear
   - php5
   - php5-cli
@@ -10,5 +11,18 @@ php_default_pkgs:
   - php5-imagick
   - php5-mysqlnd
   - php5-mcrypt
+
+php_default_pkgs:
+  - php-pear
+  - php5
+  - php5-cli
+  - php5-common
+  - php5-curl
+  - php5-dev
+  - php5-fpm
+  - php5-gd
+  - php5-mysqlnd
+  - php5-mcrypt
+  - php-imagick
 
 php_extra_pkg: []
