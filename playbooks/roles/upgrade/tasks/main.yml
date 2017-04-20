@@ -4,6 +4,7 @@
     upgrade: dist
     update_cache: yes
     dpkg_options: "{{ dpkg_options }}"
+    autoremove: yes
   register: upgrades
 
 - name: Check changes
