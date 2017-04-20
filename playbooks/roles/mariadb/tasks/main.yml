@@ -1,0 +1,3 @@
+---
+- include: mysql.yml
+  when: mysql_required == True

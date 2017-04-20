@@ -1,0 +1,24 @@
+[mysqld]
+# InnoDB settings
+default-storage-engine          = innodb
+innodb_buffer_pool_size         = {{ mysql_innodb_buffer_pool_size|default((ansible_memtotal_mb/8)|round|int) }}M
+innodb_additional_mem_pool_size = 10M
+#innodb_log_file_size            = 256M
+innodb_log_buffer_size          = 8M
+innodb_thread_concurrency       = {{ mysql_innodb_thread_concurrency|default(0) }}
+innodb_file_per_table
+innodb_large_prefix=true
+innodb_file_format=barracuda
+
+innodb_flush_log_at_trx_commit = 2
+innodb_flush_method = O_DIRECT
+binlog_format = MIXED
+
+{% if high_performance_mysql_server == True %}
+innodb_spin_wait_delay = 24
+innodb_read_io_threads = 16
+innodb_write_io_threads = 16
+innodb_sync_spin_loops = 200
+innodb_lock_wait_timeout = 25
+innodb_buffer_pool_instances = 8
+{% endif %}
