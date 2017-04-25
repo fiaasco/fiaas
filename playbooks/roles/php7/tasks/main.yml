@@ -1,0 +1,46 @@
+---
+- name: install default required php packages
+  apt:
+    name: "{{ item }}"
+    state: installed
+    cache_valid_time: 3600
+    update_cache: yes
+  with_items:
+    - "{{ php_default_pkgs }}"
+
+- name: install extra required packages
+  apt:
+    name: "{{ item }}"
+    state: installed
+    cache_valid_time: 3600
+    update_cache: yes
+  when: php_extra_pkg is defined
+  with_items: 
+    - "{{ php_extra_pkg }}"
+
+- name: put php.ini
+  template:
+    src: php.ini.j2
+    dest: /etc/php/7.0/fpm/php.ini
+    owner: root
+    group: root
+    mode: "0644"
+  notify: reload php
+
+- name: put php-fpm.conf
+  template:
+    src: php-fpm.conf.j2
+    dest: /etc/php/7.0/fpm/php-fpm.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: reload php
+
+- name: put www-data pool config-file
+  template:
+    src: www.conf.j2
+    dest: /etc/php/7.0/fpm/pool.d/www.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart php
