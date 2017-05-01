@@ -4,21 +4,37 @@
     name: "{{ item }}"
     state: absent
   with_items:
+    - mysql-client-5.5
     - mysql-server-5.5
+    - mysql-server-core-5.5
     - libmysqlclient18
- 
-- name: install mysql
+
+- name: remove obsolete config files (my.cnf alternative will try to use it otherwise)
+  file:
+    path: "/etc/mysql/{{ item }}"
+    state: absent
+  with_items:
+    - my.cnf.migrated
+    - my.cnf.fallback
+
+- name: install mariadb
   apt:
     name: "{{ item }}"
     state: latest
     cache_valid_time: 3600
     update_cache: yes
   with_items:
-    - automysqlbackup
+    - mariadb-client
     - mariadb-server
+    - automysqlbackup
     - python-mysqldb
   register: mysqlinstall
   notify: start mysql
+
+- name: confirm my.cnf alternative is correct
+  alternatives:
+    name: my.cnf
+    path: /etc/mysql/mariadb.cnf
 
 - name: put mariadb.conf.d templates
   template:
@@ -40,7 +56,7 @@
     mode: "0644"
   notify: restart mysql
 
-- name: ensure mysql is running
+- name: ensure mariadb is running
   meta: flush_handlers
 
 - name: generate random password
@@ -61,7 +77,7 @@
     - localhost
   when: mysqlrootpass.changed
 
-- name: save root password for mysql
+- name: save root password for mariadb
   template:
     src: root-my.cnf.j2
     dest: /root/.my.cnf

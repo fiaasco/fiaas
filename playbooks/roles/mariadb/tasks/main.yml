@@ -1,3 +1,3 @@
 ---
-- include: mysql.yml
+- include: mariadb.yml
   when: mysql_required == True
