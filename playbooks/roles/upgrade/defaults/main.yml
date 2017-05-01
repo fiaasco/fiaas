@@ -3,3 +3,4 @@
 dpkg_options: force-confold,force-confdef
 log_dir: /var/log/updates
 reboot: no
+verbose: False
