@@ -1,0 +1,5 @@
+---
+- locale_gen:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ locale }}"

@@ -1,2 +1,3 @@
 ---
+monitoring_over_ssh: False
 mysql_required: True

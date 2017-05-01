@@ -1,15 +1,41 @@
 ---
-- apt_key: url=http://debmon.org/debmon/repo.key state=present
-- apt_repository: repo="deb http://debmon.org/debmon debmon-{{ ansible_distribution_release }} main" state=present update_cache=yes
+- block:
+    - apt_key:
+        url: http://debmon.org/debmon/repo.key
+        state: present
+    - apt_repository:
+        repo: "deb http://debmon.org/debmon debmon-{{ ansible_distribution_release }} main"
+        state: present
+        update_cache: yes
+  when: ansible_distribution == 'Debian'
 
-- apt: name=icinga2 state=installed
-  notify: restart icinga2
+- block:
+    #- apt_key:
+    #    url: http://debmon.org/debmon/repo.key
+    #    state: present
+    - apt_repository:
+        repo: "ppa:formorer/icinga"
+        state: present
+        update_cache: yes
+  when: ansible_distribution == 'Ubuntu'
 
-- apt: name=monitoring-plugins state=installed
+- name: install packages
+  apt:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - icinga2
+    - monitoring-plugins
   notify: restart icinga2
 
 - name: allow icinga servers to icinga client port through external ip
-  ufw: rule=allow interface={{ public_interface }} direction=in proto=tcp src={{ hostvars[item].external_ip }} to_port=5665
+  ufw:
+    rule: allow
+    interface: "{{ public_interface }}"
+    direction: in
+    proto: tcp
+    src: "{{ hostvars[item].external_ip }}"
+    to_port: 5665
   with_items: "{{ groups.icingaservers }}"
   notify: reload ufw
   when: monitoring_over_ssh == False and hostvars[item].external_ip is defined
