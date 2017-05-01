@@ -8,17 +8,27 @@
   debconf: name=phpmyadmin question="phpmyadmin/dbconfig-install" value="true" vtype="boolean"
   changed_when: False
 
-- name: phpmyadmin | debconf mysql root pass
-  debconf: name=phpmyadmin question="phpmyadmin/mysql/admin-pass" value="{{mysqlrootpass.stdout}}" vtype="password"
-  changed_when: False
+# before Debian stretch
+- block:
+    - name: phpmyadmin | debconf mysql root pass
+      debconf: name=phpmyadmin question="phpmyadmin/mysql/admin-pass" value="{{mysqlrootpass.stdout}}" vtype="password"
+      changed_when: False
 
-- name: phpmyadmin | debconf app pass
-  debconf: name=phpmyadmin question="phpmyadmin/mysql/app-pass" value="{{mysqlrootpass.stdout}}" vtype="password"
-  changed_when: False
+    - name: phpmyadmin | debconf app pass
+      debconf: name=phpmyadmin question="phpmyadmin/mysql/app-pass" value="{{mysqlrootpass.stdout}}" vtype="password"
+      changed_when: False
 
-- name: phpmyadmin | debconf phpmy db pass
-  debconf: name=phpmyadmin question="phpmyadmin/app-password-confirm" value="{{mysqlrootpass.stdout}}" vtype="password"
-  changed_when: False
+    - name: phpmyadmin | debconf phpmy db pass
+      debconf: name=phpmyadmin question="phpmyadmin/app-password-confirm" value="{{mysqlrootpass.stdout}}" vtype="password"
+      changed_when: False
+  when: ansible_distribution == 'Debian' and ansible_distribution_major_version < '9'
+
+# Debian Stretch
+- block:
+    - name: phpmyadmin | debconf app pass
+      debconf: name=phpmyadmin question="phpmyadmin/mysql/app-pass" value="" vtype="password"
+      changed_when: False
+  when: ansible_distribution == 'Debian' and ansible_distribution_major_version >= '9'
 
 - name: phpmyadmin | debconf don't reconfigure webserver
   debconf: name=phpmyadmin question="phpmyadmin/reconfigure-webserver" value="" vtype="multiselect"
