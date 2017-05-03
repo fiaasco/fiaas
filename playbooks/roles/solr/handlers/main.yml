@@ -1,12 +1,24 @@
 ---
 - name: start solr-jetty
-  service: name=jetty state=running enabled=yes
+  service: name=jetty state=started enabled=yes
 
 - name: restart solr-jetty
   service: name=jetty state=restarted enabled=yes
 
 - name: start solr-jetty8
-  service: name=jetty8 state=running enabled=yes
+  service: name=jetty8 state=started enabled=yes
 
 - name: restart solr-jetty8
   service: name=jetty8 state=restarted enabled=yes
+
+- name: start jetty9
+  service:
+    name: jetty9
+    state: started
+    enabled: yes
+
+- name: restart jetty9
+  service:
+    name: jetty9
+    state: restarted
+    enabled: yes

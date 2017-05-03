@@ -1,6 +1,6 @@
 ---
 - name: start apache2
-  service: name=apache2 state=running enabled=yes
+  service: name=apache2 state=started enabled=yes
 
 - name: restart apache2
   service: name=apache2 state=restarted enabled=yes

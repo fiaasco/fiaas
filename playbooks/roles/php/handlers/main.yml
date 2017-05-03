@@ -1,6 +1,6 @@
 ---
 - name: start php
-  service: name=php5-fpm state=running enabled=yes
+  service: name=php5-fpm state=started enabled=yes
 
 - name: restart php
   service: name=php5-fpm state=restarted enabled=yes

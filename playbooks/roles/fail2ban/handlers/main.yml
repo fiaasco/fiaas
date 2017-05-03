@@ -1,6 +1,6 @@
 ---
 - name: start fail2ban
-  service: name=fail2ban state=running enabled=yes
+  service: name=fail2ban state=started enabled=yes
 
 - name: restart fail2ban
   service: name=fail2ban state=restarted enabled=yes
