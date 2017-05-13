@@ -10,5 +10,7 @@
   roles:
     - role: icinga-client
       tags: ['icinga', 'monitoring']
+    - role: icinga-checks
+      tags: ['icinga', 'checks']
     - role: munin-plugins
       tags: ['munin', 'monitoring']

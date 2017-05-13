@@ -1,2 +1,4 @@
 ---
+icinga_user: nagios
+
 slack_notifications: False

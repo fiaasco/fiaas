@@ -1,0 +1,4 @@
+{{ icinga_user }} ALL=(ALL) NOPASSWD: /bin/systemctl restart apache2
+{{ icinga_user }} ALL=(ALL) NOPASSWD: /bin/systemctl restart varnish
+{{ icinga_user }} ALL=(ALL) NOPASSWD: /bin/systemctl restart php5-fpm
+{{ icinga_user }} ALL=(ALL) NOPASSWD: /bin/systemctl restart vsftpd

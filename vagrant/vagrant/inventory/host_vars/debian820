@@ -46,19 +46,23 @@ databases:
   - name: extern1
     user: extuser1
     pass: extpass1
-    ip: "37.252.122.240"
+    ip:
+      - "37.252.122.240"
   - name: extern1
     user: extuser2
     pass: extpass2
-    ip: "37.252.122.241"
+    ip:
+      - "37.252.122.241"
   - name: extern2
     user: extuser3
     pass: extpass3
-    ip: "185.24.220.62"
+    ip:
+      - "185.24.220.62"
   - name: extern3
     user: extuser2
     pass: extpass2
-    ip: "185.24.220.62"
+    ip:
+      - "185.24.220.62"
     
 
 phppools:

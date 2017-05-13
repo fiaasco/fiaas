@@ -1,3 +1,4 @@
 ---
-monitoring_over_ssh: False
+icinga_user: nagios
+
 mysql_required: True
