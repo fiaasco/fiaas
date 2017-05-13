@@ -1,0 +1,28 @@
+#!/bin/bash
+
+while getopts "s:t:a:S:" opt; do
+  case $opt in
+    s)
+      servicestate=$OPTARG
+      ;;
+    t)
+      servicestatetype=$OPTARG
+      ;;
+    a)
+      serviceattempt=$OPTARG
+      ;;
+    S)
+      service=$OPTARG
+      ;;
+  esac
+done
+
+if ( [ -z $servicestate ] || [ -z $servicestatetype ] || [ -z $serviceattempt ] || [ -z $service ] ); then
+  echo "USAGE: $0 -s servicestate -t servicestatetype -a serviceattempt -S service"
+  exit 3;
+else
+  # Only restart on the third attempt of a critical event
+  if ( [ $servicestate == "CRITICAL" ] && [ $servicestatetype == "HARD" ] && [ $serviceattempt -eq 3 ] ); then
+    sudo /bin/systemctl restart $service
+  fi
+fi

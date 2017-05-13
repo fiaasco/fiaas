@@ -13,7 +13,7 @@
   notify: restart icinga
 
 - name: prepare pki directory
-  file: path=/etc/icinga2/pki state=directory owner=nagios group=nagios mode=0700
+  file: path=/etc/icinga2/pki state=directory owner="{{ icinga_user }}" group="{{ icinga_user }}" mode=0700
 
 - name: generate csr
   shell: icinga2 pki new-cert --cn {{ ansible_fqdn }} --key /etc/icinga2/pki/{{ ansible_fqdn }}.key --csr /etc/icinga2/pki/{{ ansible_fqdn }}.csr creates=/etc/icinga2/pki/{{ ansible_fqdn }}.csr
@@ -29,8 +29,8 @@
   file:
    path: "/etc/icinga2/zones.d/{{ item }}"
    state: directory
-   owner: nagios
-   group: nagios
+   owner: "{{ icinga_user }}"
+   group: "{{ icinga_user }}"
    mode: "0755"
   with_items:
     - global-templates
@@ -40,12 +40,12 @@
   file:
    path: "/etc/icinga2/zones.d/master/{{ item }}"
    state: directory
-   owner: nagios
-   group: nagios
+   owner: "{{ icinga_user }}"
+   group: "{{ icinga_user }}"
    mode: "0755"
   with_items:
     - hosts
-    - services
+    - checks
     - notifications
 
 - name: put config templates
@@ -65,8 +65,8 @@
   template:
     src: "{{ item.src }}"
     dest: "/etc/icinga2/zones.d/global-templates/{{ item.path }}"
-    owner: nagios
-    group: nagios
+    owner: "{{ icinga_user }}"
+    group: "{{ icinga_user }}"
     mode: "0644"
   with_filetree:
     - ../templates/global-templates/
