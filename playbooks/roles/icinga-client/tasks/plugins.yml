@@ -3,8 +3,8 @@
   copy:
     src: "{{ item }}"
     dest: "{{ monitoring_plugins_path }}/"
-    owner: "{{ icinga_user }}"
-    group: "{{ icinga_user }}"
+    owner: root
+    group: root
     mode: "0775"
   with_fileglob:
     - plugins/*
