@@ -15,7 +15,6 @@
     state: absent
   with_items:
     - my.cnf.migrated
-    - my.cnf.fallback
 
 - name: install mariadb
   apt:
