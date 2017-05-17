@@ -46,6 +46,8 @@
         state: absent
       with_items:
         - /etc/apache2/admin.d/phpmyadmin.conf
+    - name: make sure debconf db is consistent or phpymadmin reinstall will fail
+      shell: /usr/share/debconf/fix_db.pl
 
   roles:
     - role: upgrade
