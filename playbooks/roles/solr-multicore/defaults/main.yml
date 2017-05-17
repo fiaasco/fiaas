@@ -1,0 +1,24 @@
+---
+solr_version: 4.7.2
+solr_checksum: "sha256:08fb5f33a5629a2a71487123523626d263d6b1817c7cee2d54e41d2898eb4040"
+solr_required: True
+solr_reinstall: False
+
+## search_api_solr Drupal module ##
+#Version
+#Path to the Solr configuration
+solr_searchApiSolrConfPath: "searchapi/solr-conf/4.x"
+## apachesolr Drupal module ##
+solr_apachesolrConfPath: "apachesolr/solr-conf/solr-4.x"
+
+# Linux user and group name
+solr_user: solr
+
+solr_downloadUrl: https://archive.apache.org/dist/lucene/solr
+solr_downloadPath: "{{ solr_version }}/solr-{{ solr_version }}.tgz"
+solr_extractPath: /opt
+solr_saveTarPath: "/opt/solr-{{ solr_version }}.tgz"
+solr_installPath: "/opt/solr-{{ solr_version }}"
+solr_multicoreRoot: multicore
+
+solr_uninstall: no

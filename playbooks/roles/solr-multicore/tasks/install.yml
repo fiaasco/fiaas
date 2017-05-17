@@ -1,0 +1,93 @@
+---
+### Basic multicore solr preparation
+### Cores are configured in the createresources role
+
+- name: Ensure that solr group is present  
+  group:
+    name: "{{ solr_user }}"
+    state: present
+
+- name: Ensure that solr user is present  
+  user:
+    name: "{{ solr_user }}"
+    group: "{{ solr_user }}"
+    state: "present"
+    home: "{{ solr_installPath }}"
+    shell: /bin/false
+
+- name: Ensure that Apache Solr install folder exists
+  file:
+    dest: "{{ solr_installPath }}"
+    state: directory
+    owner: "{{ solr_user }}"
+    group: "{{ solr_user }}" 
+    mode: 0755
+
+- name: Extract Apache Solr
+  unarchive:
+    src: "{{ solr_saveTarPath }}"
+    dest: "{{ solr_extractPath }}"
+    remote_src: True
+
+- name: Symlink to /opt/solr
+  file:
+    src: "{{ solr_installPath }}"
+    dest: /opt/solr
+    state: link
+
+- name: Ensure that multicore configuration root exists
+  file:
+    dest: "{{ solr_installPath }}/{{ solr_multicoreRoot }}"
+    state: directory
+    owner: "{{ solr_user }}"
+    group: "{{ solr_user }}" 
+    mode: 0755
+
+- name: Copy solr/example contents to multicore configuration root
+  command: rsync -av {{ solr_installPath }}/example/ {{ solr_installPath }}/{{ solr_multicoreRoot }}/
+  args:
+    creates: "{{ solr_installPath }}/{{ solr_multicoreRoot }}/start.jar"
+
+- name: Ensure that unnecessary folders in example are removed
+  file:
+    dest: "{{ solr_installPath }}/{{ solr_multicoreRoot }}/{{ item }}"
+    state: absent
+  with_items:
+    - exampledocs
+    - example-DIH
+    - example-schemaless
+    - collection1
+    - multicore
+
+- name: put drupal solr config in example core
+  copy:
+    src: "{{ solr_apachesolrConfPath }}/"
+    dest: "{{ solr_installPath }}/{{ solr_multicoreRoot }}/solr/collection1/conf/"
+    owner: "{{ solr_user }}"
+    group: "{{ solr_user }}" 
+
+- name: Copy systemd unit
+  template:
+    src: solr-systemd-unit.j2
+    dest: /etc/systemd/system/solr.service
+    owner: root
+    group: root
+    mode: 0644
+  notify: reload systemd  
+
+- name: Copy jetty.xml
+  copy:
+    src: jetty.xml
+    dest: "{{ solr_installPath }}/{{ solr_multicoreRoot }}/etc/jetty.xml"
+    owner: "{{ solr_user }}"
+    group: "{{ solr_user }}" 
+    mode: 0644
+  notify: restart solr
+
+- name: Ensure that solr user owns the solr folder
+  file:
+    dest: "{{ solr_installPath }}"
+    state: directory
+    recurse: yes
+    owner: "{{ solr_user }}"
+    group: "{{ solr_user }}" 

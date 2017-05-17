@@ -1,0 +1,23 @@
+---
+- name: solr | put solr.xml
+  template:
+    src: multicore-solr-solr.xml.j2
+    dest: "{{ solr_installPath }}/{{ solr_multicoreRoot }}/solr/solr.xml"
+    owner: "{{ solr_user }}"
+    group: "{{ solr_user }}" 
+    mode: 0644
+  notify: restart solr
+  tags: ['solr']
+
+- name: solr | put other config
+  template:
+    src: "solr-multicore-{{ item }}.j2"
+    dest: "{{ solr_installPath }}/{{ solr_multicoreRoot }}/etc/{{ item }}"
+    owner: "{{ solr_user }}"
+    group: "{{ solr_user }}" 
+    mode: 0644
+  with_items:
+    - "realm.properties"
+    - "webdefault.xml"
+  notify: restart solr
+  tags: ['solr']
