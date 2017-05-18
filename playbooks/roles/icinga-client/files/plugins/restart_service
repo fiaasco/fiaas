@@ -22,7 +22,7 @@ if ( [ -z $servicestate ] || [ -z $servicestatetype ] || [ -z $serviceattempt ] 
   exit 3;
 else
   # Only restart on the third attempt of a critical event
-  if ( [ $servicestate == "CRITICAL" ] && [ $servicestatetype == "SOFT" ] && [ $serviceattempt -eq 3 ] ); then
+  if ( [ $servicestate == "CRITICAL" ] && [ $servicestatetype == "HARD" ] && [ $serviceattempt -eq 1 ] ); then
     sudo /bin/systemctl restart $service
   fi
 fi
