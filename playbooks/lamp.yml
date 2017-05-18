@@ -45,6 +45,9 @@
     - role: php-pecl
       tags: ['php']
       when: ansible_distribution == 'Debian' and ansible_distribution_major_version < '9'
+    - role: solr
+      tags: ['solr']
+      when: ansible_distribution == 'Debian' and ansible_distribution_major_version < '9'
       # Debian Stretch
     - role: mariadb
       tags: ['mysql', 'mariadb']
@@ -54,8 +57,9 @@
       when: ansible_distribution == 'Debian' and ansible_distribution_major_version >= '9'
     - role: phpdevtools
       tags: ['phpdevtools']
-    - role: solr
+    - role: solr-multicore
       tags: ['solr']
+      when: ansible_distribution == 'Debian' and ansible_distribution_major_version >= '9'
     - role: redis
       tags: ['redis']
     - role: memcached
