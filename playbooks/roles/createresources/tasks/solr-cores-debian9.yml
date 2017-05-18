@@ -1,7 +1,7 @@
 ---
 - name: solr-multicore | create conf dir
   file:
-    dest: "{{ solr_installPath }}/{{ solr_multicoreRoot }}/{{ item.name }}/conf"
+    dest: "{{ solr_installPath }}/{{ solr_multicoreRoot }}/solr/{{ item.name }}/conf"
     state: directory
     owner: "{{ solr_user }}"
     group: "{{ solr_user }}" 
@@ -12,9 +12,9 @@
   tags: ['solr']
 
 - name: solr-multicore | sync core config
-  shell: rsync -a {{ solr_installPath }}/{{ solr_multicoreRoot }}/solr/collection1/conf/ {{ solr_installPath }}/{{ solr_multicoreRoot }}/{{ item.name }}/conf/
+  shell: rsync -a {{ solr_installPath }}/{{ solr_multicoreRoot }}/solr/collection1/conf/ {{ solr_installPath }}/{{ solr_multicoreRoot }}/solr/{{ item.name }}/conf/
   args:
-    creates: "{{ solr_installPath }}/{{ solr_multicoreRoot }}/{{ item.name }}/conf/solrconfig.xml"
+    creates: "{{ solr_installPath }}/{{ solr_multicoreRoot }}/solr/{{ item.name }}/conf/solrconfig.xml"
   with_items: "{{ solr_cores }}"
   when: not item.delete|default(False)
   notify: restart solr
