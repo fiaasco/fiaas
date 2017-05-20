@@ -110,8 +110,13 @@ ErrorLog ${APACHE_LOG_DIR}/error.log
 LogLevel warn
 
 # Include module configuration:
+{% if apache.version == "2.2" %}
+Include mods-enabled/*.load
+Include mods-enabled/*.conf
+{% else %}
 IncludeOptional mods-enabled/*.load
 IncludeOptional mods-enabled/*.conf
+{% endif %}
 
 # Include list of ports to listen on and which to use for name based vhosts
 Include ports.conf
@@ -132,10 +137,8 @@ LogFormat "%{User-agent}i" agent
 # Include generic snippets of statements
 {% if apache.version == "2.2" %}
 Include conf.d/
+Include sites-enabled/
 {% else %}
 IncludeOptional conf-enabled/
-{% endif %}
-
-# Include the virtual host configurations:
 IncludeOptional sites-enabled/
-
+{% endif %}
