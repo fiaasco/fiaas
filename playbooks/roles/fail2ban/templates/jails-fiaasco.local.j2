@@ -1,0 +1,9 @@
+[vsftpd]
+enabled = true
+logpath = %(syslog_authpriv)s
+port     = ftp,ftp-data,ftps,ftps-data
+
+[postfix]
+enabled = true
+port     = smtp,465,submission
+logpath  = /var/log/mail.log
