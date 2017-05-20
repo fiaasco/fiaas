@@ -20,6 +20,7 @@
     mode: "0644"
   with_items:
     - defaults-fiaasco.local
+    - jails-fiaasco.local
   notify: restart fail2ban
   when: ansible_distribution == 'Debian' and ansible_distribution_major_version >= '9'
 
