@@ -4,6 +4,7 @@
   with_items:
     - memcached
     - libcache-memcached-perl
+    - munin-plugins-extra
   notify: start memcached
 
 - name: put memcached config file
