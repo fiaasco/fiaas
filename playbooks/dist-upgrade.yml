@@ -1,0 +1,59 @@
+---
+- name: Execute a dist-upgrade between major releases
+  hosts: all
+  serial: 1
+  become: true
+
+  vars:
+      # vars for dist-upgrade
+      # always set maintainer config to ease the upgrade process
+      # the config should be overwritten by the lamp playbook later
+    - dpkg_options: force-confnew
+    - current_release: jessie
+    - next_release: stretch
+
+  pre_tasks:
+    - name: Ask confirmation
+      pause:
+        prompt: 'Please confirm you want to upgrade to a new Debian Release! Press return to continue. Press Ctrl+c and then "a" to abort'
+    - name: run automysqlbackup to create fresh full backup
+      shell: /usr/sbin/automysqlbackup
+    - name: update sources list
+      replace:
+        dest: "{{ item }}"
+        regexp: "{{ current_release }}"
+        replace: "{{ next_release }}"
+        backup: yes
+      with_items:
+        - /etc/apt/sources.list
+    - name: remove absolete repo files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /etc/apt/sources.list.d/debmon_org_debmon.list
+        - /etc/apt/sources.list.d/repo_werus_be_apt_debian.list
+    - name: remove packages breaking the update, will be reinstalled later
+      apt:
+        name: "{{ item }}"
+        state: absent
+        purge: yes
+      with_items:
+        - phpmyadmin
+    - name: remove absolete config files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /etc/apache2/admin.d/phpmyadmin.conf
+    - name: make sure debconf db is consistent or phpymadmin reinstall will fail
+      shell: /usr/share/debconf/fix_db.pl
+
+  roles:
+    - role: upgrade
+
+- name: autoremove fails in upgrade role, force it in shell
+  hosts: all
+  become: true
+  tasks:
+    - shell: apt-get autoremove -y

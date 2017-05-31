@@ -1,10 +1,17 @@
 ---
 - name: add repo for custom packages
-  apt_repository: repo="deb {{ custom_repo_url }} {{ ansible_distribution_release }} main" state=present update_cache=yes
+  apt_repository:
+    repo: "deb {{ custom_repo_url }} {{ ansible_distribution_release }} main"
+    state: present
+    update_cache: yes
   when: custom_repo_url is defined
 
 - name: Install PECL dependencies
-  apt: name=php-pear state=present cache_valid_time=3600 update_cache=yes
+  apt:
+    name: php-pear
+    state: present
+    cache_valid_time: 3600
+    update_cache: yes
 
 # install 
 

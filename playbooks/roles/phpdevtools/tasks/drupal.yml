@@ -1,17 +1,31 @@
 ---
-- name: drupal | install Debian drush
-  apt: name={{ item }} state=installed cache_valid_time=3600 update_cache=yes
-  with_items:
-    - drush
+- name: drupal | make sure the Drush Debian package is absent
+  apt:
+    name: drush
+    state: absent
+    cache_valid_time: 3600
+    update_cache: yes
   tags: ['drush']
 
 - name: drupal | get drush 8
-  get_url: dest=/usr/local/bin/drush8 url=http://files.drush.org/drush.phar force=no mode=0775 owner=root group=root
+  get_url:
+    dest: /usr/local/bin/drush
+    url: http://files.drush.org/drush.phar
+    force: no
+    owner: root
+    group: root
+    mode: "0775"
   tags: ['drush']
 
-- stat: path=/etc/cron.d/drupal
+- stat:
+    path: /etc/cron.d/drupal
   register: drupal_cron
 
 - name: drupal | put /etc/cron.d/drupal example if the file doesn't exist
-  copy: src=cron-drupal dest=/etc/cron.d/drupal owner=root group=root mode=0644
+  copy:
+    src: cron-drupal
+    dest: /etc/cron.d/drupal
+    owner: root
+    group: root
+    mode: "0644"
   when: drupal_cron.stat.exists == False

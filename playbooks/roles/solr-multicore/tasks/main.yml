@@ -1,0 +1,4 @@
+---
+- name: Install Apache Solr
+  include: download.yml
+  when: solr_required == True

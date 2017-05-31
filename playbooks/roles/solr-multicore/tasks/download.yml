@@ -1,0 +1,35 @@
+---
+- name: Ensure java is installed
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items: 
+    - curl
+    - rsync
+    - default-jre-headless
+
+- name: Create directories
+  file:
+    dest: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ solr_extractPath }}"
+    - "{{ solr_installPath }}"
+
+- name: Download Apache Solr
+  get_url:
+    url: "{{ solr_downloadUrl }}/{{ solr_downloadPath }}"
+    dest: "{{ solr_saveTarPath }}"
+    checksum: "{{ solr_checksum }}"
+  register: download
+
+- block:
+    - name: remove existing solr installation
+      file:
+        path: "{{ solr_installPath }}"
+        state: absent 
+
+    - name: (re)install
+      include: install.yml
+
+  when: download.changed or solr_reinstall

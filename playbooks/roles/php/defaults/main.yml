@@ -1,3 +1,4 @@
+---
 php_default_pkgs:
   - php-pear
   - php5
@@ -7,8 +8,8 @@ php_default_pkgs:
   - php5-dev
   - php5-fpm
   - php5-gd
-  - php5-imagick
   - php5-mysqlnd
   - php5-mcrypt
+  - php5-imagick
 
 php_extra_pkg: []
