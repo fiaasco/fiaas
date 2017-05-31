@@ -1,5 +1,10 @@
 platform: vagrant
 
+ntp_servers:
+  - "0.be.pool.ntp.org"
+  - "1.be.pool.ntp.org"
+  - "2.be.pool.ntp.org"
+  - "3.be.pool.ntp.org"
 
 # system ssh user
 systemusers:

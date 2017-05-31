@@ -3,5 +3,4 @@
 
 - include: configure-client.yml
 
-- include: define-on-master.yml
-  tags: ['update-icinga-host-config']
+- include: plugins.yml

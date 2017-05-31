@@ -19,6 +19,13 @@ include "constants.conf"
 include "zones.conf"
 
 /**
+ * Also define a global-templates zone
+ */
+object Zone "global-templates" {
+  global = true
+}
+
+/**
  * The Icinga Template Library (ITL) provides a number of useful templates
  * and command definitions.
  * Common monitoring plugin command definitions are included separately.
@@ -48,3 +55,5 @@ include <nscp>
  * the features-enabled directory.
  */
 include "features-enabled/*.conf"
+
+

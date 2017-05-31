@@ -3,18 +3,18 @@
   template:
     src: host.conf.j2
     dest: "/etc/icinga2/zones.d/master/hosts/{{ ansible_fqdn }}.conf"
-    owner: nagios
-    group: nagios
+    owner: "{{ icinga_user }}"
+    group: "{{ icinga_user }}"
     mode: "0644"
-  notify: restart master icinga2
   delegate_to: "{{ groups.icingaservers|first }}"
+  notify: restart master icinga2
 
 - name: create host config include directory
   file:
     dest: "/etc/icinga2/zones.d/master/hosts/{{ ansible_fqdn }}"
     state: directory
-    owner: nagios
-    group: nagios
+    owner: "{{ icinga_user }}"
+    group: "{{ icinga_user }}"
     mode: "0775"
   delegate_to: "{{ groups.icingaservers|first }}"
   notify: restart master icinga2

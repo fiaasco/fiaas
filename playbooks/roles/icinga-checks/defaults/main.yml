@@ -2,4 +2,7 @@
 icinga_user: nagios
 monitoring_plugins_path: /usr/lib/nagios/plugins
 
-mysql_required: True
+monitoring_over_ssh: False
+
+disk_wfree: "15%"
+disk_cfree: "8%"

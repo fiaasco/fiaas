@@ -2,8 +2,8 @@
 backup_required: True
 restore: False
 
-borg_version: "1.0.9"
-borg_checksum: "sha256:9fa23310aa8b08a5d7427970250d9ec0f9512b03bbac32659079df8ae1031764"
+borg_version: "1.0.10"
+borg_checksum: "sha256:99f889e57630e64a67d0c1a54c056f8d82aac1ccc2cc56c9fb5f5f2710f29950"
 borg_download_url: "https://github.com/borgbackup/borg/releases/download/{{ borg_version }}/borg-linux64"
 
 borg_user: "borgbackup"
