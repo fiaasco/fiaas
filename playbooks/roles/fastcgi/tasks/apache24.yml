@@ -12,6 +12,7 @@
   apache2_module:
     name: fastcgi
     state: absent
+  ignore_errors: yes
   notify: reload apache2
 
 - name: Apache 2.4 | uninstall unused fastcgi module
