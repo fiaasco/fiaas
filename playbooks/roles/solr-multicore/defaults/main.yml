@@ -1,7 +1,7 @@
 ---
 solr_version: 4.7.2
 solr_checksum: "sha256:08fb5f33a5629a2a71487123523626d263d6b1817c7cee2d54e41d2898eb4040"
-solr_required: True
+solr_required: False
 solr_reinstall: False
 
 ## search_api_solr Drupal module ##
