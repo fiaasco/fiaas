@@ -21,7 +21,7 @@
     update_cache: yes
   with_items:
     - "{{ php56_default_pkgs }}"
-  notify: start php56
+  notify: restart php56
 
 - name: install extra required packages
   apt:
@@ -31,6 +31,7 @@
     update_cache: yes
   with_items: 
     - "{{ php56_extra_pkg }}"
+  notify: restart php56
 
 - name: put php.ini
   template:
