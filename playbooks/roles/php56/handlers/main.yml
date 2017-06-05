@@ -1,0 +1,18 @@
+---
+- name: start php56
+  service:
+    name: php5.6-fpm
+    state: started
+    enabled: yes
+
+- name: restart php56
+  service:
+    name: php5.6-fpm
+    state: restarted
+    enabled: yes
+
+- name: reload php56
+  service:
+    name: php5.6-fpm
+    state: reloaded
+    enabled: yes
