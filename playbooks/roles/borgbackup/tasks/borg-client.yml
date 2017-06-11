@@ -27,7 +27,7 @@
     key: "{{ sshkey.stdout }}"
     key_options: 'command="cd {{ borg_pool }}/{{ inventory_hostname }};borg serve --restrict-to-path {{ borg_pool }}/{{ inventory_hostname }}",no-port-forwarding,no-X11-forwarding,no-pty,no-agent-forwarding,no-user-rc'
   delegate_to: "{{ item }}"
-  with_items: "{{ groups.backupservers }}"
+  with_items: "{{ backupservers }}"
 
 - name: client | check for mysql
   stat: path=/var/lib/automysqlbackup

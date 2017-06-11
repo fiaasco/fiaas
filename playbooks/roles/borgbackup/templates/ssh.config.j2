@@ -1,2 +1,2 @@
-Host {% for host in groups.backupservers %}{{ host }} {{ hostvars[host].ansible_ssh_host }} {% endfor %}  # backup hosts
+Host {% for host in backupservers %}{{ host }} {{ hostvars[host].ansible_ssh_host }} {% endfor %}  # backup hosts
    StrictHostKeyChecking no
