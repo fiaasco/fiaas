@@ -73,7 +73,7 @@
     owner: root
     group: root
     mode: 0644
-  notify: reload systemd  
+  notify: reload systemd
 
 - name: Copy jetty.xml
   copy:
