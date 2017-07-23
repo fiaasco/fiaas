@@ -30,9 +30,21 @@
   when: item.type == 'normal'
   with_items: "{{ backupservers }}"
 
+# rsync.net has no python, so we can only use raw to manage ssh keys
+# this ugly workaround for an idempotent rsync.net authorized_key file supports only one endpoint
+- name: client | check for sshpubkey on rsync.net backupserver
+  raw: ssh {{ item.user }}@{{ item.fqdn }} 'cat .ssh/authorized_keys' | grep "{{ sshkey.stdout }}"
+  when: item.type == 'rsync.net'
+  delegate_to: localhost
+  become: no
+  with_items: "{{ backupservers }}"
+  ignore_errors: yes
+  changed_when: false
+  register: rsyncnet_authkey
+
 - name: client | put sshpubkey on rsync.net backupserver
   raw: echo "command=\"cd {{ item.home }}{{ item.pool }}/{{ inventory_hostname }}; /usr/local/bin/borg1 serve --restrict-to-path {{ item.home }}{{ item.pool }}/{{ inventory_hostname }}\",,no-port-forwarding,no-X11-forwarding,no-pty,no-agent-forwarding,no-user-rc {{ sshkey.stdout }}" | ssh {{ item.user }}@{{ item.fqdn }} 'dd of=.ssh/authorized_keys oflag=append conv=notrunc'
-  when: item.type == 'rsync.net'
+  when: item.type == 'rsync.net' and rsyncnet_authkey.results[0].stdout == ''
   delegate_to: localhost
   become: no
   with_items: "{{ backupservers }}"
