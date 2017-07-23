@@ -1,6 +1,7 @@
 # Borg backup role
 
 This roles installs Borg backup on backupservers and clients. The role contains a wrapper-script 'borg-backup' to ease the usage on the client. Supported options include borg-backup info | init | list | backup | mount. Per default automysqlbackup will run as pre-backup command.
+The role supports both self hosted and rsync.net as Borg server.
 
 
 ## Required variables
@@ -15,10 +16,22 @@ backup1.fiaas.co
 group\_vars/all.yml:
 ```
 backupservers:
-  - backup1.fiaas.co
+  - fqdn: backup1.fiaas.co
+    user: borgbackup
+    type: normal
+    home: /backup/
+    pool: repos
+    options: ""
+  - fqdn: ch-s011.rsync.net
+    user: 17915
+    type: rsync.net
+    home: ""
+    pool: repos
+    options: "--remote-path=borg1"
 ```
 Contains the list of server you want to use on a certain client.
 Allows to override backup servers on group or host level.
+*WARNING: the trailing / in item.home is required.*
 
 Define a borg\_passphrase for every host.
 host\_vars\client1:

@@ -7,18 +7,24 @@
     group: "root"
     mode: "0755"
     url: "{{ borg_download_url }}"
+  delegate_to: "{{ item.fqdn }}"
+  with_items: "{{ backupservers }}"
+  when: item.type == 'normal'
 
 - name: server | create user
   user:
-    name: "{{ borg_user }}"
+    name: "{{ item.user }}"
     shell: "/bin/bash"
-    home: "{{ borg_home }}"
+    home: "{{ item.home }}"
     createhome: "yes"
+  delegate_to: "{{ item.fqdn }}"
+  with_items: "{{ backupservers }}"
+  when: item.type == 'normal'
 
 - name: server | create directories
   file:
-    path: "{{ borg_pool }}"
+    path: "{{ item.pool }}"
     state: "directory"
-    owner: "{{ borg_user }}"
-    group: "{{ borg_group }}"
+    owner: "{{ item.user }}"
+    group: "{{ item.user }}"
     mode: "0770"
