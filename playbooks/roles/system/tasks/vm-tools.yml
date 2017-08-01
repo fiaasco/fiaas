@@ -5,5 +5,5 @@
 
 - name: install open-vm-tools on VMware
   apt: name=open-vm-tools state=installed cache_valid_time=3600 update_cache=yes
-  when: ansible_virtualization_type == "VMware" and vmware.legacy is defined
+  when: ansible_virtualization_type == "VMware"
 
