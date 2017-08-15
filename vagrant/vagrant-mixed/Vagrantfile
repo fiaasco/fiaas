@@ -8,6 +8,9 @@ DEBIAN_BOX_URL = "http://repo.werus.be/vagrant/debian-8.2-amd64.box"
 DEBIAN7_BOX = "debian76"
 DEBIAN7_BOX_URL = "http://repo.werus.be/vagrant/debian-7.6-amd64.box"
 
+DEBIAN9_BOX = "debian91"
+DEBIAN9_BOX_URL = "http://delta.exabyte.be/vagrant-boxes/debian-9.1-amd64.box"
+
 Vagrant.configure("2") do |config|
 
   config.vm.provider "virtualbox" do |v|
