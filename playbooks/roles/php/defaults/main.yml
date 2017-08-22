@@ -11,5 +11,6 @@ php_default_pkgs:
   - php5-mysqlnd
   - php5-mcrypt
   - php5-imagick
+  - php5-intl
 
 php_extra_pkg: []

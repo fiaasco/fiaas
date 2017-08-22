@@ -14,7 +14,7 @@ fi
 if [ "$1" = "info" ]
   then
     if [ -z "$2" ]; then printf "run $0 with list and use the backup-tag to request information\n"; exit 1; fi
-{% for host in groups.backupservers %}
+{% for host in backupservers %}
     REPOSITORY={{ borg_user }}@{{ hostvars[host].ansible_ssh_host }}:{{ borg_pool }}/{{ inventory_hostname }}
     /usr/local/bin/borg info $REPOSITORY::$2
 {% endfor %}
@@ -26,7 +26,7 @@ if [ "$1" = "mount" ]
     if [ -z "$2" ]; then printf "Select the backup-server\n"; exit 1; fi
     if [ -z "$3" ]; then printf "Select the backup to mount\n"; exit 1; fi
     if [ -z "$4" ]; then printf "Select the path to mount the backup on\n"; exit 1; fi
-{% for host in groups.backupservers %}
+{% for host in backupservers %}
     REPOSITORY={{ borg_user }}@{{ hostvars[host].ansible_ssh_host }}:{{ borg_pool }}/{{ inventory_hostname }}
     /usr/local/bin/borg mount $REPOSITORY::$3 $4
     if [ "$?" = "0" ]; then printf "Backup mounted on $4, do not forget to unmount!\n"; fi
@@ -36,7 +36,7 @@ fi
 
 if [ "$1" = "list" ]
   then
-{% for host in groups.backupservers %}
+{% for host in backupservers %}
     REPOSITORY={{ borg_user }}@{{ hostvars[host].ansible_ssh_host }}:{{ borg_pool }}/{{ inventory_hostname }}
     printf "Archives on {{ host }} ( {{ hostvars[host].ansible_ssh_host }} ):\n"
     /usr/local/bin/borg list -v $REPOSITORY
@@ -46,7 +46,7 @@ fi
 
 if [ "$1" = "init" ]
   then
-{% for host in groups.backupservers %}
+{% for host in backupservers %}
     REPOSITORY={{ borg_user }}@{{ hostvars[host].ansible_ssh_host }}:{{ borg_pool }}/{{ inventory_hostname }}
     borg init $REPOSITORY
 {% endfor %}
@@ -62,7 +62,7 @@ if [ "$1" = "backup" ]
     {{ precommand }}
 {% endfor %}
 
-{% for host in groups.backupservers %}
+{% for host in backupservers %}
     printf "Backing up to {{ host }} ( {{ hostvars[host].ansible_ssh_host }} ):\n"
     REPOSITORY={{ borg_user }}@{{ hostvars[host].ansible_ssh_host }}:{{ borg_pool }}/{{ inventory_hostname }}
     

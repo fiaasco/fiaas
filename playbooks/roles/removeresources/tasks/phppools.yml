@@ -8,7 +8,7 @@
 - name: remove fpm-pool.d file for defined pools
   file: path=/etc/php5/fpm/pool.d/{{ item.name }}.conf state=absent
   with_items: "{{ phppools }}"
-  notify: reload php
+  notify: reload php5
   when: >
     item.delete|default(False) and
     ansible_distribution == 'Debian' and ansible_distribution_major_version < '9'
@@ -17,7 +17,7 @@
 - name: remove fpm-pool.d file for defined pools
   file: path=/etc/php7.0/fpm/pool.d/{{ item.name }}.conf state=absent
   with_items: "{{ phppools }}"
-  notify: reload php
+  notify: reload php7
   when: >
     item.delete|default(False) and
     ansible_distribution == 'Debian' and ansible_distribution_major_version >= '9'

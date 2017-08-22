@@ -9,5 +9,6 @@ php_default_pkgs:
   - php7.0-imagick
   - php7.0-mysqlnd
   - php7.0-mcrypt
+  - php7.0-intl
 
 php_extra_pkg: []

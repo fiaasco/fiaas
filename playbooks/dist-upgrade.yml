@@ -40,6 +40,9 @@
         purge: yes
       with_items:
         - phpmyadmin
+        - mysql-server-5.5
+        - mysql-server-core-5.5
+        - mysql-server
     - name: remove absolete config files
       file:
         path: "{{ item }}"
