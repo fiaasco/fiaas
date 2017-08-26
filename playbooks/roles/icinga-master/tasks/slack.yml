@@ -7,7 +7,7 @@
     group: "root"
     mode: "0755"
 
-- name: put slack Icinga templates
+- name: put slack Icinga config templates
   template:
     src: "notifications/slack/{{ item }}.j2"
     dest: "/etc/icinga2/zones.d/master/notifications/slack/{{ item }}"
@@ -18,7 +18,7 @@
     - slack-notifications-user-configuration.conf
   notify: restart icinga
 
-- name: put slack Icinga templates
+- name: put slack Icinga config files
   copy:
     src: "{{ item }}"
     dest: /etc/icinga2/zones.d/master/notifications/slack/
@@ -26,4 +26,4 @@
     group: "root"
     mode: "0644"
   with_fileglob:
-    - notifications/slack/*
+    - notifications/slack/*.conf
