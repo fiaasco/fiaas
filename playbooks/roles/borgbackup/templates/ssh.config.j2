@@ -1,2 +1,8 @@
-Host {% for host in backupservers %}{{ host }} {{ hostvars[host].ansible_ssh_host }} {% endfor %}  # backup hosts
+# backup hosts
+{% for b in backupservers %}
+Host {{ b.fqdn }}
    StrictHostKeyChecking no
+   {% if b.port is defined %}
+   Port {{ b.port }}
+   {% endif %}
+{% endfor %}

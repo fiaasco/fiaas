@@ -6,11 +6,6 @@ borg_version: "1.0.10"
 borg_checksum: "sha256:99f889e57630e64a67d0c1a54c056f8d82aac1ccc2cc56c9fb5f5f2710f29950"
 borg_download_url: "https://github.com/borgbackup/borg/releases/download/{{ borg_version }}/borg-linux64"
 
-borg_user: "borgbackup"
-borg_group: "borgbackup"
-borg_home: "/var/backup"
-borg_pool: "{{ borg_home }}/repos"
-
 backup_pre_commands:
   - '[[ ! -f "/usr/sbin/automysqlbackup" ]] || /usr/sbin/automysqlbackup'
   - "dpkg --get-selections > /root/.installed-software.log"

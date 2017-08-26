@@ -21,13 +21,53 @@
     owner: "root"
     group: "root"
 
-- name: client | place sshpubkey on the backupserver
+- name: client | put sshpubkey on the normal backupserver
   authorized_key:
-    user: "{{ borg_user }}"
+    user: "{{ item.user }}"
     key: "{{ sshkey.stdout }}"
-    key_options: 'command="cd {{ borg_pool }}/{{ inventory_hostname }};borg serve --restrict-to-path {{ borg_pool }}/{{ inventory_hostname }}",no-port-forwarding,no-X11-forwarding,no-pty,no-agent-forwarding,no-user-rc'
-  delegate_to: "{{ item }}"
+    key_options: 'command="cd {{ item.home }}{{ item.pool }}/{{ inventory_hostname }};borg serve --restrict-to-path {{ item.home }}/{{ item.pool }}/{{ inventory_hostname }}",no-port-forwarding,no-X11-forwarding,no-pty,no-agent-forwarding,no-user-rc'
+  delegate_to: "{{ item.fqdn }}"
+  when: item.type == 'normal'
   with_items: "{{ backupservers }}"
+
+# rsync.net has no python, so we can only use raw to manage ssh keys - workaround with local tmp file
+- name: client | get rsync.net authorized_keys file
+  raw: scp {{ item.user }}@{{ item.fqdn }}:.ssh/authorized_keys /tmp/rsync.net-{{ item.fqdn }}-authkeys
+  delegate_to: localhost
+  become: no
+  when: item.type == 'rsync.net'
+  with_items: "{{ backupservers }}"
+  changed_when: false
+
+- name: client | modify local rsync.net authorized_keys
+  authorized_key:
+    user: "{{ ansible_user_id }}"
+    key: "{{ sshkey.stdout }}"
+    key_options: 'command="cd {{ item.home }}{{ item.pool }}/{{ inventory_hostname }};borg serve --restrict-to-path {{ item.home }}/{{ item.pool }}/{{ inventory_hostname }}",no-port-forwarding,no-X11-forwarding,no-pty,no-agent-forwarding,no-user-rc'
+    path: "/tmp/rsync.net-{{ item.fqdn }}-authkeys"
+    manage_dir: no
+  delegate_to: localhost
+  become: no
+  when: item.type == 'rsync.net'
+  with_items: "{{ backupservers }}"
+  register: authkeys
+
+- name: client | upload local authorized_keys to rsync.net
+  raw: scp /tmp/rsync.net-{{ item.fqdn }}-authkeys {{ item.user }}@{{ item.fqdn }}:.ssh/authorized_keys
+  delegate_to: localhost
+  become: no
+  when: item.type == 'rsync.net' and authkeys.changed
+  with_items: "{{ backupservers }}"
+
+- name: client | remove tmp authorized_keys files
+  file:
+    path: /tmp/rsync.net-{{ item.fqdn }}-authkeys
+    state: absent
+  delegate_to: localhost
+  become: no
+  with_items: "{{ backupservers }}"
+  when: authkeys.changed
+  changed_when: false
 
 - name: client | check for mysql
   stat: path=/var/lib/automysqlbackup
