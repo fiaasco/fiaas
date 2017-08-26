@@ -30,7 +30,11 @@
 	</IfModule>
 {% else %}
         <filesmatch "\.php">
+{% if ansible_distribution == 'Debian' and ansible_distribution_major_version < '9' %}
           SetHandler "proxy:unix:/var/run/php5-fpm-www-data.sock|fcgi://www-data"
+{% else %}
+          SetHandler "proxy:unix:/run/php/php7.0-fpm.sock|fcgi://www-data"
+{% endif %}
         </filesmatch>
 
 	<IfModule proxy_module>
