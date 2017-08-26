@@ -33,9 +33,9 @@
 # rsync.net has no python, so we can only use raw to manage ssh keys - workaround with local tmp file
 - name: client | get rsync.net authorized_keys file
   raw: scp {{ item.user }}@{{ item.fqdn }}:.ssh/authorized_keys /tmp/rsync.net-{{ item.fqdn }}-authkeys
-  when: item.type == 'rsync.net'
   delegate_to: localhost
   become: no
+  when: item.type == 'rsync.net'
   with_items: "{{ backupservers }}"
   changed_when: false
 
@@ -48,8 +48,8 @@
     manage_dir: no
   delegate_to: localhost
   become: no
-  with_items: "{{ backupservers }}"
   when: item.type == 'rsync.net'
+  with_items: "{{ backupservers }}"
   register: authkeys
 
 - name: client | upload local authorized_keys to rsync.net
@@ -67,6 +67,7 @@
   delegate_to: localhost
   become: no
   with_items: "{{ backupservers }}"
+  when: authkeys.changed
   changed_when: false
 
 - name: client | check for mysql
