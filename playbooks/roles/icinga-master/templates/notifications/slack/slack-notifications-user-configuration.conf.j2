@@ -9,8 +9,12 @@ template Notification "slack-notifications-user-configuration" {
 
 template Notification "slack-notifications-user-configuration-hosts" {
     import "slack-notifications-default-configuration-hosts"
+
+    interval = {{ slack_notify_interval }}
 }
 
 template Notification "slack-notifications-user-configuration-services" {
     import "slack-notifications-default-configuration-services"
+
+    interval = {{ slack_notify_interval }}
 }
