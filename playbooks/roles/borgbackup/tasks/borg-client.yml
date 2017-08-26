@@ -54,11 +54,10 @@
 
 - name: client | upload local authorized_keys to rsync.net
   raw: scp /tmp/rsync.net-{{ item.fqdn }}-authkeys {{ item.user }}@{{ item.fqdn }}:.ssh/authorized_keys
-  when: item.type == 'rsync.net'
   delegate_to: localhost
   become: no
+  when: item.type == 'rsync.net' and authkeys.changed
   with_items: "{{ backupservers }}"
-  when: authkeys.changed
 
 - name: client | remove tmp authorized_keys files
   file:
