@@ -1,12 +1,20 @@
 ---
 - name: install netcat
-  apt: name=netcat state=installed
+  apt:
+    name: netcat
+    state: installed
 
 - name: create homedir for munin
-  user: name=munin createhome=yes shell=/bin/false
+  user:
+    name: munin
+    createhome: yes
+    shell: /bin/false
 
 - name: secure the munin-user
-  lineinfile: dest=~munin/.ssh/authorized_keys line='command="/bin/false",from="{{ hostvars[item].external_ip|default(hostvars[item].ansible_ssh_host) }}",no-agent-forwarding,no-pty,no-user-rc,no-X11-forwarding,permitopen="localhost:4949" {{ monitoring_over_ssh_pubkey }}' owner=munin group=munin mode=0600 state=present create=yes
+  authorized_key:
+    user: munin
+    key: 'command="/bin/false",from="{{ hostvars[item].external_ip|default(hostvars[item].ansible_ssh_host) }}",no-agent-forwarding,no-pty,no-user-rc,no-X11-forwarding,permitopen="localhost:4949" {{ monitoring_over_ssh_pubkey }}'
+#owner=munin group=munin mode=0600 state=present create=yes
   with_items: "{{ groups.muninservers }}"
 
 - name: fetch ssh-pub-key for this host
@@ -15,7 +23,13 @@
   changed_when: False
 
 - name: place sshrsakey
-  lineinfile: dest=~munin/.ssh/known_hosts line='{{ ansible_ssh_host }} {{ sshrsakey.stdout }}' state=present create=yes owner=munin group=munin
+  lineinfile:
+    dest: "~munin/.ssh/known_hosts"
+    line: "{{ ansible_ssh_host }} {{ sshrsakey.stdout }}"
+    state: present
+    create: yes
+    owner: munin
+    group: munin
   delegate_to: "{{ item }}"
   with_items: "{{ groups.muninservers }}"
 
