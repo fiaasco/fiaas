@@ -14,7 +14,6 @@
     state: installed
     cache_valid_time: 3600
     update_cache: yes
-  when: php_extra_pkg is defined
   with_items: 
     - "{{ php_extra_pkg }}"
 
@@ -44,3 +43,12 @@
     group: root
     mode: "0644"
   notify: restart php
+
+- name: make sure libapache2-mod-php is not installed, use fpm!
+  apt:
+    name: libapache2-mod-php
+    state: absent
+  with_items:
+    - libapache2-mod-php7.0
+    - libapache2-mod-php
+  notify: restart apache2
