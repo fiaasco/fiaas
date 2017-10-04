@@ -13,3 +13,5 @@
 - include: sysctl.yml
 
 - include: extras.yml
+
+- include: security.yml

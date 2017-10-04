@@ -1,2 +1,5 @@
 ---
 extra_pkgs: []
+
+# sshd config value: yes|no|without-password
+system_ssh_rootlogin: without-password
