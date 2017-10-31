@@ -49,6 +49,7 @@ Assign 2 infra VMs in your inventory for monitoring and backups and run:
 ```
 $ ansible-playbook -i inventory/production/ playbooks/infra-setup.yml
 ```
+Debian Strech is the only supported version for the infra-servers (for the LAMP VMs Jessie and Wheezy also still supported).
 
 Create a LAMP VM:
 ```
@@ -65,7 +66,7 @@ Host vars
 
 The configuration for a host allows to set plenty of options. There's not much hierarchy in the yaml because we found out it blocks flexibility.
 
-An example host_vars file:
+An example host\_vars file:
 
 ```
 ---
@@ -86,17 +87,17 @@ users:
   - name: devuser3
 
 directories:
-  - name: "/var/www/sites/www.vhost1.com"
+  - name: /var/www/sites/www.vhost1.com
     mode: "0755"
     delete: True
-  - name: "/var/www/sites/www.vhost2.com"
+  - name: /var/www/sites/www.vhost2.com
     mode: "0755"
-  - name: "/var/www/sites/www.vhost3.com"
+  - name: /var/www/sites/www.vhost3.com
     mode: "0755"
 
 symlinks:
-  - src: "/var/www/sites/www.vhost3.com"
-    dest: "/var/www/sites/symlink"
+  - src: /var/www/sites/www.vhost3.com
+    dest: /var/www/sites/symlink
 
 databases:
   - name: vhost1db
@@ -109,7 +110,8 @@ databases:
   - name: extern1
     user: extuser1
     pass: extpass1
-    ip: "37.252.122.240"
+    ip:
+      - 37.252.122.240
 
 phppools:
   - name: vhost1 
