@@ -23,7 +23,7 @@
       tags: ['php','httpd']
     - role: letsencrypt
       tags: ['letsencrypt', 'acme']
-    - role: php
+    - role: php7
       tags: ['php']
     - role: munin-node
       tags: ['monitoring']
@@ -38,14 +38,11 @@
     - include_vars: "./os_vars/{{ ansible_distribution_release }}.yml"
       tags: ['backup','monitoring']
     - apt: update_cache=yes cache_valid_time=3600
+#      when: ansible_distribution == 'Debian' and ansible_distribution_major_version >= '9'
 
   roles:
-    - role: mysql
-      tags: ['mysql']
-      when: ansible_distribution == 'Debian' and ansible_distribution_major_version < '9'
     - role: mariadb
       tags: ['mysql', 'mariadb']
-      when: ansible_distribution == 'Debian' and ansible_distribution_major_version >= '9'
     - role: icinga-master
       tags: ['icinga']
     - role: icingaweb2
