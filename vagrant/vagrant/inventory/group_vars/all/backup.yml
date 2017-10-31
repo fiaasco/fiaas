@@ -1,0 +1,15 @@
+---
+borgbackup_appendonly: True
+borgbackup_servers:
+  - fqdn: 192.168.131.192
+    user: borgbackup
+    type: normal
+    home: /var/backup/
+    pool: repos
+    options: ""
+#  - fqdn: XXX.rsync.net
+#    user: XXX
+#    type: rsync.net
+#    home: ""
+#    pool: prod
+#    options: "--remote-path=/usr/local/bin/borg1"

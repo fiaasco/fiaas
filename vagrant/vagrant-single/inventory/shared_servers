@@ -1,4 +1,4 @@
 [shared_servers]
 # put you host here if you want to test the shared servers flow
 # or put it in comment if you don't...
-debian820
+fiaas01

@@ -3,12 +3,12 @@ solr_required: True
 varnish_required: False
 install_vsftpd: True
 redis_required: False
-default_vhost: "www.svhost1.com"
+default_vhost: "www8.cust2-blhihia.com"
 vsftpd_listen_port: 21
 vsftpd_tls_only: "no"
 
-backup_required: True
-borg_passphrase: eewooP0sivu5eiNop1thoaquah9ahhee
+mailname: vagrant.mail.local
+relayhost: relay.server.local
 
 vm_owner: devuser1
 
@@ -78,24 +78,24 @@ directories:
 symlinks: []
 
 solr_cores:
-  - name: svhost1-core
+  - name: ww1cust2-em
     pass: QuieC5eoFae7thus
-  - name: svhost2-core
+  - name: ww1cus2bla
     pass: reTeech4ao7aGhai
-  - name: svhost3-core
+  - name: ww8cus2blh
     pass: NeyieV2shie3ahne
 
 
 databases:
-  - name: svhost1-db
+  - name: ww1cust2-em
     pass: QuieC5eoFae7thus
-  - name: svhost2-db
+  - name: ww1cus2bla
     pass: reTeech4ao7aGhai
-  - name: svhost3-db
+  - name: ww8cus2blh
     pass: NeyieV2shie3ahne
   - name: testdieter
     ip:
-     - '192.168.131.162'
+      - 192.168.131.162
     user: dietest
     pass: diepass
 
@@ -114,21 +114,33 @@ phppools:
     user: svhost3
     group: svhost3
 
+
+owners:
+  - svhost1:
+    databases: ['ww1cust2-em']
+    solr_cores: ['ww1cust2-em']
+  - svhost2:
+    databases: ['ww1cus2bla']
+    solr_cores: ['ww1cus2bla']
+  - svhost3:
+    databases: ['ww8cus2blh']
+    solr_cores: ['ww8cus2blh']
+
+
 vhosts:
   - url: "www.svhost1.com"
     basedir: /var/www/sites/svhost1
     admin: "admin9@aladebeste.be"
     ssl: selfsigned
+    hsts: yes
     phppool: svhost1
     owner: svhost1
     default: yes
-    monitoring: True
   - url: "www.svhost2.com"
     basedir: /var/www/sites/svhost2
     admin: "ain9@aladeessste.be"
     phppool: svhost2
     owner: svhost2 
-    monitoring: True
   - url: "www.svhost3.com"
     basedir: /var/www/sites/svhost3
     admin: "ain9@aladeessste.be"
@@ -136,7 +148,6 @@ vhosts:
     alias: ['alias1.svhost3.com','alias2.svhost3.com']
     phppool: svhost3
     owner: svhost3
-    monitoring: False
 
 
 php_pecl_extra_extensions:
@@ -144,8 +155,6 @@ php_pecl_extra_extensions:
   - php5-geos
   - php5-ldap
 
-extra_pkgs: []
-#  - python-pyauthenntlm2
-
 php_extra_pkg: []
-php_pecl_inactive_extensions: []
+
+extra_pkgs: []

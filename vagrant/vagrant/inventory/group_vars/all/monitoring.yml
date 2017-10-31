@@ -1,34 +1,4 @@
-platform: vagrant
-
-ntp_servers:
-  - "0.be.pool.ntp.org"
-  - "1.be.pool.ntp.org"
-  - "2.be.pool.ntp.org"
-  - "3.be.pool.ntp.org"
-
-# system ssh user
-systemusers:
-  - name: nimda
-    full: "Admin A"
-    sshkeys:
-      - 'ssh-rsa AAAAkey=='
-    mgtips:
-      - "10.0.2.5"
-      - "192.168.1.2"
-  - name: nimdb
-    full: "Admin B"
-    sshkeys:
-      - 'ssh-rsa AAAAkey=='
-      - 'ssh-rsa BBBBkey=='
-
-public_interface: eth0
-
-admin:
-  email: admin@mail.invalid
-
-# your custom repo | only necessary if you want to include custom build packages
-custom_repo_url: 'http://repo.werus.be/apt/debian'
-
+---
 # Icinga2
 ticketsalt: fn9bc170b6489aaff4bf2e1c9504f572
 
