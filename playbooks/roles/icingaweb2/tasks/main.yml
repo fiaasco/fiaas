@@ -5,22 +5,12 @@
 - name: make sure required packages are installed
   apt: name={{ item }} state=installed
   with_items:
-    - php5-common
-    - php5
-    - php-pear
-    - php5-fpm
-    - php5-curl
-    - php5-dev
-    - php5-gd
-    - php5-mysql
-    - php5-imagick
-    - php5-intl
     - icingaweb2
     - icinga2-ido-mysql
   register: icinstall
 
 - name: enable php module
-  shell: php5enmod {{ item }} creates=/etc/php5/apache2/conf.d/20-{{ item }}.ini
+  shell: phpenmod {{ item }} creates=/etc/php/7.0/fpm/conf.d/20-{{ item }}.ini
   with_items:
     - imagick
     - intl
