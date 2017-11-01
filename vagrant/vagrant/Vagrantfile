@@ -16,28 +16,28 @@ Vagrant.configure("2") do |config|
 
   config.ssh.insert_key = false
 
-  config.vm.define "debian820" do |v|
+  config.vm.define "fiaas01" do |v|
     v.vm.box = DEBIAN_BOX
     v.vm.box_url = DEBIAN_BOX_URL
-    v.vm.hostname = "debian820"
+    v.vm.hostname = "fiaas01"
     v.vm.network :private_network, ip: "192.168.131.190"
     v.vm.network :forwarded_port, guest: 22, host: 10190, id: 'ssh'
     v.hostsupdater.aliases = [ "www.vhost1.com", "www.vhost2.com", "www.vhost3.com" ]
   end
 
-  config.vm.define "debian821" do |v|
-    v.vm.box = DEBIAN_BOX
-    v.vm.box_url = DEBIAN_BOX_URL
-    v.vm.hostname = "debian821"
+  config.vm.define "fiaas02" do |v|
+    v.vm.box = DEBIAN9_BOX
+    v.vm.box_url = DEBIAN9_BOX_URL
+    v.vm.hostname = "fiaas02"
     v.vm.network :private_network, ip: "192.168.131.191"
     v.vm.network :forwarded_port, guest: 22, host: 10191, id: 'ssh'
     v.hostsupdater.aliases = [ "www.svhost1.com", "www.svhost2.com", "www.svhost3.com" ]
   end
 
-  config.vm.define "debian822" do |v|
-    v.vm.box = DEBIAN_BOX
-    v.vm.box_url = DEBIAN_BOX_URL
-    v.vm.hostname = "debian822"
+  config.vm.define "fiaas03" do |v|
+    v.vm.box = DEBIAN9_BOX
+    v.vm.box_url = DEBIAN9_BOX_URL
+    v.vm.hostname = "fiaas03"
     v.vm.network :private_network, ip: "192.168.131.192"
     v.vm.network :forwarded_port, guest: 22, host: 10192, id: 'ssh'
     v.vm.provision :ansible do |ansible|

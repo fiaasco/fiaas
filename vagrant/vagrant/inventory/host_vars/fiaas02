@@ -1,3 +1,4 @@
+---
 memcached_required: True
 solr_required: True
 varnish_required: False
@@ -8,8 +9,8 @@ vsftpd_listen_port: 21
 vsftpd_tls_only: "no"
 monitoring_over_ssh: True
 
-backup_required: True
-borg_passphrase: jout3tiChe0keetae0Ietei0ohsh3ol8
+borgbackup_required: True
+borgbackup_passphrase: jout3tiChe0keetae0Ietei0ohsh3ol8
 
 vm_owner: devuser1
 

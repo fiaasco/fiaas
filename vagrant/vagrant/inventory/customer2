@@ -1,2 +1,2 @@
 [customer2]
-debian821 ansible_ssh_host=192.168.131.191 public_interface=eth1 
+fiaas02 ansible_ssh_host=192.168.131.191 public_interface=enp0s8

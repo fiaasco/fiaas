@@ -1,37 +1,4 @@
-platform: vagrant
-
-ntp_servers:
-  - "0.be.pool.ntp.org"
-  - "1.be.pool.ntp.org"
-  - "2.be.pool.ntp.org"
-  - "3.be.pool.ntp.org"
-
-# system ssh user
-systemusers:
-  - name: nimda
-    full: "Admin A"
-    sshkeys:
-      - 'ssh-rsa AAAAkey=='
-    mgtips:
-      - "10.0.2.5"
-      - "192.168.1.2"
-  - name: nimdb
-    full: "Admin B"
-    sshkeys:
-      - 'ssh-rsa AAAAkey=='
-      - 'ssh-rsa BBBBkey=='
-
-public_interface: eth0
-
-admin:
-  email: admin@mail.invalid
-
-# your custom repo | only necessary if you want to include custom build packages
-custom_repo_url: 'http://repo.werus.be/apt/debian'
-
-# Icinga2
-ticketsalt: fn9bc170b6489aaff4bf2e1c9504f572
-
+---
 idodbname: icinga2
 idodbuser: icinga2
 idodbpass: aquaiYothaGhoo8i
@@ -71,7 +38,6 @@ slack_notifications: True
 slack_webhook: "https://hooks.slack.com/YOUR-URL-HERE"
 slack_channel: "#alerts"
 
-# ssh keys for monitoring over ssh
 # (only useful for clients behind firewall)
 monitoring_over_ssh_privkey: |
   -----BEGIN RSA PRIVATE KEY-----
@@ -101,14 +67,3 @@ monitoring_over_ssh_privkey: |
   4Nd5DuQapGyQsPv71s2sKls2eQGZuymh6dhHHXAbWAqSd05Gu2jq7xMzqHNYEROn
   7LhZ78iBVrIlFnNBWzOtlyJeUXz9DGc2YbXuIRSu/rIMlbLbY7uI5g==
   -----END RSA PRIVATE KEY-----
-
-monitor_mysql:
-  checks:
-    - open-files
-    - slow-queries
-    - connection-time
-  user: monitor
-  pass: Jieluu8eid9Nechu
-
-monitoring_over_ssh_pubkey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPgdESO/TX17QQL/QOVXZ3arVYbSJTCQpuzvQO88WCqnlNuTYx9loh9PGVPXoAqWmsEjZcvYCN3gS9q7QdzxNQJKmJUe9Z13r9b/hwtU7fZo0gaOCZxR4hTb8b2VIxBuXaS9S5ehv03CbUqYHhaltypFIO6afFoXksinzS07fF0mXIjxIbQJRBpcvLcSETLJwfj8TIK+Ceibz0Eea37bpb/lx/EGutWBpqrgwiTN0+MUXEj8v38B3YgKP59w0y/0tYxUIFipd5kaXAWiP1XXLfPNNA0c8L/A8UMllXNjzOuWmM1OQwcqM+TTebQLTV+jR86Jldlf5ofGe2icpGizKL munin'
-

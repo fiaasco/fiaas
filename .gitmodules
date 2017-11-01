@@ -1,0 +1,3 @@
+[submodule "playbooks/roles/borgbackup"]
+	path = playbooks/roles/borgbackup
+	url = https://github.com/FiaasCo/borgbackup.git

@@ -1,8 +1,0 @@
-# backup hosts
-{% for b in backupservers %}
-Host {{ b.fqdn }}
-   StrictHostKeyChecking no
-   {% if b.port is defined %}
-   Port {{ b.port }}
-   {% endif %}
-{% endfor %}

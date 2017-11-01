@@ -1,3 +1,4 @@
+---
 varnish_required: False
 redis_required: False
 solr_required: False

@@ -1,0 +1,5 @@
+---
+borgbackup_management_user: root
+borgbackup_management_sshkey: |
+  ssh-rsa keyhere user@host
+
