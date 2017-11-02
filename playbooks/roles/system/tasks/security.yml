@@ -1,7 +1,0 @@
----
-- name: security | configure ssh root logins
-  lineinfile:
-    dest: /etc/ssh/sshd_config
-    regexp: "^PermitRootLogin "
-    line: "PermitRootLogin {{ system_ssh_rootlogin }}"
-  notify: reload ssh
