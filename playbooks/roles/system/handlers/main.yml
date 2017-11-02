@@ -1,4 +1,8 @@
 ---
+- name: test ssh config and reload
+  shell: /usr/sbin/sshd -t
+  notify: reload ssh
+
 - name: reload ssh
   service:
     name: ssh

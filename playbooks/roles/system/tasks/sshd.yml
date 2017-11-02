@@ -4,7 +4,7 @@
     dest: /etc/ssh/sshd_config
     regexp: "^PermitRootLogin "
     line: "PermitRootLogin {{ system_ssh_rootlogin }}"
-  notify: reload ssh
+  notify: test ssh config and reload
 
 - name: security | remove sshd weak hostkeys
   lineinfile:
@@ -15,7 +15,7 @@
   with_items:
     - /etc/ssh/ssh_host_dsa_key
     - /etc/ssh/ssh_host_ecdsa_key
-  notify: reload ssh
+  notify: test ssh config and reload
 
 - name: security | configure strong sshd key exchange algoritms
   lineinfile:
@@ -23,7 +23,7 @@
     regexp: "^KexAlgorithms "
     line: "KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256"
   when: ansible_distribution == 'Debian' and ansible_distribution_major_version >= '8'
-  notify: reload ssh
+  notify: test ssh config and reload
 
 - name: security | remove insecure moduli
   lineinfile:
@@ -35,7 +35,7 @@
     - "1023"
     - "1535"
     - "2047"
-  notify: reload ssh
+  notify: test ssh config and reload
 
 - name: security | configure strong sshd ciphers
   lineinfile:
@@ -43,7 +43,7 @@
     regexp: "^Ciphers "
     line: "Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
   when: ansible_distribution == 'Debian' and ansible_distribution_major_version >= '8'
-  notify: reload ssh
+  notify: test ssh config and reload
 
 - name: security | configure strong sshd MACs
   lineinfile:
@@ -51,7 +51,7 @@
     regexp: "^MACs "
     line: "MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com"
   when: ansible_distribution == 'Debian' and ansible_distribution_major_version >= '8'
-  notify: reload ssh
+  notify: test ssh config and reload
 
 - name: security | log sftp file access
   lineinfile:
@@ -59,4 +59,4 @@
     regexp: '^Subsystem\s+sftp\s+/usr/lib/openssh/sftp-server'
     line: "Subsystem       sftp    /usr/lib/openssh/sftp-server -f AUTHPRIV -l INFO"
   when: ansible_distribution == 'Debian' and ansible_distribution_major_version >= '8'
-  notify: reload ssh
+  notify: test ssh config and reload
