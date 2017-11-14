@@ -19,7 +19,11 @@ server {
 
 
         # certs sent to the client in SERVER HELLO are concatenated in ssl_certificate
+{% if platform == 'vagrant' %}
         ssl_certificate /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.crt;
+{% else %}
+        ssl_certificate /etc/ssl/{{ inventory_hostname }}/fullchain.cer;
+{% endif %}
         ssl_certificate_key /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:SSL:50m;
@@ -42,7 +46,7 @@ server {
         ssl_stapling_verify on;
 
         ## verify chain of trust of OCSP response using Root CA and Intermediate certs
-        ssl_trusted_certificate /path/to/root_CA_cert_plus_intermediates;
+        ssl_trusted_certificate /etc/ssl/{{ inventory_hostname }}/fullchain.cer;
 {% endif %}
 
 }
