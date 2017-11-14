@@ -21,6 +21,8 @@ NameVirtualHost *:80
 Listen 80
 {% endif %}
 
+{% if not nginx_required %}
+{# only listen on 443 in case we don't use nginx to terminate https #}
 <IfModule mod_ssl.c>
     # If you add NameVirtualHost *:443 here, you will also have to change
     # the VirtualHost statement in /etc/apache2/sites-available/default-ssl
@@ -33,3 +35,4 @@ Listen 80
 <IfModule mod_gnutls.c>
     Listen 443
 </IfModule>
+{% endif %}

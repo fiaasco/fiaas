@@ -5,12 +5,12 @@
 	ServerAlias localhost
         ServerAlias 127.0.0.1
 
-	DocumentRoot /var/www/sites/adminhost
+	DocumentRoot {{ httpd_adminhost_docroot }}
 	<Directory />
 		Options FollowSymLinks
 		AllowOverride None
 	</Directory>
-	<Directory /var/www/sites/adminhost>
+	<Directory {{ httpd_adminhost_docroot }}>
 		Options FollowSymLinks
 		AllowOverride None
 {% if apache.version == '2.2' %}

@@ -168,8 +168,11 @@ php_extra_pkg: []
 php_pecl_inactive_extensions: []
 php_pecl_extra_extensions: []
 ```
-Define a host in the inventory, create a similar host_vars file, run the lamp and createresources playbook against your VM and you'll be ready to go.
+Define a host in the inventory, create a similar host\_vars file, run the lamp and createresources playbook against your VM and you'll be ready to go.
 To delete something you created, set delete: True and use the deleteresources playbook to remove them. 
+
+Important:
+Always use a fully qualified domainname in your inventory when you define a server, the same fqdn will also be configured as the server hostname (`hostname -f`) if that's not already the case. Don't forget that a default "admin vhost" is added with the servername "{{ inventory\_hostname }}", so you won't be be able to add an additional vhost with the fqdn of your server.
 
 Support
 =======

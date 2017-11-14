@@ -1,5 +1,4 @@
 ---
-# CREATION
 - name: vhosts | create certificates directory for selfsigned/commercial
   file: dest=/etc/ssl/{{ item.url }} state=directory
   with_items: "{{ vhosts }}"
@@ -47,6 +46,28 @@
   with_items: "{{ vhosts }}"
   when: apache.version == "2.4" and not item.delete|default(False)
   notify: reload apache2
+  tags: ['vhosts']
+
+- name: vhosts | put nginx vhost templates
+  template:
+    src: nginx-vhost.j2
+    dest: "/etc/nginx/sites-available/{{ item.url }}.conf"
+    owner: root
+    group: root
+    mode: "0644"
+  with_items: "{{ vhosts }}"
+  when: nginx_required and not item.delete|default(False)
+  notify: reload nginx
+  tags: ['vhosts']
+
+- name: vhosts | enable nginx vhost config
+  file:
+    src: "/etc/nginx/sites-available/{{ item.url }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ item.url }}.conf"
+    state: link
+  with_items: "{{ vhosts }}"
+  when: nginx_required and not item.delete|default(False)
+  notify: reload nginx
   tags: ['vhosts']
 
 - name: vhosts | enable site when it's not default

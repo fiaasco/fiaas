@@ -1,0 +1,3 @@
+---
+# put nginx default on False for backward compatibility
+nginx_required: False

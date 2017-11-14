@@ -116,3 +116,5 @@
 
 - name: make admin vhost includes dir
   file: dest=/etc/apache2/admin.d owner=root group=root state=directory
+
+- include: certificates.yml

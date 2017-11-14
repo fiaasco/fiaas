@@ -10,6 +10,12 @@
 - name: reload apache2
   service: name=apache2 state=reloaded enabled=yes
 
+- name: reload nginx
+  service:
+    name: nginx
+    state: reloaded
+    enabled: yes
+
 - name: restart solr-jetty
   service: name=jetty state=restarted enabled=yes
 

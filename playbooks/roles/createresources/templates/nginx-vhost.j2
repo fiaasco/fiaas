@@ -1,0 +1,58 @@
+# {{ ansible_managed }}
+
+server {
+	listen 443 ssl http2{% if item.default is defined %} default_server{% endif %};
+	listen [::]:443 ssl http2{% if item.default is defined %} default_server{% endif %};
+
+	server_name {{ item.url }}{% if item.alias is defined %}{% for alias in item.alias %} {{ alias }}{% endfor %}{% endif %};
+
+	root {{ item.basedir }}/web;
+
+        access_log {{ item.basedir }}/logs/{{ item.url }}-ssl-access.log combined;
+        error_log {{ item.basedir }}/logs/{{ item.url }}-ssl-error.log error;
+
+
+        location / {
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $remote_addr;
+          proxy_set_header X-Forwarded-Proto "https";
+          proxy_pass http://127.0.0.1:80/;
+        }
+
+        # certs sent to the client in SERVER HELLO are concatenated in ssl_certificate
+{% if item.ssl | default(False) %}
+  {% if item.ssl != 'selfsigned' %}
+        ssl_certificate /etc/ssl/{{ item.url }}/fullchain.cer;
+  {% else %}
+        ssl_certificate /etc/ssl/{{ item.url }}/{{ item.url }}.crt;
+  {% endif %}
+        ssl_certificate_key /etc/ssl/{{ item.url }}/{{ item.url }}.key;
+        ssl_session_timeout 1d;
+        ssl_session_cache shared:SSL:50m;
+        ssl_session_tickets off;
+
+        # Diffie-Hellman parameter for DHE ciphersuites, recommended 2048 bits
+        ssl_dhparam /etc/ssl/certs/dhparam.pem;
+
+        # intermediate configuration. tweak to your needs.
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+  {% if item.hsts is defined %}
+        # HSTS (ngx_http_headers_module is required) (15768000 seconds = 6 months)
+        add_header Strict-Transport-Security max-age=15768000;
+  {% endif %}
+
+
+        {% if platform != 'vagrant' %}
+        {# self signed cert in vagrant #}
+        # OCSP Stapling ---
+        # fetch OCSP records from URL in ssl_certificate and cache them
+        ssl_stapling on;
+        ssl_stapling_verify on;
+
+        ## verify chain of trust of OCSP response using Root CA and Intermediate certs
+        ssl_trusted_certificate /etc/ssl/{{ item.url }}/fullchain.cer;
+        {% endif %}
+{% endif %}
+
+}
