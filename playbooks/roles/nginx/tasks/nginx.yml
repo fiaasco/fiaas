@@ -1,7 +1,7 @@
 ---
 - name: create config directory
   file:
-    path: /etc/nginx/sites-enabled
+    path: /etc/nginx/sites-available
     state: directory
     owner: root
     group: root
