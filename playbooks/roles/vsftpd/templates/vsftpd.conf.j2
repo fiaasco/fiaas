@@ -24,7 +24,11 @@ pasv_address={{ ansible_ssh_host }}
 
 listen_port={{ vsftpd_listen_port }}
 
-rsa_cert_file=/etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.crt
+{% if admin_vhost_cert.stat.exists == False %}
+rsa_cert_file=/etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.cer
+{% else %}
+rsa_cert_file=/etc/ssl/{{ inventory_hostname }}/fullchain.cer
+{% endif %}
 rsa_private_key_file=/etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.key
 
 # Turn on SSL

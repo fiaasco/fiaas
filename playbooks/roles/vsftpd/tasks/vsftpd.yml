@@ -1,33 +1,66 @@
 ---
 - name: add repo for working vsftpd on Debian Wheezy
-  apt_repository: repo="deb http://ftp.cyconet.org/debian wheezy-updates main non-free contrib" update_cache=yes
+  apt_repository:
+    repo: "deb http://ftp.cyconet.org/debian wheezy-updates main non-free contrib"
+    update_cache: yes
   when: ansible_distribution == 'Debian' and ansible_distribution_major_version == "7"
 
 - name: install vsftpd on Wheezy
-  apt: name=vsftpd state=latest default_release=wheezy-updates force=yes
+  apt:
+    name: vsftpd
+    state: latest
+    default_release: wheezy-updates
+    force: yes
   when: ansible_distribution == 'Debian' and ansible_distribution_major_version == "7"
 
 - name: remove wheezy repo on Jessie
-  apt_repository: repo="deb http://ftp.cyconet.org/debian wheezy-updates main non-free contrib" state=absent update_cache=yes
+  apt_repository:
+    repo: "deb http://ftp.cyconet.org/debian wheezy-updates main non-free contrib"
+    state: absent
+    update_cache: yes
   when: ansible_distribution == 'Debian' and ansible_distribution_major_version >= "8"
 
-- name: install vsftpd on Jessie
-  apt: name=vsftpd state=installed
+- name: install vsftpd
+  apt:
+    name: vsftpd
+    state: installed
   when: ansible_distribution == 'Debian' and ansible_distribution_major_version >= "8"
 
 - name: open up port in firewall
-  ufw: rule=allow interface={{ public_interface }} direction=in proto=tcp to_port={{ vsftpd_listen_port }}
+  ufw:
+    rule: allow
+    interface: "{{ public_interface }}"
+    direction: in
+    proto: tcp
+    to_port: "{{ vsftpd_listen_port }}"
 
 - name: open up pasv-ports in firewall
-  ufw: rule=allow interface={{ public_interface }} direction=in proto=tcp to_port={{ vsftpd_pasv_min_port }}:{{ vsftpd_pasv_max_port }}
+  ufw:
+    rule: allow
+    interface: "{{ public_interface }}"
+    direction: in
+    proto: tcp
+    to_port: "{{ vsftpd_pasv_min_port }}:{{ vsftpd_pasv_max_port }}"
 
-- name: place configuration
-  template: src=vsftpd.conf.j2 dest=/etc/vsftpd.conf owner=root group=root
+- name: check if certificate exists
+  stat:
+    path: "/etc/ssl/{{ inventory_hostname }}/fullchain.cer"
+  register: admin_vhost_cert
+
+- file:
+    dest: "/etc/ssl/{{ inventory_hostname }}"
+    state: directory
+  when: admin_vhost_cert.stat.exists == False
+
+- name: generate self signed certificate if no certificate found
+  command: openssl req -new -nodes -x509 -subj "/C=BE/ST=BXL/L=Belgium/O=IT/CN={{inventory_hostname}}" -days 3650 -keyout /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.key -out /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.cer -extensions v3_ca creates=/etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.cer
+  when: admin_vhost_cert.stat.exists == False
+
+- name: put config file
+  template:
+    src: vsftpd.conf.j2
+    dest: /etc/vsftpd.conf
+    owner: root
+    group: root
+    mode: "0664"
   notify: restart vsftpd
-
-- file: dest=/etc/ssl/{{ inventory_hostname }} state=directory
-
-- name: generate certificates for now
-  command: openssl req -new -nodes -x509 -subj "/C=BE/ST=BXL/L=Belgium/O=IT/CN={{inventory_hostname}}" -days 3650 -keyout /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.key -out /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.crt -extensions v3_ca creates=/etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.crt
-
-# TODO: support Letsencrypt and commercial certs
