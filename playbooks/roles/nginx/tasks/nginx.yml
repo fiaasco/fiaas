@@ -1,0 +1,52 @@
+---
+- name: create config directory
+  file:
+    path: /etc/nginx/sites-enabled
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: put empty default vhost to avoid listening on :80
+  copy:
+    dest: /etc/nginx/sites-available/default
+    content: "# Disable default vhost"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: put nginx.conf
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: "0644"
+    
+- name: install nginx (stopped)
+  apt:
+    name: nginx
+    state: installed
+  environment:
+    runlevel: 1
+
+- name: disable default vhost listening on :80 where Apache is
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: generate strong DH parameter
+  shell: openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048 creates=/etc/ssl/certs/dhparam.pem
+
+- name: put nginx https admin vhost
+  template:
+    src: nginx-admin-vhost.j2
+    dest: /etc/nginx/sites-available/admin-vhost.conf
+  notify: restart nginx
+
+- name: enable admin vhost
+  file:
+    src: /etc/nginx/sites-available/admin-vhost.conf
+    dest: /etc/nginx/sites-enabled/admin-vhost.conf
+    state: link
+  notify: restart nginx
