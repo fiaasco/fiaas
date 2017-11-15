@@ -21,7 +21,7 @@ NameVirtualHost *:80
 Listen 80
 {% endif %}
 
-{% if not nginx_required %}
+{% if not nginx_required | default(False) %}
 {# only listen on 443 in case we don't use nginx to terminate https #}
 <IfModule mod_ssl.c>
     # If you add NameVirtualHost *:443 here, you will also have to change
