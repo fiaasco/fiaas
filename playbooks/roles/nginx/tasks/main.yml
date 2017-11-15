@@ -9,7 +9,7 @@
 
 - name: put empty default vhost to avoid listening on :80
   copy:
-    dest: /etc/nginx/sites-enabled/default
+    dest: /etc/nginx/sites-available/default
     content: "# Disable default vhost"
     owner: root
     group: root
