@@ -20,7 +20,7 @@ server {
 
         # certs sent to the client in SERVER HELLO are concatenated in ssl_certificate
 {% if platform == 'vagrant' %}
-        ssl_certificate /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.crt;
+        ssl_certificate /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.cer;
 {% else %}
         ssl_certificate /etc/ssl/{{ inventory_hostname }}/fullchain.cer;
 {% endif %}
