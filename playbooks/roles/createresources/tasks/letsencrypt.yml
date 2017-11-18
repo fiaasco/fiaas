@@ -1,6 +1,20 @@
 ---
 - name: put vhost ssl request template
-  template: src=request-vhost.sh dest=/root/ssl/request-{{ item.url }}.sh owner=root group=root mode=0700
+  template:
+    src: request-vhost.sh
+    dest: /root/ssl/request-{{ item.url }}.sh
+    owner: root
+    group: root
+    mode: "0700"
+  with_items: "{{ vhosts }}"
+  when: not item.delete|default(False)
+  tags: ['vhosts', 'letsencrypt']
+
+- name: make sure webroot in existing configs is up to date
+  lineinfile:
+    dest: "/root/acme.sh/{{ item.url }}/{{ item.url }}.conf"
+    regexp: '^Le_Webroot='
+    line: 'Le_Webroot=/var/www/acme'
   with_items: "{{ vhosts }}"
   when: not item.delete|default(False)
   tags: ['vhosts', 'letsencrypt']

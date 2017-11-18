@@ -1,4 +1,16 @@
 ---
+- name: create required directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0775"
+  with_items:
+    - /var/www/acme
+    - /var/www/sites
+    - /var/www/sites/adminhost
+
 - name: install apache webserver
   apt:
     name: "{{ item }}"
@@ -35,14 +47,7 @@
     owner: root
     group: root
     mode: "0644"
-  register: ports
-
-- name: force restart apache for port-change
-  service:
-    name: apache2
-    state: restarted
-    enabled: yes
-  when: ports.changed
+  notify: restart apache2
 
 - name: put apache 2.2 security config
   template:
@@ -109,22 +114,6 @@
   when: apache_extra_modules is defined
   notify: reload apache2
 
-- name: set sites dir permissions
-  file:
-    path: /var/www/sites
-    state: directory
-    owner: root
-    group: root
-    mode: "0775"
-
-- name: create default vhost dir
-  file:
-    path: /var/www/sites/adminhost
-    state: directory
-    owner: root
-    group: root
-    mode: "0775"
-
 - name: create empty index.html
   copy:
     src: index.html
@@ -141,6 +130,12 @@
     group: root
     mode: "0644"
 
+- name: Enable admin vhost
+  shell: a2ensite admin-vhost.conf
+  args:
+    creates: /etc/apache2/sites-enabled/admin-vhost.conf
+  notify: reload apache2
+
 - name: disable default default for 2.2
   shell: a2dissite 000-default
   args:
@@ -153,12 +148,6 @@
   args:
     removes: /etc/apache2/sites-enabled/000-default.conf
   when: apache.version == "2.4"
-  notify: reload apache2
-
-- name: Enable admin vhost
-  shell: a2ensite admin-vhost.conf
-  args:
-    creates: /etc/apache2/sites-enabled/admin-vhost.conf
   notify: reload apache2
 
 - name: enable logrotation for /var/log/apache2/
@@ -198,12 +187,15 @@
     group: root
     mode: "0755"
 
-- name: make admin vhost includes dir
+- name: create admin vhost includes dir
   file:
     dest: /etc/apache2/admin.d
     state: directory
     owner: root
     group: root
     mode: "0755"
+
+- name: flush handlers to activate changes we need now
+  meta: flush_handlers
 
 - include: certificates.yml
