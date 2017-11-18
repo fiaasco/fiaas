@@ -1,34 +1,66 @@
 ---
 - name: install apache webserver
-  apt: name={{ item }} state=installed cache_valid_time=3600 update_cache=yes
+  apt:
+    name: "{{ item }}"
+    state: installed
+    cache_valid_time: 3600
+    update_cache: yes
   with_items:
     - apache2
     - liblwp-useragent-determined-perl
   notify: start apache2
 
 - name: put default ssl.conf ( to disable SSLv3 )
-  template: src=ssl.conf dest=/etc/apache2/mods-available/ssl.conf mode=0644 owner=root group=root
+  template:
+    src: ssl.conf.j2
+    dest: /etc/apache2/mods-available/ssl.conf
+    owner: root
+    group: root
+    mode: "0644"
   notify: reload apache2
 
 - name: configure apache webserver
-  template: src=apache2.conf.j2 dest=/etc/apache2/apache2.conf owner=root group=root mode=0644
+  template:
+    src: apache2.conf.j2
+    dest: /etc/apache2/apache2.conf
+    owner: root
+    group: root
+    mode: "0644"
   notify: restart apache2
 
 - name: put apache ports.conf
-  template: src=apache-ports.conf.j2 dest=/etc/apache2/ports.conf owner=root group=root mode=0644
+  template:
+    src: apache-ports.conf.j2
+    dest: /etc/apache2/ports.conf
+    owner: root
+    group: root
+    mode: "0644"
   register: ports
 
 - name: force restart apache for port-change
-  service: name=apache2 state=restarted
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
   when: ports.changed
 
 - name: put apache 2.2 security config
-  template: src=22-security dest=/etc/apache2/conf.d/security owner=root group=root mode=0644
+  template:
+    src: 22-security
+    dest: /etc/apache2/conf.d/security
+    owner: root
+    group: root
+    mode: "0644"
   notify: restart apache2
   when: apache.version == "2.2"
 
 - name: put apache 2.4 security config
-  template: src=24-security.conf dest=/etc/apache2/conf-available/security.conf owner=root group=root mode=0644
+  template:
+    src: 24-security.conf
+    dest: /etc/apache2/conf-available/security.conf
+    owner: root
+    group: root
+    mode: "0644"
   notify: restart apache2
   when: apache.version == "2.4"
 
@@ -57,64 +89,121 @@
   notify: reload apache2
 
 - name: Apache | Enable mod_remoteip if required
-  apache2_module: name=remoteip state=present
+  apache2_module:
+    name: remoteip
+    state: present
   when: apache.version == "2.4" and varnish_required == True
 
 - name: Apache | Install extra modules
-  apt: name=libapache2-mod-{{ item }} state=installed
+  apt:
+    name: libapache2-mod-{{ item }}
+    state: installed
   with_items: apache_extra_modules
   when: apache_extra_modules is defined
 
 - name: Apache | Enable extra modules
-  apache2_module: name={{ item|replace('-','_') }} state=present
+  apache2_module:
+    name: "{{ item|replace('-','_') }}"
+    state: present
   with_items: apache_extra_modules
   when: apache_extra_modules is defined
   notify: reload apache2
 
 - name: set sites dir permissions
-  file: path=/var/www/sites state=directory owner=root group=root mode=0775
+  file:
+    path: /var/www/sites
+    state: directory
+    owner: root
+    group: root
+    mode: "0775"
 
 - name: create default vhost dir
-  file: path=/var/www/sites/adminhost state=directory owner=root group=root mode=0755
+  file:
+    path: /var/www/sites/adminhost
+    state: directory
+    owner: root
+    group: root
+    mode: "0775"
 
 - name: create empty index.html
-  copy: src=index.html dest=/var/www/sites/adminhost/index.html owner=root group=root mode=0755
+  copy:
+    src: index.html
+    dest: /var/www/sites/adminhost/index.html
+    owner: root
+    group: root
+    mode: "0775"
 
 - name: add our hostname-vhost config
-  template: src=admin-vhost.conf.j2 dest=/etc/apache2/sites-available/admin-vhost.conf owner=root group=root mode=0644
+  template:
+    src: admin-vhost.conf.j2
+    dest: /etc/apache2/sites-available/admin-vhost.conf
+    owner: root
+    group: root
+    mode: "0644"
 
 - name: disable default default for 2.2
-  shell: a2dissite 000-default removes=/etc/apache2/sites-enabled/000-default
+  shell: a2dissite 000-default
+  args:
+    removes: /etc/apache2/sites-enabled/000-default
   when: apache.version == "2.2"
   notify: reload apache2
 
 - name: disable default default for 2.4
-  shell: a2dissite 000-default removes=/etc/apache2/sites-enabled/000-default.conf
+  shell: a2dissite 000-default
+  args:
+    removes: /etc/apache2/sites-enabled/000-default.conf
   when: apache.version == "2.4"
   notify: reload apache2
 
 - name: Enable admin vhost
-  shell: a2ensite admin-vhost.conf creates=/etc/apache2/sites-enabled/admin-vhost.conf
+  shell: a2ensite admin-vhost.conf
+  args:
+    creates: /etc/apache2/sites-enabled/admin-vhost.conf
   notify: reload apache2
 
 - name: enable logrotation for /var/log/apache2/
-  copy: src=logrotate.apache2 dest=/etc/logrotate.d/apache2 owner=root group=root mode=0644
+  copy:
+    src: logrotate.apache2
+    dest: /etc/logrotate.d/apache2
+    owner: root
+    group: root
+    mode: "0644"
   when: apache.version == "2.2"
   tags: ['logrotate']
 
 - name: enable logrotation for /var/www/apache2/
-  copy: src=logrotate.apache24 dest=/etc/logrotate.d/apache2 owner=root group=root mode=0644
+  copy:
+    src: logrotate.apache24
+    dest: /etc/logrotate.d/apache2
+    owner: root
+    group: root
+    mode: "0644"
   when: apache.version == "2.4"
   tags: ['logrotate']
 
 - name: copy over htpasswd for fiaas.co
-  template: src=fiaasco.htpasswd dest=/etc/apache2/fiaasco.htpasswd owner=root group=root mode=0644
+  template:
+    src: fiaasco.htpasswd
+    dest: /etc/apache2/fiaasco.htpasswd
+    owner: root
+    group: root
+    mode: "0644"
   when: groups.infra is defined and inventory_hostname in groups.infra
 
-- name: make extra-conf dir
-  file: dest=/etc/apache2/extra.d owner=root group=root state=directory
+- name: create extra-conf dir
+  file:
+    dest: /etc/apache2/extra.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
 
 - name: make admin vhost includes dir
-  file: dest=/etc/apache2/admin.d owner=root group=root state=directory
+  file:
+    dest: /etc/apache2/admin.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
 
 - include: certificates.yml
