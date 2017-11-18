@@ -1,6 +1,8 @@
 ---
 - name: adminvhost | request letsencrypt cert
-  command: /root/.acme.sh/acme.sh --issue --webroot {{ httpd_adminhost_docroot }} -d {{ inventory_hostname }} creates=/root/.acme.sh/{{ inventory_hostname }}/{{ inventory_hostname }}.cer
+  command: /root/.acme.sh/acme.sh --issue --webroot /var/www/acme -d {{ inventory_hostname }}
+  args:
+    creates: /root/.acme.sh/{{ inventory_hostname }}/{{ inventory_hostname }}.cer
   when: platform != 'vagrant'
 
 - name: adminvhost | symlink certificate directory
