@@ -10,11 +10,14 @@
   when: not item.delete|default(False)
   tags: ['vhosts', 'letsencrypt']
 
-- name: make sure webroot in existing configs is up to date
+- name: Update webroot in existing configs when acme_config_update is set
   lineinfile:
     dest: "/root/.acme.sh/{{ item.url }}/{{ item.url }}.conf"
     regexp: '^Le_Webroot='
     line: 'Le_Webroot=/var/www/acme'
   with_items: "{{ vhosts }}"
-  when: not item.delete|default(False) and platform != 'vagrant'
+  when: >
+    not item.delete|default(False) and
+    item.ssl|default(False) == 'letsencrypt' and
+    acme_config_update|default(False)
   tags: ['vhosts', 'letsencrypt']
