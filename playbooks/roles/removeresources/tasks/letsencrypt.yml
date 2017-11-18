@@ -10,4 +10,7 @@
 - name: remove deleted vhost acme.sh conf (keep certs)
   shell: "/root/.acme.sh/acme.sh --remove -d {{ item.url }}"
   args:
-    creates: "/root/.acme.sh/{{ item.url }}/{{ item.url }}.conf.removed"
+    removes: "/root/.acme.sh/{{ item.url }}/{{ item.url }}.conf"
+  with_items: "{{ vhosts }}"
+  when: item.delete|default(False)
+  tags: ['vhosts', 'letsencrypt']
