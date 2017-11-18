@@ -12,7 +12,7 @@
 
 - name: make sure webroot in existing configs is up to date
   lineinfile:
-    dest: "/root/acme.sh/{{ item.url }}/{{ item.url }}.conf"
+    dest: "/root/.acme.sh/{{ item.url }}/{{ item.url }}.conf"
     regexp: '^Le_Webroot='
     line: 'Le_Webroot=/var/www/acme'
   with_items: "{{ vhosts }}"
