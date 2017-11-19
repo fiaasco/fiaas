@@ -28,7 +28,6 @@
 	AddHandler php-fastcgi .php .php5
   	Action php-fastcgi /php-fpm
   	Alias /php-fpm /usr/sbin/php-fpm-www-data
-  	FastCGIExternalServer /usr/sbin/php-fpm-www-data -socket /var/run/php5-fpm-www-data.sock -idle-timeout 600 -pass-header Authorization
 	</IfModule>
   {% else %}
         <filesmatch "\.php">
