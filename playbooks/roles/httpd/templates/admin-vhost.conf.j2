@@ -5,12 +5,12 @@
 	ServerAlias localhost
         ServerAlias 127.0.0.1
 
-	DocumentRoot {{ httpd_adminhost_docroot }}
+	DocumentRoot {{ adminhost_docroot }}
 	<Directory />
 		Options FollowSymLinks
 		AllowOverride None
 	</Directory>
-	<Directory {{ httpd_adminhost_docroot }}>
+	<Directory {{ adminhost_docroot }}>
 		Options FollowSymLinks
 		AllowOverride None
 {% if apache.version == '2.2' %}

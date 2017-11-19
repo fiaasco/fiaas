@@ -43,7 +43,7 @@ server {
   {% endif %}
 
 
-        {% if platform != 'vagrant' %}
+  {% if item.ssl != 'selfsigned' %}
         {# self signed cert in vagrant #}
         # OCSP Stapling ---
         # fetch OCSP records from URL in ssl_certificate and cache them
@@ -52,7 +52,7 @@ server {
 
         ## verify chain of trust of OCSP response using Root CA and Intermediate certs
         ssl_trusted_certificate /etc/ssl/{{ item.url }}/fullchain.cer;
-        {% endif %}
+  {% endif %}
 {% endif %}
 
 }

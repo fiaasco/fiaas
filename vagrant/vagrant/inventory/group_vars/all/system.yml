@@ -1,5 +1,6 @@
 ---
 platform: vagrant
+adminhost_ssl: selfsigned
 
 ntp_servers:
   - "0.be.pool.ntp.org"

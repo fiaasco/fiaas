@@ -19,7 +19,7 @@ server {
 
 
         # certs sent to the client in SERVER HELLO are concatenated in ssl_certificate
-{% if platform == 'vagrant' %}
+{% if adminhost_ssl == 'selfsigned' %}
         ssl_certificate /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.cer;
 {% else %}
         ssl_certificate /etc/ssl/{{ inventory_hostname }}/fullchain.cer;
@@ -38,8 +38,7 @@ server {
         # HSTS (ngx_http_headers_module is required) (15768000 seconds = 6 months)
         add_header Strict-Transport-Security max-age=15768000;
 
-{% if platform != 'vagrant' %}
-{# self signed cert in vagrant #}
+{% if adminhost_ssl != 'selfsigned' %}
         # OCSP Stapling ---
         # fetch OCSP records from URL in ssl_certificate and cache them
         ssl_stapling on;
