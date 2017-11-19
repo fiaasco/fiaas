@@ -1,8 +1,16 @@
 ---
 - name: remove deleted vhost ssl request script
-  file: path=/root/ssl/request-{{ item.url }}.sh state=absent
+  file:
+    path: "/root/ssl/request-{{ item.url }}.sh"
+    state: absent
   with_items: "{{ vhosts }}"
   when: item.delete|default(False)
   tags: ['vhosts', 'letsencrypt']
 
-# TODO: we also have to make sure acme.sh cron doesn't try to renew a removed vhost cert
+- name: remove deleted vhost acme.sh conf (keep certs)
+  shell: "/root/.acme.sh/acme.sh --remove -d {{ item.url }}"
+  args:
+    removes: "/root/.acme.sh/{{ item.url }}/{{ item.url }}.conf"
+  with_items: "{{ vhosts }}"
+  when: item.delete|default(False)
+  tags: ['vhosts', 'letsencrypt']

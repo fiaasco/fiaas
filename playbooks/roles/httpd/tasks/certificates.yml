@@ -1,0 +1,33 @@
+---
+- name: adminvhost | request letsencrypt cert
+  command: /root/.acme.sh/acme.sh --issue --webroot /var/www/acme -d {{ inventory_hostname }}
+  args:
+    creates: /root/.acme.sh/{{ inventory_hostname }}/{{ inventory_hostname }}.cer
+  when: adminhost_ssl == 'letsencrypt'
+
+- name: adminvhost | test if self signed certificates exists
+  stat:
+    path: "/etc/ssl/{{ inventory_hostname }}"
+  register: certs_check
+  when: adminhost_ssl == 'letsencrypt'
+
+- name: adminvhost | move self signed certificates when switching to letsencrypt
+  shell: "mv /etc/ssl/{{ inventory_hostname }} /etc/ssl/{{ inventory_hostname }}.bak"
+  when: adminhost_ssl == 'letsencrypt' and certs_check.stat.isdir | default(False)
+
+- name: adminvhost | symlink certificate directory
+  file:
+    src: "/root/.acme.sh/{{ inventory_hostname }}"
+    dest: "/etc/ssl/{{ inventory_hostname }}"
+    state: link
+  when: adminhost_ssl == 'letsencrypt'
+
+- name: adminvhost | create certificates directory for selfsigned cert
+  file:
+    dest: "/etc/ssl/{{ inventory_hostname }}"
+    state: directory
+  when: adminhost_ssl == 'selfsigned'
+
+- name: adminvhost | generate self signed certificate
+  command: openssl req -new -nodes -x509 -subj "/C=BE/ST=BXL/L=Belgium/O=IT/CN={{ inventory_hostname }}" -days 3650 -keyout /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.key -out /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.cer -extensions v3_ca creates=/etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.cer
+  when: adminhost_ssl == 'selfsigned'

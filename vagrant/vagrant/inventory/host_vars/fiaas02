@@ -2,6 +2,7 @@
 memcached_required: True
 solr_required: True
 varnish_required: False
+nginx_required: True
 install_vsftpd: True
 redis_required: False
 default_vhost: "www.svhost1.com"

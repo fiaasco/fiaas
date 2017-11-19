@@ -27,12 +27,14 @@
       tags: ['ntp']
     - role: postfix
       tags: ['postfix']
+    - role: letsencrypt
+      tags: ['letsencrypt', 'acme']
     - role: httpd
       tags: ['httpd']
     - role: varnish
       tags: ['varnish']
-    - role: letsencrypt
-      tags: ['letsencrypt', 'acme']
+    - role: nginx
+      tags: ['nginx']
     - role: fastcgi
       tags: ['php','httpd']
       # before Debian Stretch
