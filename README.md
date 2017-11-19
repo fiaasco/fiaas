@@ -10,6 +10,7 @@ FIAAS includes:
   * automatic generation of Letsencrypt certificates with [acme.sh](https://github.com/Neilpang/acme.sh)
   * services are not left with default configuration values, but are dynamically resized according to the size of the VM.
   * PHP-FPM with worker mode Apache 2.4 and mod proxy fcgi for best performance
+  * Possible to use nginx to terminate ssl and enable http2 (default disabled, set nginx\_required: True)
   * optional "extra" configs to configure those few annoying exceptions which can't be added in default roles
   * Vagrant examples for local development or playbook tests
 
@@ -172,7 +173,7 @@ Define a host in the inventory, create a similar host\_vars file, run the lamp a
 To delete something you created, set delete: True and use the deleteresources playbook to remove them. 
 
 Important:
-Always use a fully qualified domainname in your inventory when you define a server, the same fqdn will also be configured as the server hostname (`hostname -f`) if that's not already the case. Don't forget that a default "admin vhost" is added with the servername "{{ inventory\_hostname }}", so you won't be be able to add an additional vhost with the fqdn of your server.
+Always use a fully qualified domainname in your inventory when you define a server, the same fqdn will also be configured as the server hostname (`hostname -f`) if that's not already the case. Don't forget that a default "admin vhost" is added with the servername "{{ inventory\_hostname }}", so you won't be able to add an additional vhost with the fqdn of your server. Per default a Letsencrypt certificate will be requested for the server FQDN, if you are behind a firewall or run in vagrant, configure adminhost\_ssl and use selfsigned or commercial instead of letsencrypt.
 
 Support
 =======
