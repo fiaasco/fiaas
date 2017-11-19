@@ -1,4 +1,6 @@
-<VirtualHost *:{% if varnish_required == True %}8080{% else %}80{% endif %}>
+{% if not nginx_required | default(False) %}
+{# configure Apache https admin vhost if not configured in nginx #}
+<VirtualHost *:443>
 	ServerAdmin {{ admin.email }}
 	ServerName {{ inventory_hostname }}
 	ServerAlias {{ ansible_ssh_host }}
@@ -13,28 +15,28 @@
 	<Directory {{ adminhost_docroot }}>
 		Options FollowSymLinks
 		AllowOverride None
-{% if apache.version == '2.2' %}
+  {% if apache.version == '2.2' %}
 		Order allow,deny
 		allow from all
-{% else %}
+  {% else %}
                 Require all granted
-{% endif %}
+  {% endif %}
 	</Directory>
 
-{% if apache.version == '2.2' %}
+  {% if apache.version == '2.2' %}
 	<IfModule mod_fastcgi.c>
 	AddHandler php-fastcgi .php .php5
   	Action php-fastcgi /php-fpm
   	Alias /php-fpm /usr/sbin/php-fpm-www-data
   	FastCGIExternalServer /usr/sbin/php-fpm-www-data -socket /var/run/php5-fpm-www-data.sock -idle-timeout 600 -pass-header Authorization
 	</IfModule>
-{% else %}
+  {% else %}
         <filesmatch "\.php">
-{% if ansible_distribution == 'Debian' and ansible_distribution_major_version < '9' %}
+    {% if ansible_distribution == 'Debian' and ansible_distribution_major_version < '9' %}
           SetHandler "proxy:unix:/var/run/php5-fpm-www-data.sock|fcgi://www-data"
-{% else %}
+    {% else %}
           SetHandler "proxy:unix:/run/php/php7.0-fpm.sock|fcgi://www-data"
-{% endif %}
+    {% endif %}
         </filesmatch>
 
 	<IfModule proxy_module>
@@ -42,24 +44,36 @@
 	  ProxySet connectiontimeout=5 timeout=121 acquire=1000
         </Proxy>
 	</IfModule>
-{% endif %}
+  {% endif %}
 
-	ErrorLog ${APACHE_LOG_DIR}/error.log
+	ErrorLog ${APACHE_LOG_DIR}/ssl_error.log
 
 	# Possible values include: debug, info, notice, warn, error, crit,
 	# alert, emerg.
 	LogLevel warn
 
-	CustomLog ${APACHE_LOG_DIR}/access.log combined
+	CustomLog ${APACHE_LOG_DIR}/ssl_access.log combined
 
-	{% if 'infra' not in group_names %}
-	{% if apache.version != '2.2' %}
+	SSLEngine on
+
+  {% if adminhost_ssl == 'selfsigned' %}
+	SSLCertificateFile        /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.cer
+  {% else %}
+	SSLCertificateFile        /etc/ssl/{{ inventory_hostname }}/fullchain.cer
+  {% endif %}
+	SSLCertificateKeyFile     /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.key
+
+	# HSTS (mod_headers is required) (15768000 seconds = 6 months)
+	Header always set Strict-Transport-Security "max-age=15768000"
+
+
+  {% if 'infra' not in group_names %}
+    {% if apache.version != '2.2' %}
 	IncludeOptional /etc/apache2/admin.d/*.conf
-        {% else %} {# no includeOptional in 2.2 :( #}
+    {% else %} {# no includeOptional in 2.2 :( #}
 	Include /etc/apache2/admin.d/*.conf
-        {% endif %}
-	{% endif %}
+    {% endif %}
+  {% endif %}
 
-	RewriteEngine On
-	RewriteRule ^/$	https://{{ inventory_hostname }}$1 [R=301,L]
 </VirtualHost>
+{% endif %}

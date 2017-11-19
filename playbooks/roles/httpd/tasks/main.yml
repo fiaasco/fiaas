@@ -199,3 +199,27 @@
   meta: flush_handlers
 
 - include: certificates.yml
+
+- name: add our hostname-vhost-ssl config
+  template:
+    src: admin-vhost-ssl.conf.j2
+    dest: /etc/apache2/sites-available/admin-vhost-ssl.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: reload apache2
+  when: not nginx_required | default(False)
+
+- name: Enable https admin vhost
+  shell: a2ensite admin-vhost-ssl.conf
+  args:
+    creates: /etc/apache2/sites-enabled/admin-vhost-ssl.conf
+  when: not nginx_required | default(False)
+  notify: reload apache2
+
+- name: Disable https admin vhost when nginx is used to terminate ssl
+  shell: a2dissite admin-vhost-ssl.conf
+  args:
+    removes: /etc/apache2/sites-enabled/admin-vhost-ssl.conf
+  when: nginx_required | default(False)
+  notify: reload apache2
