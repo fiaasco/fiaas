@@ -5,6 +5,16 @@
     creates: /root/.acme.sh/{{ inventory_hostname }}/{{ inventory_hostname }}.cer
   when: adminhost_ssl == 'letsencrypt'
 
+- name: adminvhost | test if self signed certificates exists
+  stat:
+    path: "/etc/ssl/{{ inventory_hostname }}"
+  register: certs_check
+  when: adminhost_ssl == 'letsencrypt'
+
+- name: adminvhost | move self signed certificates when switching to letsencrypt
+  shell: "mv /etc/ssl/{{ inventory_hostname }} /etc/ssl/{{ inventory_hostname }}.bak"
+  when: adminhost_ssl == 'letsencrypt' and certs_check.stat.isdir | default(False)
+
 - name: adminvhost | symlink certificate directory
   file:
     src: "/root/.acme.sh/{{ inventory_hostname }}"
