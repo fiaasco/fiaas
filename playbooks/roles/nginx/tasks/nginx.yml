@@ -23,12 +23,11 @@
     group: root
     mode: "0644"
     
-- name: install nginx (stopped)
+- name: install nginx
   apt:
     name: nginx
     state: installed
-  environment:
-    runlevel: 1
+  notify: start nginx
 
 - name: disable default vhost listening on :80 where Apache is
   file:
