@@ -43,6 +43,7 @@
         - mysql-server-5.5
         - mysql-server-core-5.5
         - mysql-server
+        - jetty8
     - name: remove absolete config files
       file:
         path: "{{ item }}"
