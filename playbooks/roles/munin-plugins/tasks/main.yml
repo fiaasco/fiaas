@@ -22,3 +22,5 @@
 - include: redis.yml
   when: redis_required == True
 
+- include: nginx.yml
+  when: nginx_required == True

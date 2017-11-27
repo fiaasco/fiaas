@@ -1,0 +1,19 @@
+---
+- name: Enable nginx plugins
+  file:
+   src: "/usr/share/munin/plugins/{{ item }}"
+   dest: "/etc/munin/plugins/{{ item }}"
+   state: link
+  with_items:
+    - nginx_request
+    - nginx_status
+  notify: restart munin-node
+
+- name: Configure munin to poll nginx on admin vhost
+  template:
+    src: nginx.conf.j2
+    dest: /etc/munin/plugin-conf.d/nginx
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart munin-node
