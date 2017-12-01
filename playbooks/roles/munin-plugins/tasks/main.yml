@@ -23,4 +23,4 @@
   when: redis_required == True
 
 - include: nginx.yml
-  when: nginx_required == True
+  when: nginx_required | default(False) == True
