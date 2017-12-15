@@ -82,7 +82,7 @@ Your user in the group developers has sudo rights for:
 $ sudo sudoedit /etc/cron.d/drupal
   Put your drupal crons in there if you want te be sure they run as the PHP user (www-data)
 
-$ sudo service fail2ban restart
+$ sudo fail2ban-client set sshd unbanip <ip>
   Because some people manage to lockout their account too easy :-)
 
 $ sudo www-data-shell
