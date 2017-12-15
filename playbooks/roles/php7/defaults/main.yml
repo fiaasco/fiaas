@@ -11,5 +11,10 @@ php_default_pkgs:
   - php7.0-mcrypt
   - php7.0-intl
   - php7.0-uploadprogress
+  - php7.0-json
+  - php7.0-soap
+  - php7.0-xml
+  - php7.0-xmlrpc
+  - php7.0-zip
 
 php_extra_pkg: []
