@@ -1,3 +1,4 @@
 ---
 nginx_required: False
 ssl_protocols: "TLSv1 TLSv1.1 TLSv1.2"
+nginx_max_body_size: 32M

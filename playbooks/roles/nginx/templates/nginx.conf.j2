@@ -45,6 +45,7 @@ http {
 	error_log /var/log/nginx/error.log;
 
 	gzip off;
+	client_max_body_size {{ nginx_max_body_size }};
 
 	##
 	# Virtual Host Configs
