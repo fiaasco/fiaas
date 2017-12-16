@@ -45,7 +45,6 @@
    mode: "0755"
   with_items:
     - hosts
-    - checks
     - notifications
 
 - name: put config templates
