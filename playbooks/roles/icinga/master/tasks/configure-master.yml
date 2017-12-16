@@ -1,25 +1,7 @@
 ---
-# Icinga master setup without node wizard
-
-- name: generate ca
-  shell: icinga2 pki new-ca creates=/var/lib/icinga2/ca/ca.key
+- name: Icinga2 master setup
+  shell: icinga2 node setup --master creates=/var/lib/icinga2/ca/ca.key
   notify: restart icinga
-
-- name: copy ca to /etc/icinga2/pki
-  shell: rsync -a /var/lib/icinga2/ca/{{ item }} /etc/icinga2/pki/{{ item }} creates=/etc/icinga2/pki/{{ item }}
-  with_items:
-    - ca.crt
-    - ca.key
-  notify: restart icinga
-
-- name: prepare pki directory
-  file: path=/etc/icinga2/pki state=directory owner="{{ icinga_user }}" group="{{ icinga_user }}" mode=0700
-
-- name: generate csr
-  shell: icinga2 pki new-cert --cn {{ ansible_fqdn }} --key /etc/icinga2/pki/{{ ansible_fqdn }}.key --csr /etc/icinga2/pki/{{ ansible_fqdn }}.csr creates=/etc/icinga2/pki/{{ ansible_fqdn }}.csr
-
-- name: sign csr
-  shell: icinga2 pki sign-csr --csr /etc/icinga2/pki/{{ ansible_fqdn }}.csr --cert /etc/icinga2/pki/{{ ansible_fqdn }}.crt creates=/etc/icinga2/pki/{{ ansible_fqdn }}.crt
 
 - name: enable api
   shell: icinga2 feature enable api creates=/etc/icinga2/features-enabled/api.conf
@@ -34,18 +16,9 @@
    mode: "0755"
   with_items:
     - global-templates
+    - global-templates/notifications
+    - global-templates/checks
     - master
-
-- name: create zones.d config dirs
-  file:
-   path: "/etc/icinga2/zones.d/master/{{ item }}"
-   state: directory
-   owner: "{{ icinga_user }}"
-   group: "{{ icinga_user }}"
-   mode: "0755"
-  with_items:
-    - hosts
-    - notifications
 
 - name: put config templates
   template:
