@@ -1,4 +1,5 @@
-- name: Install LAMP env.
+---
+- name: Remove resources
   hosts: all:!infra
   become: True
   become_method: sudo

@@ -1,10 +1,11 @@
-- name: prepare infrastructure when needed
-  hosts: infra
+---
+- name: icinga2 setup
+  hosts: icingaservers
   become: True
 
   pre_tasks:
     - include_vars: "./os_vars/{{ ansible_distribution_release }}.yml"
-      tags: ['always']
+      tags: ['backup','monitoring']
     - apt: update_cache=yes cache_valid_time=3600
 
   roles:
@@ -15,8 +16,6 @@
     - ntp
     - postfix
     - system
-    - role: munin
-      tags: ['monitoring']
     - role: httpd
       tags: ['httpd']
     - role: fastcgi
@@ -25,22 +24,6 @@
       tags: ['letsencrypt', 'acme']
     - role: php7
       tags: ['php']
-    - role: munin-node
-      tags: ['monitoring']
-    - role: borgbackup
-      tags: ['backup']
-
-- name: icinga2 stuff
-  hosts: icingaservers
-  become: True
-
-  pre_tasks:
-    - include_vars: "./os_vars/{{ ansible_distribution_release }}.yml"
-      tags: ['backup','monitoring']
-    - apt: update_cache=yes cache_valid_time=3600
-#      when: ansible_distribution == 'Debian' and ansible_distribution_major_version >= '9'
-
-  roles:
     - role: mariadb
       tags: ['mysql', 'mariadb']
     - role: icinga-master

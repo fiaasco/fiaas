@@ -1,5 +1,6 @@
-- name: Configure monitored hosts
-  hosts: all:!backupservers
+---
+- name: Configure backups
+  hosts: all:!borgbackup_servers
   become: True
 
   pre_tasks:

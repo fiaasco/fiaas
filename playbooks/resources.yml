@@ -1,4 +1,5 @@
-- name: Install LAMP env.
+---
+- name: Create resources and update monitoring
   hosts: all:!infra
   become: True
   pre_tasks:

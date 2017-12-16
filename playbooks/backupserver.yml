@@ -1,5 +1,6 @@
-- name: Configure monitored hosts
-  hosts: all:!infra
+---
+- name: Configure Borg server
+  hosts: borgbackup_servers
   become: True
 
   pre_tasks:
@@ -8,11 +9,8 @@
     - apt: update_cache=yes cache_valid_time=3600
 
   roles:
+    - fail2ban
+    - ufw
     - system
-    - role: infra-remove
-      serial: 1
-      tags: ['icinga']
-    - role: monitoring
-      tags: ['monitoring']
-    - role: backup
+    - role: borgbackup
       tags: ['backup']
