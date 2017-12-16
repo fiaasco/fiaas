@@ -1,0 +1,32 @@
+---
+- name: icinga2 setup
+  hosts: icingaservers
+  become: True
+
+  pre_tasks:
+    - include_vars: "./os_vars/{{ ansible_distribution_release }}.yml"
+      tags: ['backup','monitoring']
+    - apt: update_cache=yes cache_valid_time=3600
+
+  roles:
+    - fail2ban
+    - role: users
+      tags: ['users']
+    - ufw
+    - ntp
+    - postfix
+    - system
+    - role: httpd
+      tags: ['httpd']
+    - role: fastcgi
+      tags: ['php','httpd']
+    - role: letsencrypt
+      tags: ['letsencrypt', 'acme']
+    - role: php7
+      tags: ['php']
+    - role: mariadb
+      tags: ['mysql', 'mariadb']
+    - role: icinga-master
+      tags: ['icinga']
+    - role: icingaweb2
+      tags: ['icinga', 'web2']

@@ -1,3 +1,4 @@
+---
 - name: Configure monitored hosts
   hosts: all:!icingaservers
   become: True
