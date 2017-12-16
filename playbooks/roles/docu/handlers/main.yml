@@ -1,5 +1,0 @@
----
-- name: commitdocu
-  local_action: shell git add * && git commit -m "Docu update" && git push chdir={{ docu_root }}
-  sudo: False
-  when: inventory_hostname == play_hosts[0] and docu_commit == "yes"
