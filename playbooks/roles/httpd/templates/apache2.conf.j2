@@ -6,7 +6,7 @@ LockFile ${APACHE_LOCK_DIR}/accept.lock
 {% endif %}
 PidFile ${APACHE_PID_FILE}
 Timeout 300
-KeepAlive Off
+KeepAlive {{ httpd_keepalive }}
 MaxKeepAliveRequests 100
 KeepAliveTimeout 1
 

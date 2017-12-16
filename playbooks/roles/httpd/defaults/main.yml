@@ -1,4 +1,7 @@
 ---
+# no boolean: quoted On or Off!
+httpd_keepalive: "Off"
+
 adminhost_docroot: /var/www/sites/adminhost
 adminhost_ssl: letsencrypt
 
