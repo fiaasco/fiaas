@@ -1,13 +1,9 @@
 ---
-- apt_key: url=http://debmon.org/debmon/repo.key state=present
-- apt_repository: repo="deb http://debmon.org/debmon debmon-{{ ansible_distribution_release }} main" state=present update_cache=yes
-
-- apt: name={{ item }} state=installed
+- apt:
+    name: "{{ item }}"
+    state: installed
   with_items:
     - icinga2
     - icinga2-ido-mysql
     - monitoring-plugins
   notify: restart icinga
-
-- name: open up port in firewall
-  ufw: rule=allow direction=in proto=tcp to_port=5665

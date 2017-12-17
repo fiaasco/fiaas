@@ -2,7 +2,7 @@
 - name: put host config on master
   template:
     src: host.conf.j2
-    dest: "/etc/icinga2/zones.d/master/hosts/{{ ansible_fqdn }}.conf"
+    dest: "/etc/icinga2/zones.d/master/{{ ansible_fqdn }}.conf"
     owner: "{{ icinga_user }}"
     group: "{{ icinga_user }}"
     mode: "0644"
@@ -11,7 +11,7 @@
 
 - name: create host config include directory
   file:
-    dest: "/etc/icinga2/zones.d/master/hosts/{{ ansible_fqdn }}"
+    dest: "/etc/icinga2/zones.d/master/{{ ansible_fqdn }}"
     state: directory
     owner: "{{ icinga_user }}"
     group: "{{ icinga_user }}"

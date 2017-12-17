@@ -59,6 +59,7 @@ object Host "{{ ansible_fqdn }}" {
 
 }
 
+{% if inventory_hostname not in groups.icingaservers %}
 object Endpoint "{{ ansible_fqdn }}" {
 }
 
@@ -66,3 +67,4 @@ object Zone "{{ ansible_fqdn }}"  {
 	endpoints = [ "{{ ansible_fqdn }}" ];
 	parent = "master";
 }
+{% endif %}

@@ -1,0 +1,21 @@
+---
+- name: add Icinga key
+  apt_key:
+    url: https://packages.icinga.com/icinga.key 
+    state: present
+
+- name: add Icinga repo (Debian)
+  apt_repository:
+    repo: "deb http://packages.icinga.com/{{ ansible_distribution|lower }} icinga-{{ ansible_distribution_release }} main"
+    state: present
+    update_cache: yes
+
+- name: open up port in firewall
+  ufw:
+    rule: allow
+    direction: in
+    proto: tcp
+    to_port: 5665
+  when: inventory_hostname in groups.icingaservers
+
+- include: cleanup.yml

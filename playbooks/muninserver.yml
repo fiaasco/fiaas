@@ -24,5 +24,3 @@
       tags: ['letsencrypt', 'acme']
     - role: munin-node
       tags: ['monitoring']
-    - role: borgbackup
-      tags: ['backup']

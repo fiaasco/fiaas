@@ -1,6 +1,26 @@
 ---
-- name: Define client on Icinga master
-  include: add-host-on-master.yml
+- name: create services directories
+  template:
+    dest: "/etc/icinga2/zones.d/global-templates/checks/{{ item.path }}"
+    state: directory
+    owner: "{{ icinga_user }}"
+    group: "{{ icinga_user }}"
+    mode: "{{ item.mode }}"
+  with_filetree:
+    - ../templates/checks/
+  when: item.state == 'directory'
+  delegate_to: "{{ groups.icingaservers|first }}"
+  notify: restart master icinga2
 
-- name: Configure al checks on Icinga master
-  include: configure-checks.yml
+- name: copy service definitions to Icinga primary master
+  template:
+    src: "{{ item.src }}"
+    dest: "/etc/icinga2/zones.d/global-templates/checks/{{ item.path }}"
+    owner: "{{ icinga_user }}"
+    group: "{{ icinga_user }}"
+    mode: "{{ item.mode }}"
+  with_filetree:
+    - ../templates/checks/
+  when: item.state == 'file'
+  delegate_to: "{{ groups.icingaservers|first }}"
+  notify: restart master icinga2

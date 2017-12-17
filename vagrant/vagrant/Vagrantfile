@@ -2,8 +2,10 @@
 # vi: set ft=ruby :
 #
 
-DEBIAN_BOX = "debian82"
-DEBIAN_BOX_URL = "http://repo.werus.be/vagrant/debian-8.2-amd64.box"
+DEBIAN7_BOX = "debian76"
+DEBIAN7_BOX_URL = "http://repo.werus.be/vagrant/debian-7.6-amd64.box"
+DEBIAN8_BOX = "debian82"
+DEBIAN8_BOX_URL = "http://repo.werus.be/vagrant/debian-8.2-amd64.box"
 DEBIAN9_BOX = "debian91"
 DEBIAN9_BOX_URL = "http://delta.exabyte.be/vagrant-boxes/debian-9.1-amd64.box"
 
@@ -17,8 +19,8 @@ Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
 
   config.vm.define "fiaas01" do |v|
-    v.vm.box = DEBIAN_BOX
-    v.vm.box_url = DEBIAN_BOX_URL
+    v.vm.box = DEBIAN8_BOX
+    v.vm.box_url = DEBIAN8_BOX_URL
     v.vm.hostname = "fiaas01"
     v.vm.network :private_network, ip: "192.168.131.190"
     v.vm.network :forwarded_port, guest: 22, host: 10190, id: 'ssh'
@@ -32,6 +34,13 @@ Vagrant.configure("2") do |config|
     v.vm.network :private_network, ip: "192.168.131.191"
     v.vm.network :forwarded_port, guest: 22, host: 10191, id: 'ssh'
     v.hostsupdater.aliases = [ "www.svhost1.com", "www.svhost2.com", "www.svhost3.com" ]
+    v.vm.provision :ansible do |ansible|
+      ansible.inventory_path = "inventory/"
+      ansible.playbook = "../../playbooks/lamp.yml"
+      ansible.sudo = "true"
+      ansible.host_key_checking = "false"
+      ansible.limit = 'all'
+    end
   end
 
   config.vm.define "fiaas03" do |v|
@@ -40,13 +49,14 @@ Vagrant.configure("2") do |config|
     v.vm.hostname = "fiaas03"
     v.vm.network :private_network, ip: "192.168.131.192"
     v.vm.network :forwarded_port, guest: 22, host: 10192, id: 'ssh'
-    v.vm.provision :ansible do |ansible|
-      ansible.inventory_path = "inventory/"
-      ansible.playbook = "../../playbooks/lamp.yml"
-      ansible.sudo = "true"
-      ansible.host_key_checking = "false"
-      ansible.limit = 'all'
-    end
+  end
+
+  config.vm.define "fiaas04", autostart: false do |v|
+    v.vm.box = DEBIAN7_BOX
+    v.vm.box_url = DEBIAN7_BOX_URL
+    v.vm.hostname = "fiaas04"
+    v.vm.network :private_network, ip: "192.168.131.193"
+    v.vm.network :forwarded_port, guest: 22, host: 10194, id: 'ssh'
   end
 
 end
