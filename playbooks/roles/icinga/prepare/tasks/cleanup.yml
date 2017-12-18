@@ -24,6 +24,14 @@
   args:
     creates: /var/lib/icinga2/certs/{{ inventory_hostname }}.key
   when: icinga_installed.stat.exists | default(False)
+  notify: restart icinga2
+
+- name: move ca to standard file for 2.8 migration
+  shell: mv /var/lib/icinga2/certs/trusted-master.crt /var/lib/icinga2/certs/ca.crt
+  args:
+    creates: /var/lib/icinga2/certs/ca.crt
+  when: icinga_installed.stat.exists | default(False)
+  notify: restart icinga2
 
 - name: remove debmon apt key
   apt_key:
@@ -55,6 +63,7 @@
     line: 'object Zone "global-templates" {'
     state: present
   check_mode: yes
+  when: icinga_installed.stat.exists | default(False)
   register: zones
 
 - name: add global zones in zones.conf
@@ -70,4 +79,4 @@
         global = true
       }
   notify: restart icinga2
-  when: zones | changed
+  when: zones | changed | default(False)
