@@ -19,15 +19,15 @@
     creates: /var/lib/icinga2/certs/{{ ansible_fqdn }}.crt
   notify: restart icinga2
 
-- name: Request the master certificate from the master host and store it as trusted-master.crt
-  shell: "icinga2 pki save-cert --key /var/lib/icinga2/certs/{{ ansible_fqdn }}.key --cert /var/lib/icinga2/certs/{{ ansible_fqdn }}.crt --trustedcert /var/lib/icinga2/certs/trusted-master.crt --host {{ item }}"
+- name: Request the master certificate from the master host and store it as ca.crt
+  shell: "icinga2 pki save-cert --key /var/lib/icinga2/certs/{{ ansible_fqdn }}.key --cert /var/lib/icinga2/certs/{{ ansible_fqdn }}.crt --trustedcert /var/lib/icinga2/certs/ca.crt --host {{ item }}"
   args:
-    creates: /var/lib/icinga2/certs/trusted-master.crt
+    creates: /var/lib/icinga2/certs/ca.crt
   with_items: "{{ groups.icingaservers|first }}"
   notify: restart icinga2
 
 - name: Continue with the additional node setup steps
-  shell: "icinga2 node setup --ticket {{ ticket.stdout }} --endpoint {{ item }},{{ item }},5665 --zone {{ ansible_fqdn }} --master_host {{ item }} --master_zone master --trustedcert /var/lib/icinga2/certs/trusted-master.crt --accept-config --accept-commands"
+  shell: "icinga2 node setup --ticket {{ ticket.stdout }} --endpoint {{ item }},{{ item }},5665 --zone {{ ansible_fqdn }} --master_host {{ item }} --master_zone master --trustedcert /var/lib/icinga2/certs/ca.crt --accept-config --accept-commands"
   args:
     creates: /etc/icinga2/zones.conf.orig
   with_items: "{{ groups.icingaservers|first }}"
