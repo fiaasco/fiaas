@@ -14,6 +14,17 @@
     - /etc/icinga2/zones.d/master/hosts
   when: inventory_hostname in groups.icingaservers
 
+- name: check if this host was earlier installed
+  stat:
+    path: /etc/icinga2/pki/{{ inventory_hostname }}.key
+  register: icinga_installed
+
+- name: move icinga certificates for 2.8 migration
+  shell: mv /etc/icinga2/pki/ /var/lib/icinga2/certs/
+  args:
+    creates: /var/lib/icinga2/certs/{{ inventory_hostname }}.key
+  when: icinga_installed.stat.exists | default(False)
+
 - name: remove debmon apt key
   apt_key:
     id: "{{ item }}"
