@@ -1,4 +1,10 @@
 ---
+- name: install python-urllib3 (required for wheezy apt_key°
+  apt:
+    name: python-urllib3
+    state: installed
+  when: ansible_distribution == 'Debian' and ansible_distribution_major_version == '7'
+
 - name: add Icinga key
   apt_key:
     url: https://packages.icinga.com/icinga.key 
