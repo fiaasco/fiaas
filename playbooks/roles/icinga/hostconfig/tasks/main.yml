@@ -8,14 +8,3 @@
     mode: "0644"
   delegate_to: "{{ groups.icingaservers|first }}"
   notify: restart master icinga2
-
-- name: create host config include directory
-  file:
-    dest: "/etc/icinga2/zones.d/master/{{ ansible_fqdn }}"
-    state: directory
-    owner: "{{ icinga_user }}"
-    group: "{{ icinga_user }}"
-    mode: "0775"
-  delegate_to: "{{ groups.icingaservers|first }}"
-  notify: restart master icinga2
-
