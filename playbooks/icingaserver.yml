@@ -26,7 +26,13 @@
       tags: ['php']
     - role: mariadb
       tags: ['mysql', 'mariadb']
-    - role: icinga-master
+    - role: icinga/prepare
       tags: ['icinga']
-    - role: icingaweb2
-      tags: ['icinga', 'web2']
+    - role: icinga/master
+      tags: ['icinga']
+    - role: icinga/hostconfig
+      tags: ['icinga', 'hostconfig']
+    - role: icinga/icingaweb
+      tags: ['icinga', 'icingaweb']
+    - role: icinga/checks
+      tags: ['icinga', 'checks']

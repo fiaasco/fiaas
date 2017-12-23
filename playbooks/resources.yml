@@ -12,4 +12,4 @@
     - createresources
     - removeresources
     - readme
-    - icinga-client
+    - icinga/hostconfig

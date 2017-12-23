@@ -5,7 +5,7 @@ solr_required: False
 install_vsftpd: False
 memcached_required: False
 
-backup_required: False
+borgbackup_required: False
 
 users: []
 directories: []

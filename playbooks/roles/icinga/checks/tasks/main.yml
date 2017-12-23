@@ -1,7 +1,7 @@
 ---
 - name: create services directories
   template:
-    dest: "/etc/icinga2/zones.d/master/checks/{{ item.path }}"
+    dest: "/etc/icinga2/zones.d/global-templates/checks/{{ item.path }}"
     state: directory
     owner: "{{ icinga_user }}"
     group: "{{ icinga_user }}"
@@ -15,7 +15,7 @@
 - name: copy service definitions to Icinga primary master
   template:
     src: "{{ item.src }}"
-    dest: "/etc/icinga2/zones.d/master/checks/{{ item.path }}"
+    dest: "/etc/icinga2/zones.d/global-templates/checks/{{ item.path }}"
     owner: "{{ icinga_user }}"
     group: "{{ icinga_user }}"
     mode: "{{ item.mode }}"

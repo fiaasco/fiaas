@@ -1,7 +1,7 @@
 ---
 - name: create slack config dir
   file:
-    path: "/etc/icinga2/zones.d/master/notifications/slack"
+    path: "/etc/icinga2/zones.d/global-templates/notifications/slack"
     state: "directory"
     owner: "root"
     group: "root"
@@ -10,7 +10,7 @@
 - name: put slack Icinga config templates
   template:
     src: "notifications/slack/{{ item }}.j2"
-    dest: "/etc/icinga2/zones.d/master/notifications/slack/{{ item }}"
+    dest: "/etc/icinga2/zones.d/global-templates/notifications/slack/{{ item }}"
     owner: "root"
     group: "root"
     mode: "0644"
@@ -21,7 +21,7 @@
 - name: put slack Icinga config files
   copy:
     src: "{{ item }}"
-    dest: /etc/icinga2/zones.d/master/notifications/slack/
+    dest: /etc/icinga2/zones.d/global-templates/notifications/slack/
     owner: "root"
     group: "root"
     mode: "0644"

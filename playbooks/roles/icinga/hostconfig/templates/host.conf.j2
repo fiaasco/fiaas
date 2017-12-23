@@ -21,18 +21,19 @@ object Host "{{ ansible_fqdn }}" {
   vars.client_endpoint = name
 
   /* Services based on host_vars */
-  vars.monitoring_over_ssh = "{{ monitoring_over_ssh }}"
-  vars.varnish = "{{ varnish_required }}"
-  vars.redis = "{{ redis_required }}"
-  vars.memcached = "{{ memcached_required }}"
-  vars.solr = "{{ solr_required }}"
-  vars.vsftpd = "{{ install_vsftpd }}"
+  vars.monitoring_over_ssh = "{{ monitoring_over_ssh | default(False) }}"
+  vars.varnish = "{{ varnish_required | default(False) }}"
+  vars.redis = "{{ redis_required | default(False) }}"
+  vars.memcached = "{{ memcached_required | default(False) }}"
+  vars.solr = "{{ solr_required | default(False) }}"
+  vars.vsftpd = "{{ install_vsftpd |default(False) }}"
   vars.vsftpd_port = "{{ vsftpd_listen_port|default(990) }}"
-  vars.backup = "{{ borgbackup_required }}"
-  vars.mysql = "{{ mysql_required }}"
-  vars.mysql_user = "{{ monitor_mysql.user }}"
-  vars.mysql_pass = "{{ monitor_mysql.pass }}"
+  vars.backup = "{{ borgbackup_required | default(True) }}"
+  vars.mysql = "{{ mysql_required | default(True) }}"
+  vars.mysql_user = "{{ monitor_mysql.user | default('') }}"
+  vars.mysql_pass = "{{ monitor_mysql.pass | default('') }}"
 
+  {% if vhosts is defined %}
   {% for v in vhosts %}
   {% if v.delete is not defined %}
   {% if v.monitoring == True %}
@@ -46,8 +47,9 @@ object Host "{{ ansible_fqdn }}" {
   {% endif %}
   {% endif %}
   {% endfor %}
+  {% endif %}
 
-  {% if solr_required == True %}
+  {% if solr_required | default(False) == True %}
   vars.solr_uri = "/solr/{{ solr_cores[0].name }}/admin/ping"
   vars.solr_auth_pair = "{{ solr_cores[0].name }}:{{ solr_cores[0].pass }}"
   {% endif %}
@@ -59,6 +61,7 @@ object Host "{{ ansible_fqdn }}" {
 
 }
 
+{% if inventory_hostname not in groups.icingaservers %}
 object Endpoint "{{ ansible_fqdn }}" {
 }
 
@@ -66,3 +69,4 @@ object Zone "{{ ansible_fqdn }}"  {
 	endpoints = [ "{{ ansible_fqdn }}" ];
 	parent = "master";
 }
+{% endif %}

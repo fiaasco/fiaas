@@ -1,6 +1,0 @@
----
-- name: Define client on Icinga master
-  include: add-host-on-master.yml
-
-- name: Configure al checks on Icinga master
-  include: configure-checks.yml

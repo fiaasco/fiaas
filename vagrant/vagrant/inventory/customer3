@@ -1,0 +1,2 @@
+[customer3]
+fiaas04 ansible_ssh_host=192.168.131.193 public_interface=eth1
