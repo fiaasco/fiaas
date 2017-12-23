@@ -1,5 +1,5 @@
 ---
-- name: install python-urllib3 (required for wheezy apt_key°
+- name: install python-urllib3 (required for wheezy apt_key)
   apt:
     name: python-urllib3
     state: installed
