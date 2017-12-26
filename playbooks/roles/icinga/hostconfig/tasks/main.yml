@@ -7,4 +7,4 @@
     group: "{{ icinga_user }}"
     mode: "0644"
   delegate_to: "{{ groups.icingaservers|first }}"
-  notify: restart master icinga2
+  notify: reload master icinga2

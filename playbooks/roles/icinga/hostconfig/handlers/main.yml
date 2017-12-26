@@ -1,0 +1,8 @@
+---
+- name: reload master icinga2
+  service:
+    name: icinga2
+    state: restarted
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups.icingaservers }}"
+  run_once: yes
