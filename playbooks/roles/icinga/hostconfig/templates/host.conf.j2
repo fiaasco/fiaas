@@ -50,8 +50,12 @@ object Host "{{ ansible_fqdn }}" {
   {% endif %}
 
   {% if solr_required | default(False) == True %}
-  vars.solr_uri = "/solr/{{ solr_cores[0].name }}/admin/ping"
-  vars.solr_auth_pair = "{{ solr_cores[0].name }}:{{ solr_cores[0].pass }}"
+  {% for core in solr_cores %}
+  {% if core.delete is not defined %}
+  vars.solr_uri = "/solr/{{ core.name }}/admin/ping"
+  vars.solr_auth_pair = "{{ core.name }}:{{ core.pass }}"
+  {% endif %}
+  {% endfor %}
   {% endif %}
 
   /* Define disks and attributes for service apply rules in `services.conf`. */
