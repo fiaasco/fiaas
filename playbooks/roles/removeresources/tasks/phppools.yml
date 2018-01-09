@@ -15,7 +15,7 @@
   tags: ['phppools']
 
 - name: remove fpm-pool.d file for defined pools
-  file: path=/etc/php7.0/fpm/pool.d/{{ item.name }}.conf state=absent
+  file: path=/etc/php/7.0/fpm/pool.d/{{ item.name }}.conf state=absent
   with_items: "{{ phppools }}"
   notify: reload php7
   when: >
