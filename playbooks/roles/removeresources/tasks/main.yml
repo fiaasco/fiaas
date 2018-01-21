@@ -1,4 +1,6 @@
 ---
+- include: acls.yml
+
 - include: phppools.yml
 
 - include: letsencrypt.yml
