@@ -35,6 +35,14 @@ symlinks:
   - src: "/var/www/sites/www.vhost3.com"
     dest: "/var/www/sites/symlink"
 
+acls:
+ - path: /var/www/sites/www.vhost3.com/web
+   entity: devuser2
+   etype: user
+   permissions: rwx
+   recursive: yes
+   default: yes
+
 databases:
   - name: vhost1db
     pass: vhost1pass
@@ -101,6 +109,14 @@ vhosts:
     phppool: vhost2
     owner: devuser2
     monitoring: False
+  - url: "www.vhost3.com"
+    basedir: "/var/www/sites/www.vhost3.com"
+    admin: "admin@vhost3.com"
+    ssl: selfsigned
+    ssl_redirect_http: True
+    phppool: vhost3
+    owner: devuser1
+    monitoring: True
   - url: "static.vhost3.com"
     basedir: "/var/www/sites/static.vhost3.com"
     admin: "admin@vhost3.com"

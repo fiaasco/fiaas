@@ -1,0 +1,25 @@
+---
+- name: set acl for existing files
+  acl:
+    path: "{{ item.path }}"
+    entity: "{{ item.entity }}"
+    etype: "{{ item.etype }}"
+    permissions: "{{ item.permissions }}"
+    recursive: "{{ item.recursive }}"
+    state: present
+  when: not item.delete|default(False)
+  with_items: "{{ acls }}"
+
+- name: set default acl for new files
+  acl:
+    path: "{{ item.path }}"
+    entity: "{{ item.entity }}"
+    etype: "{{ item.etype }}"
+    permissions: "{{ item.permissions }}"
+    recursive: "{{ item.recursive }}"
+    default: yes
+    state: present
+  when: >
+    not item.delete|default(False)
+    and item.default
+  with_items: "{{ acls }}"

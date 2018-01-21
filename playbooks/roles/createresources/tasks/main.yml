@@ -13,6 +13,8 @@
 
 - include: vhosts.yml
 
+- include: acls.yml
+
 - include: databases.yml
 
 - include: "solr-shared-debian{{ ansible_distribution_major_version }}.yml"
