@@ -78,6 +78,14 @@ directories:
     group: svhost3
     mode: "0775"
 
+acls:
+ - path: /var/www/sites/svhost3/logs
+   entity: svhost2
+   etype: group
+   permissions: rwx
+   recursive: yes
+   default: no
+
 symlinks: []
 
 solr_cores:
