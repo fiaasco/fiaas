@@ -15,5 +15,5 @@
 
 # install 
 
-- import_tasks: pecl.yml package={{ php_pecl_extra_extensions }}
+- include_tasks: pecl.yml package={{ php_pecl_extra_extensions }}
   when: custom_repo_url is defined
