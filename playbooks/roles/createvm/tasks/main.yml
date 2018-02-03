@@ -1,6 +1,6 @@
 ---
-- include: digitalocean.yml
+- import_tasks: digitalocean.yml
   when: vm_type=='digital_ocean'
 
-- include: vmware.yml
+- import_tasks: vmware.yml
   when: vm_type=='vmware'

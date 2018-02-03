@@ -2,5 +2,6 @@
 # keep configurations by default for normal security upgrades
 dpkg_options: force-confold,force-confdef
 log_dir: /var/log/updates
-reboot: no
+
+reboot: False
 verbose: False

@@ -198,7 +198,7 @@
 - name: flush handlers to activate changes we need now
   meta: flush_handlers
 
-- include: certificates.yml
+- import_tasks: certificates.yml
 
 - name: add our hostname-vhost-ssl config
   template:

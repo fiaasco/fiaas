@@ -30,6 +30,6 @@
         state: absent 
 
     - name: (re)install
-      include: install.yml
+      import_tasks: install.yml
 
   when: download.changed or solr_reinstall

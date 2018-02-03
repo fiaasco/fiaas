@@ -1,3 +1,3 @@
 ---
-- include: mysql.yml
+- import_tasks: mysql.yml
   when: mysql_required == True

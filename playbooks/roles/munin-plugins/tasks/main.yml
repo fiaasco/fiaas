@@ -1,26 +1,26 @@
 ---
 
-- include: postfix.yml
+- import_tasks: postfix.yml
 
-- include: php.yml
+- import_tasks: php.yml
 
-- include: mysql.yml
+- import_tasks: mysql.yml
   when: databases is defined
 
-- include: varnish.yml
+- import_tasks: varnish.yml
   when: varnish_required == True
 
-- include: solr.yml
+- import_tasks: solr.yml
   when: solr_required == True and solr_cores is defined
 
-- include: apache.yml
+- import_tasks: apache.yml
   when: vhosts is defined
 
-- include: memcached.yml
+- import_tasks: memcached.yml
   when: memcached_required == True
 
-- include: redis.yml
+- import_tasks: redis.yml
   when: redis_required == True
 
-- include: nginx.yml
+- import_tasks: nginx.yml
   when: nginx_required | default(False) == True

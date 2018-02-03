@@ -1,29 +1,29 @@
 ---
-- include: acls.yml
+- import_tasks: acls.yml
 
-- include: phppools.yml
+- import_tasks: phppools.yml
 
-- include: letsencrypt.yml
+- import_tasks: letsencrypt.yml
 
-- include: vhosts.yml
+- import_tasks: vhosts.yml
 
-- include: logrotate.yml
+- import_tasks: logrotate.yml
 
-- include: "solr-shared-debian{{ ansible_distribution_major_version }}.yml"
+- import_tasks: "solr-shared-debian{{ ansible_distribution_major_version }}.yml"
   when: solr_required == True
 
-- include: "solr-cores-debian{{ ansible_distribution_major_version }}.yml"
+- import_tasks: "solr-cores-debian{{ ansible_distribution_major_version }}.yml"
   when: solr_required == True
 
 - name: flush handlers before we remove the basic resources
   meta: flush_handlers
 
-- include: databases.yml
+- import_tasks: databases.yml
 
-- include: symlinks.yml
+- import_tasks: symlinks.yml
 
-- include: directories.yml
+- import_tasks: directories.yml
 
-- include: useraccess.yml
+- import_tasks: useraccess.yml
 
-- include: users.yml
+- import_tasks: users.yml
