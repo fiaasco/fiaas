@@ -1,18 +1,35 @@
 ---
-- name: useraccess | put public keys from group_vars definition
-  authorized_key: user={{ item.name }} key="{{ user[item.name].sshkeys|join('\n') }}" state=present
-  with_items: "{{ users }}"
-  when: user[item.name].sshkeys is defined and not item.delete|default(False)
-  tags: ['users','sshkeys']
+- name: useraccess | configure authorized_keys for users
+  authorized_key:
+    user: "{{ item.0.name }}"
+    key: "{{ item.1 }}"
+    state: present
+  with_subelements:
+    - "{{ users }}"
+    - authorized_keys
+    - skip_missing: True
+  when: not item.delete|default(False)
+  tags: ['users','authorized_keys']
 
-- name: useraccess | put public keys from host_vars definition
-  authorized_key: user="{{ item.name }}" key="{{ item.authorized_keys|join('\n') }}" state=present
-  with_items: "{{ users }}"
-  when: item.authorized_keys is defined and not item.delete|default(False)
-  tags: ['users','sshkeys']
+- name: useraccess | get vm_owner ssh keys (can be a system or normal user)
+  set_fact:
+    vm_owner: "{{ item }}"
+  when: >
+    vm_owner is defined
+    and item.name == vm_owner
+  with_items:
+    - "{{ systemusers }}"
+    - "{{ users }}"
 
-- name: useraccess | put vm owner public keys in shared_server users
-  authorized_key: user="{{ item.name }}" key="{{ user[vm_owner].sshkeys|join('\n') }}" state=present
-  with_items: "{{ users }}"
-  when: user[vm_owner] is defined and not item.delete|default(False)
-  tags: ['users','sshkeys']
+- name: useraccess | configure vm owner authorized_keys in shared_server users
+  authorized_key:
+    user: "{{ item.0.name }}"
+    key: "{{ item.1 }}"
+    state: present
+  with_nested:
+    - "{{ users }}"
+    - "{{ vm_owner.authorized_keys }}"
+  when:
+    vm_owner.authorized_keys is defined
+    and not item.delete|default(False)
+  tags: ['users','authorized_keys']

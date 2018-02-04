@@ -1,27 +1,49 @@
 ---
 - name: users | create users with standard homedir
-  user: name={{ item.name }} shell={{ item.shell|default("/bin/bash") }} comment="{{ item.full|default(omit) }}"
+  user:
+    name: "{{ item.name }}"
+    shell: "{{ item.shell|default('/bin/bash') }}"
+    comment: "{{ item.full|default(omit) }}"
   with_items: "{{ users }}"
-  when: item.home is not defined and not item.delete|default(False)
+  when: >
+    item.home is not defined
+    and not item.delete|default(False)
   tags: ['users']
 
 - name: users | create users with custom homedir
-  user: name={{ item.name }} shell={{ item.shell|default("/bin/bash") }} home={{ item.home }} createhome=no comment="{{ item.full|default(omit) }}"
+  user:
+    name: "{{ item.name }}"
+    shell: "{{ item.shell|default('/bin/bash') }}"
+    home: "{{ item.home }}"
+    createhome: no
+    comment: "{{ item.full|default(omit) }}"
   with_items: "{{ users }}"
-  when: item.home is defined and not item.delete|default(False)
+  when: >
+    item.home is defined
+    and not item.delete|default(False)
   tags: ['users']
 
 - name: users | set user password
-  user: name={{ item.name }} password={{ item.pass.crypted }}
+  user:
+    name: "{{ item.name }}"
+    password: "{{ item.pass.crypted }}"
   with_items: "{{ users }}"
-  when: item.pass is defined and not item.delete|default(False)
+  when: >
+    item.pass is defined
+    and not item.delete|default(False)
   tags: ['users']
 
 - name: users | set owner groups
-  user: name={{ vm_owner }} groups=developers,adm
+  user:
+    name: "{{ vm_owner }}"
+    groups: developers,adm
   tags: ['users']
 
 - name: users | deny ftp for owners_user
-  lineinfile: dest=/etc/ftpusers line='{{ vm_owner }}' state=present create=yes
+  lineinfile:
+    dest: /etc/ftpusers
+    line: '{{ vm_owner }}'
+    state: present
+    create: yes
   when: install_vsftpd == True
   tags: ['users']
