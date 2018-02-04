@@ -1,6 +1,6 @@
 ---
-- include: install.yml
+- import_tasks: install.yml
 
-- include: configure-client.yml
+- import_tasks: configure-client.yml
 
-- include: plugins.yml
+- import_tasks: plugins.yml
