@@ -13,11 +13,14 @@ monitoring_over_ssh: True
 borgbackup_required: True
 borgbackup_passphrase: jout3tiChe0keetae0Ietei0ohsh3ol8
 
-vm_owner: devuser1
+vm_owner: nimdb
 
 # defaults = no homedir, no password
 users:
   - name: devuser1
+    authorized_keys:
+      - 'ssh-rsa kieken devuser1@hier'
+      - 'ssh-rsa nogeenkieken devuser2@daar'
 
   - name: svhost1
     home: /var/www/sites/svhost1
