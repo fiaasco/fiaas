@@ -1,24 +1,50 @@
 ---
 - name: create user {{ item.name }}
-  user: name={{ item.name }} shell=/bin/bash
+  user:
+    name: "{{ item.name }}"
+    shell: /bin/bash
   with_items: "{{ systemusers }}"
 
 - name: put public key for {{ item.name }}
-  authorized_key: user={{ item.name }} key="{{ item.sshkeys|join('\n') }}" state=present
-  with_items: "{{ systemusers }}"
+  authorized_key:
+    user: "{{ item.0.name }}"
+    key: "{{ item.1 }}"
+    state: present
+  with_subelements:
+    - "{{ systemusers }}"
+    - authorized_keys
+    - skip_missing: True
 
 - name: grant {{ item.name }} sudo
-  lineinfile: "dest=/etc/sudoers.d/fiaasco regexp='^{{ item.name }}' line='{{ item.name }}        ALL = NOPASSWD: ALL' state=present create=yes mode=0440"
+  lineinfile:
+    dest: /etc/sudoers.d/fiaasco
+    regexp: '^{{ item.name }}'
+    line: '{{ item.name }}        ALL = NOPASSWD: ALL'
+    state: present
+    create: yes
+    owner: root
+    group: root
+    mode: "0440"
+    validate: '/usr/sbin/visudo -cf %s'
   with_items: "{{ systemusers }}"
 
 - name: create group for developers
-  group: name=developers
+  group:
+    name: developers
 
 - name: create group for customers
-  group: name=customers
+  group:
+    name: customers
 
 - name: create group for ftpusers
-  group: name=ftpusers
+  group:
+    name: ftpusers
 
 - name: put developers sudoers
-  template: src=sudo-devs.j2 dest=/etc/sudoers.d/developers owner=root group=root mode=0440 validate='visudo -cf %s'
+  template:
+    src: sudo-devs.j2
+    dest: /etc/sudoers.d/developers
+    owner: root
+    group: root
+    mode: "0440"
+    validate: 'visudo -cf %s'
