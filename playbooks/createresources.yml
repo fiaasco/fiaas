@@ -6,9 +6,6 @@
   pre_tasks:
     - include_vars: "./os_vars/{{ ansible_distribution_release }}.yml"
       tags: ['always']
-    - include_vars: "./../inventory/{{ platform }}/group_vars/{{ item }}.yml"
-      with_items:
-        - owners
 
   roles:
     - role: createresources
