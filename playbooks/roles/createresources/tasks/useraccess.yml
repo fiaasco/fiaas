@@ -11,16 +11,6 @@
   when: not item.delete|default(False)
   tags: ['users','authorized_keys']
 
-- name: useraccess | get vm_owner ssh keys (can be a system or normal user)
-  set_fact:
-    vm_owner: "{{ item }}"
-  when: >
-    vm_owner is defined
-    and item.name == vm_owner
-  with_items:
-    - "{{ systemusers }}"
-    - "{{ users }}"
-
 - name: useraccess | configure vm owner authorized_keys in shared_server users
   authorized_key:
     user: "{{ item.0.name }}"
@@ -28,8 +18,9 @@
     state: present
   with_nested:
     - "{{ users }}"
-    - "{{ vm_owner.authorized_keys }}"
+    - "{{ owners[vm_owner].authorized_keys }}"
   when:
-    vm_owner.authorized_keys is defined
+    vm_owner is defined
+    and owners[vm_owner].authorized_keys is defined
     and not item.delete|default(False)
   tags: ['users','authorized_keys']
