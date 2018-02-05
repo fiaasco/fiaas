@@ -1,0 +1,4 @@
+---
+- name: php 5.6 for debian stretch
+  include: php56.yml
+  when: stretch_php56

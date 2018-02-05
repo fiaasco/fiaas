@@ -1,0 +1,61 @@
+---
+- name: install apt-transport-https
+  apt:
+    name: apt-transport-https
+    state: installed
+
+- apt_key:
+    url: "https://packages.sury.org/php/apt.gpg"
+    state: present
+
+- name: add repo
+  apt_repository:
+    repo: "deb https://packages.sury.org/php/ stretch main"
+    update_cache: yes
+
+- name: install php5.6 default required php packages
+  apt:
+    name: "{{ item }}"
+    state: installed
+    cache_valid_time: 3600
+    update_cache: yes
+  with_items:
+    - "{{ php56_default_pkgs }}"
+  notify: restart php56
+
+- name: install extra required packages
+  apt:
+    name: "{{ item }}"
+    state: installed
+    cache_valid_time: 3600
+    update_cache: yes
+  with_items: 
+    - "{{ php56_extra_pkg }}"
+  notify: restart php56
+
+- name: put php.ini
+  template:
+    src: "php.ini.j2"
+    dest: /etc/php/5.6/fpm/php.ini
+    owner: root
+    group: root
+    mode: 0644
+  notify: reload php56
+
+- name: put php-fpm.conf
+  template:
+    src: php-fpm.conf.j2
+    dest: /etc/php/5.6/fpm/php-fpm.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: reload php56
+
+- name: put www-data pool config-file
+  template:
+    src: www.conf.j2
+    dest: /etc/php/5.6/fpm/pool.d/www.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: reload php56

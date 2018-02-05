@@ -1,0 +1,15 @@
+---
+stretch_php56: False
+
+php56_default_pkgs:
+  - php5.6-fpm
+  - php5.6-cli
+  - php5.6-common
+  - php5.6-curl
+  - php5.6-dev
+  - php5.6-gd
+  - php5.6-mysqlnd
+  - php5.6-mcrypt
+  - php5.6-imagick
+
+php56_extra_pkg: []
