@@ -13,7 +13,7 @@ monitoring_over_ssh: True
 borgbackup_required: True
 borgbackup_passphrase: jout3tiChe0keetae0Ietei0ohsh3ol8
 
-vm_owner: nimdb
+vm_owner: owners2
 
 # defaults = no homedir, no password
 users:

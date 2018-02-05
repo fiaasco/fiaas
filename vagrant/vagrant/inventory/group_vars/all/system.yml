@@ -8,7 +8,7 @@ ntp_servers:
   - "2.be.pool.ntp.org"
   - "3.be.pool.ntp.org"
 
-# system ssh user
+# system ssh user (full admin access)
 systemusers:
   - name: nimda
     full: "Admin A"
