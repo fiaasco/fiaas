@@ -1,26 +1,53 @@
 ---
 - include_tasks: users.yml
+  tags:
+    - users
 
 - include_tasks: directories.yml
+  tags:
+    - directories
 
 - include_tasks: symlinks.yml
+  tags:
+    - symlinks
 
 - include_tasks: useraccess.yml
+  tags:
+    - authorized_keys
+    - users
 
 - include_tasks: phppools.yml
+  tags:
+    - phppools
 
 - include_tasks: letsencrypt.yml
+  tags:
+    - vhosts
+    - letsencrypt
 
 - include_tasks: vhosts.yml
+  tags:
+    - vhosts
 
 - include_tasks: acls.yml
+  tags:
+    - acls
 
 - include_tasks: databases.yml
+  tags:
+    - databases
 
 - include_tasks: "solr-shared-debian{{ ansible_distribution_major_version }}.yml"
   when: solr_required == True
+  tags:
+    - solr
 
 - include_tasks: "solr-cores-debian{{ ansible_distribution_major_version }}.yml"
   when: solr_required == True
+  tags:
+    - solr
 
 - include_tasks: logrotate.yml
+  tags:
+    - vhosts
+    - logrotate

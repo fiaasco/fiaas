@@ -158,7 +158,6 @@
     group: root
     mode: "0644"
   when: apache.version == "2.2"
-  tags: ['logrotate']
 
 - name: enable logrotation for /var/www/apache2/
   copy:
@@ -168,7 +167,6 @@
     group: root
     mode: "0644"
   when: apache.version == "2.4"
-  tags: ['logrotate']
 
 - name: copy over htpasswd for fiaas.co
   template:

@@ -3,4 +3,3 @@
   file: path={{ item.dest }} state=absent
   with_items: "{{ symlinks }}"
   when: item.delete|default(False)
-  tags: symlinks

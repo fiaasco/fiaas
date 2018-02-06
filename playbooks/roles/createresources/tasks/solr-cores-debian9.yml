@@ -9,7 +9,6 @@
   with_items: "{{ solr_cores }}"
   when: not item.delete|default(False)
   notify: restart solr
-  tags: ['solr']
 
 - name: solr-multicore | sync core config
   shell: rsync -a {{ solr_installPath }}/{{ solr_multicoreRoot }}/solr/collection1/conf/ {{ solr_installPath }}/{{ solr_multicoreRoot }}/solr/{{ item.name }}/conf/
@@ -18,4 +17,3 @@
   with_items: "{{ solr_cores }}"
   when: not item.delete|default(False)
   notify: restart solr
-  tags: ['solr']

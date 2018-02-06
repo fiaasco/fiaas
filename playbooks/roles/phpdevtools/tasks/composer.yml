@@ -7,4 +7,3 @@
     group: "root"
     mode: "0755"
     url: "{{ composer_url }}"
-  tags: composer

@@ -3,27 +3,23 @@
   file: dest=/etc/ssl/{{ item.url }} state=absent
   with_items: "{{ vhosts }}"
   when: item.ssl|default(False) != "letsencrypt" and item.delete|default(False)
-  tags: ['vhosts']
 
 - name: vhosts | unlink letsencrypt cert directory
   file: path=/etc/ssl/{{ item.url }} state=absent
   with_items: "{{ vhosts }}"
   when: item.ssl|default(False) == "letsencrypt" and item.delete|default(False)
-  tags: ['vhosts']
 
 - name: vhosts | disable site when it's not default
   file: path=/etc/apache2/sites-enabled/{{ item.url }}.conf state=absent
   with_items: "{{ vhosts }}"
   when: item.default is not defined and item.delete|default(False)
   notify: reload apache2
-  tags: ['vhosts']
 
 - name: vhosts | disable site as default
   file: path=/etc/apache2/sites-enabled/001-default.conf state=absent
   with_items: "{{ vhosts }}"
   notify: reload apache2
   when: item.default is defined and item.delete|default(False)
-  tags: ['vhosts']
 
 - name: vhosts | disable nginx vhost
   file:
@@ -32,20 +28,17 @@
   with_items: "{{ vhosts }}"
   notify: reload nginx
   when: nginx_required and item.delete|default(False)
-  tags: ['vhosts']
 
 - name: vhosts | remove extras file
   file: path=/etc/apache2/extra.d/extra.{{ item.url }}.conf state=absent
   with_items: "{{ vhosts }}"
   when: item.delete is defined
-  tags: ['vhosts']
 
 - name: vhosts | remove vhost
   file: path=/etc/apache2/sites-available/{{ item.url }}.conf state=absent
   with_items: "{{ vhosts }}"
   when: item.delete|default(False)
   notify: reload apache2
-  tags: ['vhosts']
 
 - name: vhosts | remove nginx vhost
   file:
@@ -54,6 +47,5 @@
   with_items: "{{ vhosts }}"
   notify: reload nginx
   when: nginx_required and item.delete|default(False)
-  tags: ['vhosts']
 
 # Only delete apache and ssl contents here, all the subdirs and files created for vhosts logs and data will be removed by removing the basedir

@@ -8,7 +8,6 @@
   when: >
     item.home is not defined
     and not item.delete|default(False)
-  tags: ['users']
 
 - name: users | create users with custom homedir
   user:
@@ -21,7 +20,6 @@
   when: >
     item.home is defined
     and not item.delete|default(False)
-  tags: ['users']
 
 - name: users | set user password
   user:
@@ -31,13 +29,11 @@
   when: >
     item.pass is defined
     and not item.delete|default(False)
-  tags: ['users']
 
 - name: users | set owner groups
   user:
     name: "{{ vm_owner }}"
     groups: developers,adm
-  tags: ['users']
 
 - name: users | deny ftp for owners_user
   lineinfile:
@@ -46,4 +42,3 @@
     state: present
     create: yes
   when: install_vsftpd == True
-  tags: ['users']

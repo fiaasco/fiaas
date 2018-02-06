@@ -9,7 +9,6 @@
     - authorized_keys
     - skip_missing: True
   when: not item.delete|default(False)
-  tags: ['users','authorized_keys']
 
 - name: useraccess | configure vm owner authorized_keys in shared_server users
   authorized_key:
@@ -23,4 +22,3 @@
     vm_owner is defined
     and owners[vm_owner].authorized_keys is defined
     and not item.delete|default(False)
-  tags: ['users','authorized_keys']
