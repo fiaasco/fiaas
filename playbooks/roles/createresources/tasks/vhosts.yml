@@ -3,26 +3,22 @@
   file: dest=/etc/ssl/{{ item.url }} state=directory
   with_items: "{{ vhosts }}"
   when: item.ssl|default('letsencrypt') != "letsencrypt" and not item.delete|default(False)
-  tags: ['vhosts']
 
 - name: vhosts | generate self signed certificates
   command: openssl req -new -nodes -x509 -subj "/C=BE/ST=BXL/L=Belgium/O=IT/CN={{ ansible_fqdn }}" -days 3650 -keyout /etc/ssl/{{ item.url }}/{{ item.url }}.key -out /etc/ssl/{{ item.url }}/{{ item.url }}.crt -extensions v3_ca creates=/etc/ssl/{{ item.url }}/{{ item.url }}.crt
   when: item.ssl|default(False) == "selfsigned" and not item.delete|default(False)
   with_items: "{{ vhosts }}"
-  tags: ['vhosts']
 
 # letsencrypt
 - name: vhosts | generate letsencrypt certificates
   shell: /root/ssl/request-{{ item.url }}.sh  creates=/root/.acme.sh/{{ item.url }}/{{ item.url }}.cer
   when: item.ssl|default(False) == "letsencrypt" and not item.delete|default(False)
   with_items: "{{ vhosts }}"
-  tags: ['vhosts']
 
 - name: vhosts | symlink directory
   file: src=/root/.acme.sh/{{ item.url }} dest=/etc/ssl/{{ item.url }} state=link
   with_items: "{{ vhosts }}"
   when: item.ssl|default(False) == "letsencrypt" and not item.delete|default(False)
-  tags: ['vhosts']
 
 # halt playbook on current host when commercial certificate is not found
 - name: vhosts | check for commercial certificate
@@ -32,21 +28,18 @@
   register: sslpaths
   changed_when: False
   failed_when: "'No such file or directory' in sslpaths.stdout"
-  tags: ['vhosts']
 
 - name: vhosts | put apache 2.2 vhost templates
   template: src=vhost22.j2 dest=/etc/apache2/sites-available/{{ item.url }}.conf owner=root group=root mode=0644
   with_items: "{{ vhosts }}"
   when: apache.version == "2.2" and not item.delete|default(False)
   notify: reload apache2
-  tags: ['vhosts']
 
 - name: vhosts | put apache 2.4 vhost templates
   template: src=vhost24.j2 dest=/etc/apache2/sites-available/{{ item.url }}.conf owner=root group=root mode=0644
   with_items: "{{ vhosts }}"
   when: apache.version == "2.4" and not item.delete|default(False)
   notify: reload apache2
-  tags: ['vhosts']
 
 - name: vhosts | put nginx vhost templates
   template:
@@ -58,7 +51,6 @@
   with_items: "{{ vhosts }}"
   when: nginx_required and not item.delete|default(False)
   notify: reload nginx
-  tags: ['vhosts']
 
 - name: vhosts | enable nginx vhost config
   file:
@@ -68,27 +60,23 @@
   with_items: "{{ vhosts }}"
   when: nginx_required and not item.delete|default(False)
   notify: reload nginx
-  tags: ['vhosts']
 
 - name: vhosts | enable site when it's not default
   shell: a2ensite {{ item.url }}.conf creates=/etc/apache2/sites-enabled/{{ item.url }}.conf
   with_items: "{{ vhosts }}"
   when: item.default is not defined and not item.delete|default(False)
   notify: reload apache2
-  tags: ['vhosts']
 
 - name: vhosts | enable site as default
   file: src=/etc/apache2/sites-available/{{ item.url }}.conf dest=/etc/apache2/sites-enabled/001-default.conf state=link
   with_items: "{{ vhosts }}"
   notify: reload apache2
   when: item.default is defined and not item.delete|default(False)
-  tags: ['vhosts']
 
 - name: vhosts | place extras file
   lineinfile: dest=/etc/apache2/extra.d/extra.{{ item.url }}.conf line="# Define your extras here" state=present create=yes
   with_items: "{{ vhosts }}"
   when: not item.delete|default(False)
-  tags: ['vhosts']
 
 - name: vhosts | create private files dir outside web root
   file: dest={{ item.0.basedir }}/private owner={{ item.1.user }} group={{ item.0.owner }} state=directory mode=0775
@@ -96,7 +84,6 @@
     - "{{ vhosts }}"
     - "{{ phppools }}"
   when: not item.0.delete|default(False) and item.0.phppool is defined and item.0.phppool == item.1.name
-  tags: ['vhosts']
 
 - name: vhosts | create tmp dir outside web root
   file: dest={{ item.0.basedir }}/tmp owner={{ item.1.user }} group={{ item.0.owner }} state=directory mode=0775
@@ -104,19 +91,16 @@
     - "{{ vhosts }}"
     - "{{ phppools }}"
   when: not item.0.delete|default(False) and item.0.phppool is defined and item.0.phppool == item.1.name
-  tags: ['vhosts']
 
 - name: vhosts | create web dirs
   file: dest={{ item.basedir }}/web owner={{ item.owner }} group={{ item.owner }} state=directory mode=0775
   with_items: "{{ vhosts }}"
   when: not item.delete|default(False)
-  tags: ['vhosts']
 
 - name: vhosts | create logs dirs
   file: dest={{ item.basedir }}/logs owner=root group={{ item.owner }} state=directory mode=0750
   with_items: "{{ vhosts }}"
   when: not item.delete|default(False)
-  tags: ['vhosts']
 
 - name: vhosts | create symlink {{ item.url }} in homedir for {{ item.owner }}
   file: src={{ item.0.basedir }} dest=~{{ item.1.name }}/{{ item.0.url }} state=link
@@ -124,16 +108,13 @@
     - "{{ vhosts }}"
     - "{{ users }}"
   when: not item.0.delete|default(False) and item.0.owner == item.1.name and item.1.home is not defined
-  tags: ['vhosts', 'symlink']
 
 - name: vhosts | create index.html for vagrant 
   lineinfile: dest={{ item.basedir }}/web/index.html line='^<html><body><p>yes</p></body></html>' state=present create=yes
   with_items: "{{ vhosts }}"
   when: not item.delete|default(False) and ansible_user is defined and ansible_user == "vagrant" and item.phppool is not defined
-  tags: ['vhosts']
 
 - name: vhosts | create index.php for vagrant 
   lineinfile: dest={{ item.basedir }}/web/index.php line='^<?php phpinfo(); ?>' state=present create=yes
   with_items: "{{ vhosts }}"
   when: not item.delete|default(False) and ansible_user is defined and ansible_user == "vagrant" and item.phppool is defined
-  tags: ['vhosts']

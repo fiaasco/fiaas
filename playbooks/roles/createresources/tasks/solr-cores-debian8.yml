@@ -4,18 +4,15 @@
   with_items: "{{ solr_cores }}"
   when: not item.delete|default(False)
   notify: restart solr-jetty8
-  tags: ['solr']
 
 - name: solr-jetty8 | sync core config
   shell: rsync -a /etc/solr/conf/ /var/lib/solr/{{ item.name }}/conf/ creates=/var/lib/solr/{{ item.name }}/conf/solrconfig.xml
   with_items: "{{ solr_cores }}"
   when: not item.delete|default(False)
   notify: restart solr-jetty8
-  tags: ['solr']
 
 - name: solr-jetty8 | link core
   file: src=/var/lib/solr/{{ item.name }} dest=/usr/share/solr/{{ item.name }} state=link
   with_items: "{{ solr_cores }}"
   when: not item.delete|default(False)
   notify: restart solr-jetty8
-  tags: ['solr']

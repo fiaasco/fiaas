@@ -1,4 +1,4 @@
 ---
 - name: Install Apache Solr
-  include: download.yml
+  import_tasks: download.yml
   when: ansible_distribution_major_version >= '9' and solr_required == True

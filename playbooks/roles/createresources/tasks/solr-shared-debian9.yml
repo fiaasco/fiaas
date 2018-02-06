@@ -7,7 +7,6 @@
     group: "{{ solr_user }}" 
     mode: 0644
   notify: restart solr
-  tags: ['solr']
 
 - name: solr | put other config
   template:
@@ -20,4 +19,3 @@
     - "realm.properties"
     - "webdefault.xml"
   notify: restart solr
-  tags: ['solr']

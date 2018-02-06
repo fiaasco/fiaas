@@ -1,18 +1,14 @@
-user:
-  devuser1:
-    full: "Dev user customer1"
-    sshkeys:
+---
+owners:
+  owner1:
+    full: "Superdev 1"
+    authorized_keys:
       - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBhXDLzUNugkn++tWZSeBsCGh2+hDqrOqyHKeBUiyfE/U96JxdzQq79GON/2pJsadtt+9ugBjFIYQ18SbuLwp3mtjPQVdyNY7/D0JGfiVuiZ4gS10CSMS32tifdlN6ZahzZO+YXzERdTFMAIE4VRBPB53jpW0NcPnyG8GO8MGDhvEqdiAVuoIZ4eU0Hsa4/fuOp4FB/3D2kDaOnN8UKvZe0LTiwUr8Oc3msdt7ofSR/Wxa6df218YOhkQIEkKH2dAywGnkj++5/GVxebW+MYGtKNTdYYVctrNlXbS9Az3rHshMyU+P9+snAAu7N4w2k570zTQuXuTogXYuEFDwKoKz"
-  devuser2:
+  owner2:
     full: "Geen 1 zonder 2"
-    sshkeys:
+    authorized_keys:
       - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQOb78nQepl3yhCWFkSFXe8IqmbSDOSbMHA0WqpvF3S+Jiko0/qNVJgkMH+cnW/Fvy6U9Wnjz2vhR/jO3yCh8WqUqGyK4sufsitJGpucXGkK3DbrwCYHkh+VIULruXPpVDLCahAANnvIJ7R9PG4T+re8iiCPym59gToXSCQ7ejECYK8jBv77cHo+uuKdDyuhRe5UiS3F/fwO+7GD6DAjKufJyULWPMcHghHBIuIUKyfrJ2w7Relw94zl7St7zi46D3VmLebEw4A4TnacmYQ6DqoFhuuEyaLZWpXHl0yk3DcRXZXK01H2xvl+rJapGiRFqowNddEi6ViU5hWBXX07ot"
-  dev1:
-    full: "Dev user 1"
-    sshkeys:
+  owner3:
+    full: "Dev user 3"
+    authorized_keys:
       - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBhXDLzUNugkn++tWZSeBsCGh2+hDqrOqyHKeBUiyfE/U96JxdzQq79GON/2pJsadtt+9ugBjFIYQ18SbuLwp3mtjPQVdyNY7/D0JGfiVuiZ4gS10CSMS32tifdlN6ZahzZO+YXzERdTFMAIE4VRBPB53jpW0NcPnyG8GO8MGDhvEqdiAVuoIZ4eU0Hsa4/fuOp4FB/3D2kDaOnN8UKvZe0LTiwUr8Oc3msdt7ofSR/Wxa6df218YOhkQIEkKH2dAywGnkj++5/GVxebW+MYGtKNTdYYVctrNlXbS9Az3rHshMyU+P9+snAAu7N4w2k570zTQuXuTogXYuEFDwKoKz"
-  dev2:
-    full: "dev user 2"
-    sshkeys:
-      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBhXDLzUNugkn++tWZSeBsCGh2+hDqrOqyHKeBUiyfE/U96JxdzQq79GON/2pJsadtt+9ugBjFIYQ18SbuLwp3mtjPQVdyNY7/D0JGfiVuiZ4gS10CSMS32tifdlN6ZahzZO+YXzERdTFMAIE4VRBPB53jpW0NcPnyG8GO8MGDhvEqdiAVuoIZ4eU0Hsa4/fuOp4FB/3D2kDaOnN8UKvZe0LTiwUr8Oc3msdt7ofSR/Wxa6df218YOhkQIEkKH2dAywGnkj++5/GVxebW+MYGtKNTdYYVctrNlXbS9Az3rHshMyU+P9+snAAu7N4w2k570zTQuXuTogXYuEFDwKoKz"
-

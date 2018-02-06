@@ -1,14 +1,27 @@
 ---
 - name: configure hostname
-  template: src=hostname.j2 dest=/etc/hostname owner=root group=root mode=0744
-  tags: ['hostname']
+  template:
+    src: hostname.j2
+    dest: /etc/hostname
+    owner: root
+    group: root
+    mode: "0644"
 
 - name: put hosts file on vagrant
-  copy: src=vagrant-hosts dest=/etc/hosts mode=0644 owner=root group=root
+  copy:
+    src: vagrant-hosts
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: "0644"
   when: ansible_virtualization_type=="virtualbox"
 
 - name: fix hosts
-  lineinfile: dest=/etc/hosts regexp="{{ item.regex }}" line="{{ item.line }}" state=present
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "{{ item.regex }}"
+    line: "{{ item.line }}"
+    state: present
   with_items:
     - { regex: "^127.0.0.1", line: "127.0.0.1  localhost" }
     - { regex: "^127.0.1.1", line: "127.0.1.1  {{ inventory_hostname }}  {{ inventory_hostname.split('.')[0] }}" }

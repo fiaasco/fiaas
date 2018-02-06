@@ -8,18 +8,18 @@ ntp_servers:
   - "2.be.pool.ntp.org"
   - "3.be.pool.ntp.org"
 
-# system ssh user
+# system ssh user (full admin access)
 systemusers:
   - name: nimda
     full: "Admin A"
-    sshkeys:
+    authorized_keys:
       - 'ssh-rsa AAAAkey=='
     mgtips:
       - "10.0.2.5"
       - "192.168.1.2"
   - name: nimdb
     full: "Admin B"
-    sshkeys:
+    authorized_keys:
       - 'ssh-rsa AAAAkey=='
       - 'ssh-rsa BBBBkey=='
 

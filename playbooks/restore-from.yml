@@ -20,10 +20,10 @@
       tags: always
 
 - name: run lamp setup playbook
-  include: lamp.yml
+  import_playbook: lamp.yml
 
 - name: create resources before restore
-  include: createresources.yml
+  import_playbook: createresources.yml
 
 - name: Restore backup from other VM
   hosts: all:!backupservers

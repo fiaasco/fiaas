@@ -2,7 +2,6 @@
 - name: solr | put solr.xml
   template: src=solr.xml.j2 dest=/etc/solr/solr.xml owner=root group=root mode=0644
   notify: restart solr-jetty8
-  tags: ['solr']
 
 - name: solr | put other config
   template: src=jetty8-{{ item }}.j2 dest=/etc/jetty8/{{ item }} owner=root group=root mode=0644
@@ -10,4 +9,3 @@
     - "realm.properties"
     - "webdefault.xml"
   notify: restart solr-jetty8
-  tags: ['solr']

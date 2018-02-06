@@ -3,7 +3,6 @@
   template: src=fastcgiexternal.j2 dest=/etc/apache2/conf.d/fastcgiexternal.conf owner=root group=root mode=0644
   notify: reload apache2
   when: apache.version == "2.2"
-  tags: ['phppools']
 
 - name: remove fpm-pool.d file for defined pools
   file: path=/etc/php5/fpm/pool.d/{{ item.name }}.conf state=absent
@@ -12,7 +11,6 @@
   when: >
     item.delete|default(False) and
     ansible_distribution == 'Debian' and ansible_distribution_major_version < '9'
-  tags: ['phppools']
 
 - name: remove fpm-pool.d file for defined pools
   file: path=/etc/php/7.0/fpm/pool.d/{{ item.name }}.conf state=absent
@@ -21,4 +19,3 @@
   when: >
     item.delete|default(False) and
     ansible_distribution == 'Debian' and ansible_distribution_major_version >= '9'
-  tags: ['phppools']

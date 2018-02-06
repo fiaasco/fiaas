@@ -5,7 +5,6 @@
     state: absent
   with_items: "{{ vhosts }}"
   when: item.delete|default(False)
-  tags: ['vhosts', 'letsencrypt']
 
 - name: remove deleted vhost acme.sh conf (keep certs)
   shell: "/root/.acme.sh/acme.sh --remove -d {{ item.url }}"
@@ -13,4 +12,3 @@
     removes: "/root/.acme.sh/{{ item.url }}/{{ item.url }}.conf"
   with_items: "{{ vhosts }}"
   when: item.delete|default(False)
-  tags: ['vhosts', 'letsencrypt']

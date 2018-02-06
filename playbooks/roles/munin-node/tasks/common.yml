@@ -50,7 +50,7 @@
   notify: reload ufw
   when: monitoring_over_ssh == False and hostvars[item].external_ip is defined
 
-- include: munin-node-ssh.yml
+- import_tasks: munin-node-ssh.yml
   when: monitoring_over_ssh == True
 
 - name: Adapt munin-server config

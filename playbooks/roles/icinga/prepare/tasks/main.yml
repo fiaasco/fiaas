@@ -24,4 +24,4 @@
     to_port: 5665
   when: inventory_hostname in groups.icingaservers
 
-- include: cleanup.yml
+- import_tasks: cleanup.yml

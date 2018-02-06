@@ -1,29 +1,55 @@
 ---
-- include: acls.yml
+- include_tasks: acls.yml
+  tags:
+    - acls
 
-- include: phppools.yml
+- include_tasks: phppools.yml
+  tags:
+    - phppools
 
-- include: letsencrypt.yml
+- include_tasks: letsencrypt.yml
+  tags:
+    - letsencrypt
+    - vhosts
 
-- include: vhosts.yml
+- include_tasks: vhosts.yml
+  tags:
+    - vhosts
 
-- include: logrotate.yml
+- include_tasks: logrotate.yml
+  tags:
+    - vhosts
 
-- include: "solr-shared-debian{{ ansible_distribution_major_version }}.yml"
+- include_tasks: "solr-shared-debian{{ ansible_distribution_major_version }}.yml"
   when: solr_required == True
+  tags:
+    - solr
 
-- include: "solr-cores-debian{{ ansible_distribution_major_version }}.yml"
+- include_tasks: "solr-cores-debian{{ ansible_distribution_major_version }}.yml"
   when: solr_required == True
+  tags:
+    - solr
 
 - name: flush handlers before we remove the basic resources
   meta: flush_handlers
 
-- include: databases.yml
+- include_tasks: databases.yml
+  tags:
+    - databases
 
-- include: symlinks.yml
+- include_tasks: symlinks.yml
+  tags:
+    - symlinks
 
-- include: directories.yml
+- include_tasks: directories.yml
+  tags:
+    - directories
 
-- include: useraccess.yml
+- include_tasks: useraccess.yml
+  tags:
+    - authorized_keys
+    - users
 
-- include: users.yml
+- include_tasks: users.yml
+  tags:
+    - users

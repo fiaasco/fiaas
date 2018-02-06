@@ -158,7 +158,6 @@
     group: root
     mode: "0644"
   when: apache.version == "2.2"
-  tags: ['logrotate']
 
 - name: enable logrotation for /var/www/apache2/
   copy:
@@ -168,7 +167,6 @@
     group: root
     mode: "0644"
   when: apache.version == "2.4"
-  tags: ['logrotate']
 
 - name: copy over htpasswd for fiaas.co
   template:
@@ -198,7 +196,7 @@
 - name: flush handlers to activate changes we need now
   meta: flush_handlers
 
-- include: certificates.yml
+- import_tasks: certificates.yml
 
 - name: add our hostname-vhost-ssl config
   template:

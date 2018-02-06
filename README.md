@@ -19,17 +19,17 @@ Everything is currently built to run all services in one VM.
 Environment setup
 =================
 
-Ansible = 2.2.1(.0) is used for this setup. (1.9.x still appears to work too)
+Ansible = 2.4.3(.0) is used for this setup. Ansible versions before 2.4.0 will no longer work.
 
   * sudo apt-get -y install python-dev libffi-dev libssl-dev python-virtualenv virtualenv
-  * virtualenv ansible-2.2.1
-  * source ansible-2.2.1/bin/activate
-  * pip install ansible==2.2.1.0
+  * virtualenv ansible-2.4.3
+  * source ansible-2.4.3/bin/activate
+  * pip install ansible==2.4.3.0
 
 Executing (vagrant)
 ===================
 
-  * source ansible-2.2.1/bin/activate
+  * source ansible-2.4.3/bin/activate
   * cd vagrant/somevagrantsetup/
   * vagrant up --no-provision
   * provisioning:
@@ -43,12 +43,14 @@ Executing
 =========
 
 ```
-$ source ansible-2.2.1/bin/activate
+$ source ansible-2.4.3/bin/activate
 ```
 
-Assign 2 infra VMs in your inventory for monitoring and backups and run:
+Assign the infra VMs in your inventory for monitoring and backups and run:
 ```
-$ ansible-playbook -i inventory/production/ playbooks/infra-setup.yml
+$ ansible-playbook -i inventory/production/ playbooks/icingaserver.yml
+$ ansible-playbook -i inventory/production/ playbooks/backupserver.yml
+$ ansible-playbook -i inventory/production/ playbooks/muninserver.yml
 ```
 Debian Strech is the only supported version for the infra-servers (for the LAMP VMs Jessie and Wheezy also still supported).
 
@@ -112,7 +114,7 @@ databases:
     user: extuser1
     pass: extpass1
     ip:
-      - 37.252.122.240
+      - 10.2.4.322
 
 phppools:
   - name: vhost1 
@@ -169,7 +171,8 @@ php_extra_pkg: []
 php_pecl_inactive_extensions: []
 php_pecl_extra_extensions: []
 ```
-Define a host in the inventory, create a similar host\_vars file, run the lamp and createresources playbook against your VM and you'll be ready to go.
+Define a host in the inventory, create a similar host\_vars file, copy the [group\_vars/all configuration from the vagrant inventory](https://github.com/FiaasCo/fiaas/tree/master/vagrant/vagrant/inventory/group_vars/all) and define your users, backup and monitoring settings which will apply to all systems.
+run the lamp and createresources playbook against your VM and you'll be ready to go.
 To delete something you created, set delete: True and use the deleteresources playbook to remove them. 
 
 Important:

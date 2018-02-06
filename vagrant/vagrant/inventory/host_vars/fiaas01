@@ -15,9 +15,10 @@ mysql_query_cache_size: 32
 mysql_innodb_buffer_pool_size: 64
 mysql_innodb_thread_concurrency: 2
 
-vm_owner: devuser2
+vm_owner: owner1
 
 users:
+  - name: owner1
   - name: devuser1
   - name: devuser2
   - name: devuser3

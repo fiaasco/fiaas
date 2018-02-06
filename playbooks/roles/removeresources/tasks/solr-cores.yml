@@ -4,11 +4,9 @@
   with_items: "{{ solr_cores }}"
   when: item.delete|default(False)
   notify: restart solr-jetty
-  tags: ['solr']
 
 - name: solr | remove core link
   file: dest=/usr/share/solr/{{ item.name }} state=absent
   with_items: "{{ solr_cores }}"
   when: item.delete|default(False)
   notify: restart solr-jetty
-  tags: ['solr']

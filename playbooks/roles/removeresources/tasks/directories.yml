@@ -3,4 +3,3 @@
   file: path={{ item.name }} state=absent
   with_items: "{{ directories }}"
   when: item.delete|default(False)
-  tags: directories
