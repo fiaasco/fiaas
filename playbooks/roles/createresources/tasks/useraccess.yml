@@ -8,7 +8,7 @@
     - "{{ users }}"
     - authorized_keys
     - skip_missing: True
-  when: not item.delete|default(False)
+  when: not item.0.delete|default(False)
 
 - name: useraccess | configure vm owner authorized_keys in shared_server users
   authorized_key:
@@ -21,4 +21,4 @@
   when:
     vm_owner is defined
     and owners[vm_owner].authorized_keys is defined
-    and not item.delete|default(False)
+    and not item.0.delete|default(False)
