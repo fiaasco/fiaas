@@ -5,44 +5,86 @@
   changed_when: False
 
 - name: phpmyadmin | debconf dbconfig yes
-  debconf: name=phpmyadmin question="phpmyadmin/dbconfig-install" value="true" vtype="boolean"
+  debconf:
+    name: phpmyadmin
+    question: "phpmyadmin/dbconfig-install"
+    value: "true"
+    vtype: "boolean"
   changed_when: False
 
 # before Debian stretch
 - block:
     - name: phpmyadmin | debconf mysql root pass
-      debconf: name=phpmyadmin question="phpmyadmin/mysql/admin-pass" value="{{mysqlrootpass.stdout}}" vtype="password"
+      debconf:
+        name: phpmyadmin
+        question: "phpmyadmin/mysql/admin-pass"
+        value: "{{mysqlrootpass.stdout}}"
+        vtype: "password"
       changed_when: False
 
     - name: phpmyadmin | debconf app pass
-      debconf: name=phpmyadmin question="phpmyadmin/mysql/app-pass" value="{{mysqlrootpass.stdout}}" vtype="password"
+      debconf:
+        name: phpmyadmin
+        question: "phpmyadmin/mysql/app-pass"
+        value: "{{mysqlrootpass.stdout}}"
+        vtype: "password"
       changed_when: False
 
     - name: phpmyadmin | debconf phpmy db pass
-      debconf: name=phpmyadmin question="phpmyadmin/app-password-confirm" value="{{mysqlrootpass.stdout}}" vtype="password"
+      debconf:
+        name: phpmyadmin
+        question: "phpmyadmin/app-password-confirm"
+        value: "{{mysqlrootpass.stdout}}"
+        vtype: "password"
       changed_when: False
   when: ansible_distribution == 'Debian' and ansible_distribution_major_version < '9'
 
 # Debian Stretch
 - block:
     - name: phpmyadmin | debconf app pass
-      debconf: name=phpmyadmin question="phpmyadmin/mysql/app-pass" value="" vtype="password"
+      debconf:
+        name: phpmyadmin
+        question: "phpmyadmin/mysql/app-pass"
+        value: ""
+        vtype: "password"
       changed_when: False
   when: ansible_distribution == 'Debian' and ansible_distribution_major_version >= '9'
 
 - name: phpmyadmin | debconf don't reconfigure webserver
-  debconf: name=phpmyadmin question="phpmyadmin/reconfigure-webserver" value="" vtype="multiselect"
+  debconf:
+    name: phpmyadmin
+    question: "phpmyadmin/reconfigure-webserver"
+    value: ""
+    vtype: "multiselect"
   changed_when: False
 
-- name: phpmyadmin | install package
-  apt: name=phpmyadmin state=installed cache_valid_time=3600 update_cache=yes
+- name: phpmyadmin | install package (no-install-recommends to avoid installing mod-php)
+  apt:
+    name: phpmyadmin
+    state: installed
+    install_recommends: no
+    cache_valid_time: 3600
+    update_cache: yes
 
 - name: phpmyadmin | put apache config
-  template: src=phpmyadmin/{{ apache.version }}.phpmy-apache.conf.j2 dest=/etc/phpmyadmin/apache.conf owner=root group=root mode=0644
+  template:
+    src: "phpmyadmin/{{ apache.version }}.phpmy-apache.conf.j2"
+    dest: /etc/phpmyadmin/apache.conf
+    owner: root
+    group: root
+    mode: "0644"
   notify: restart apache2
 
 - name: phpmyadmin | symlink config
-  file: src=/etc/phpmyadmin/apache.conf dest=/etc/apache2/admin.d/phpmyadmin.conf state=link
+  file:
+    src: /etc/phpmyadmin/apache.conf
+    dest: /etc/apache2/admin.d/phpmyadmin.conf
+    state: link
 
 - name: phmyadmin | put htpasswd.users
-  template: src=phpmyadmin/htpasswd.users dest=/etc/phpmyadmin/htpasswd.users owner=root group=www-data mode=0640
+  template:
+    src: phpmyadmin/htpasswd.users
+    dest: /etc/phpmyadmin/htpasswd.users
+    owner: root
+    group: www-data
+    mode: "0640"

@@ -1,9 +1,18 @@
 ---
 - name: start php
-  service: name=php7.0-fpm state=started enabled=yes
+  service:
+    name: "php{{ php7_version }}-fpm"
+    state: started
+    enabled: yes
 
 - name: restart php
-  service: name=php7.0-fpm state=restarted enabled=yes
+  service:
+    name: "php{{ php7_version }}-fpm"
+    state: restarted
+    enabled: yes
 
 - name: reload php
-  service: name=php7.0-fpm state=reloaded enabled=yes
+  service:
+    name: "php{{ php7_version }}-fpm"
+    state: reloaded
+    enabled: yes

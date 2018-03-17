@@ -1,0 +1,67 @@
+---
+- name: enable surey repo
+  include_tasks: repo.yml
+  when: php7_version != "7.0"
+
+- name: install default required php packages
+  apt:
+    name: "php{{ php7_version }}-{{ item }}"
+    state: installed
+    cache_valid_time: 3600
+    update_cache: yes
+  with_items:
+    - "{{ php_default_pkgs }}"
+
+- name: install exception php packages
+  apt:
+    name: "{{ item }}"
+    state: installed
+    cache_valid_time: 3600
+    update_cache: yes
+  with_items:
+    - php-pear
+
+- name: install extra required packages
+  apt:
+    name: "{{ php7_version }}-{{ item }}"
+    state: installed
+    cache_valid_time: 3600
+    update_cache: yes
+  with_items: 
+    - "{{ php_extra_pkg }}"
+
+- name: put php.ini
+  template:
+    src: php.ini.j2
+    dest: "/etc/php/{{ php7_version }}/fpm/php.ini"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: reload php
+
+- name: put php-fpm.conf
+  template:
+    src: php-fpm.conf.j2
+    dest: "/etc/php/{{ php7_version }}/fpm/php-fpm.conf"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: reload php
+
+- name: put www-data pool config-file
+  template:
+    src: www.conf.j2
+    dest: "/etc/php/{{ php7_version }}/fpm/pool.d/www.conf"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart php
+
+- name: make sure libapache2-mod-php is not installed, use fpm!
+  apt:
+    name: libapache2-mod-php
+    state: absent
+  with_items:
+    - "libapache2-mod-{{ php7_version }}"
+    - libapache2-mod-php
+  notify: restart apache2
