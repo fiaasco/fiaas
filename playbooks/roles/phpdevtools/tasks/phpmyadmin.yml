@@ -58,11 +58,10 @@
     vtype: "multiselect"
   changed_when: False
 
-- name: phpmyadmin | install package (no-install-recommends to avoid installing mod-php)
+- name: phpmyadmin | install package
   apt:
     name: phpmyadmin
     state: installed
-    install_recommends: no
     cache_valid_time: 3600
     update_cache: yes
 
