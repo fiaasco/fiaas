@@ -12,6 +12,7 @@ php_default_pkgs:
   - dev
   - gd
   - mysqlnd
+  - mbstring
   - intl
   - json
   - soap
