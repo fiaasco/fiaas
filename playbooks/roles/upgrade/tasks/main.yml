@@ -42,9 +42,9 @@
   async: 0
   poll: 0
   ignore_errors: true
-  when: reboot == True and upgrades.changed
+  when: reboot|bool == True and upgrades.changed
 
 - name: Wait for server to come back
   local_action: wait_for host={{ ansible_ssh_host }} port=22 state=started delay=10 search_regex=OpenSSH
   become: False
-  when: reboot == True
+  when: reboot|bool == True
