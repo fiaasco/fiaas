@@ -35,7 +35,7 @@ http {
 
 	ssl_protocols {{ ssl_protocols }};
 	ssl_prefer_server_ciphers on;
-        ssl_ciphers "{{ ssl_ciphers }}";
+        ssl_ciphers "{{ ssl_ciphers|join(':') }}";
 
 	##
 	# Logging Settings

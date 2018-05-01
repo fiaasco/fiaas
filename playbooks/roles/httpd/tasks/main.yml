@@ -22,7 +22,7 @@
     - liblwp-useragent-determined-perl
   notify: start apache2
 
-- name: put default ssl.conf ( to disable SSLv3 )
+- name: put ssl.conf
   template:
     src: ssl.conf.j2
     dest: /etc/apache2/mods-available/ssl.conf
