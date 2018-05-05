@@ -15,16 +15,7 @@ SSLSessionCacheTimeout  300
 # Mozilla SSL config
 # generator: https://mozilla.github.io/server-side-tls/ssl-config-generator/
 # docu: https://wiki.mozilla.org/Security/Server_Side_TLS
-{% if apache.version == "2.2" %}
-SSLMutex  file:${APACHE_RUN_DIR}/ssl_mutex
 
-# default to intermediate configuration on older servers with httpd 2.2
-SSLProtocol             {{ ssl_protocols_intermediate }}
-SSLCipherSuite          {{ ssl_ciphers_intermediate|join(':') }}
-SSLHonorCipherOrder     on
-{% endif %}
-
-{% if apache.version == "2.4" %}
 SSLProtocol             {{ ssl_protocols }}
 SSLCipherSuite          {{ ssl_ciphers|join(':') }}
 
@@ -36,6 +27,5 @@ SSLUseStapling          on
 SSLStaplingResponderTimeout 5
 SSLStaplingReturnResponderErrors off
 SSLStaplingCache        shmcb:/var/run/ocsp(128000)
-{% endif %}
 
 </IfModule>

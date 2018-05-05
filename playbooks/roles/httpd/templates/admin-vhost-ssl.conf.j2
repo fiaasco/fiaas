@@ -15,21 +15,9 @@
 	<Directory {{ adminhost_docroot }}>
 		Options FollowSymLinks
 		AllowOverride None
-  {% if apache.version == '2.2' %}
-		Order allow,deny
-		allow from all
-  {% else %}
                 Require all granted
-  {% endif %}
 	</Directory>
 
-  {% if apache.version == '2.2' %}
-	<IfModule mod_fastcgi.c>
-	AddHandler php-fastcgi .php .php5
-  	Action php-fastcgi /php-fpm
-  	Alias /php-fpm /usr/sbin/php-fpm-www-data
-	</IfModule>
-  {% else %}
         <filesmatch "\.php">
     {% if ansible_distribution == 'Debian' and ansible_distribution_major_version < '9' %}
           SetHandler "proxy:unix:/var/run/php5-fpm-www-data.sock|fcgi://www-data"
@@ -43,7 +31,6 @@
 	  ProxySet connectiontimeout=5 timeout=121 acquire=1000
         </Proxy>
 	</IfModule>
-  {% endif %}
 
 	ErrorLog ${APACHE_LOG_DIR}/ssl_error.log
 
@@ -67,11 +54,7 @@
 
 
   {% if 'infra' not in group_names %}
-    {% if apache.version != '2.2' %}
 	IncludeOptional /etc/apache2/admin.d/*.conf
-    {% else %} {# no includeOptional in 2.2 :( #}
-	Include /etc/apache2/admin.d/*.conf
-    {% endif %}
   {% endif %}
 
 </VirtualHost>

@@ -1,9 +1,0 @@
-pip_exec: "pip3.2"
-apache:
-  version: "2.2"
-  defaultsite: "default"
-  confdir: "conf.d"
-python3:
-  - "/usr/bin/python3.2"
-  - "/usr/bin/python3.2mu"
-owncloud_repo: "http://download.opensuse.org/repositories/isv:/ownCloud:/community/Debian_7.0/"
