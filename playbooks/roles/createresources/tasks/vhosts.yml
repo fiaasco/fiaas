@@ -29,16 +29,10 @@
   changed_when: False
   failed_when: "'No such file or directory' in sslpaths.stdout"
 
-- name: vhosts | put apache 2.2 vhost templates
-  template: src=vhost22.j2 dest=/etc/apache2/sites-available/{{ item.url }}.conf owner=root group=root mode=0644
-  with_items: "{{ vhosts }}"
-  when: apache.version == "2.2" and not item.delete|default(False)
-  notify: reload apache2
-
 - name: vhosts | put apache 2.4 vhost templates
   template: src=vhost24.j2 dest=/etc/apache2/sites-available/{{ item.url }}.conf owner=root group=root mode=0644
   with_items: "{{ vhosts }}"
-  when: apache.version == "2.4" and not item.delete|default(False)
+  when: not item.delete|default(False)
   notify: reload apache2
 
 - name: vhosts | put nginx vhost templates

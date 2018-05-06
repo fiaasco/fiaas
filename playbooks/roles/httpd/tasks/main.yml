@@ -49,16 +49,6 @@
     mode: "0644"
   notify: restart apache2
 
-- name: put apache 2.2 security config
-  template:
-    src: 22-security
-    dest: /etc/apache2/conf.d/security
-    owner: root
-    group: root
-    mode: "0644"
-  notify: restart apache2
-  when: apache.version == "2.2"
-
 - name: put apache 2.4 security config
   template:
     src: 24-security.conf
@@ -67,7 +57,6 @@
     group: root
     mode: "0644"
   notify: restart apache2
-  when: apache.version == "2.4"
 
 - name: disable modules (impossible with apache2_module till ansible 2.3)
   shell: a2dismod {{ item }} removes=/etc/apache2/mods-enabled/{{ item }}.load
@@ -76,12 +65,10 @@
     - mpm_prefork
     - mpm_event
   notify: restart apache2
-  when: apache.version == "2.4"
 
 - name: enable mpm_worker (impossible with apache2_module till ansible 2.3)
   shell: a2enmod mpm_worker creates=/etc/apache2/mods-enabled/mpm_worker.load
   notify: restart apache2
-  when: apache.version == "2.4"
 
 - name: enable modules
   apache2_module: name={{ item }} state=present
@@ -97,7 +84,7 @@
   apache2_module:
     name: remoteip
     state: present
-  when: apache.version == "2.4" and varnish_required == True
+  when: varnish_required == True
 
 - name: Apache | Install extra modules
   apt:
@@ -136,28 +123,11 @@
     creates: /etc/apache2/sites-enabled/admin-vhost.conf
   notify: reload apache2
 
-- name: disable default default for 2.2
-  shell: a2dissite 000-default
-  args:
-    removes: /etc/apache2/sites-enabled/000-default
-  when: apache.version == "2.2"
-  notify: reload apache2
-
 - name: disable default default for 2.4
   shell: a2dissite 000-default
   args:
     removes: /etc/apache2/sites-enabled/000-default.conf
-  when: apache.version == "2.4"
   notify: reload apache2
-
-- name: enable logrotation for /var/log/apache2/
-  copy:
-    src: logrotate.apache2
-    dest: /etc/logrotate.d/apache2
-    owner: root
-    group: root
-    mode: "0644"
-  when: apache.version == "2.2"
 
 - name: enable logrotation for /var/www/apache2/
   copy:
@@ -166,7 +136,6 @@
     owner: root
     group: root
     mode: "0644"
-  when: apache.version == "2.4"
 
 - name: copy over htpasswd for fiaas.co
   template:

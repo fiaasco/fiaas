@@ -1,34 +1,12 @@
-# If you just change the port or add more ports here, you will likely also
-# have to change the VirtualHost statement in
-# /etc/apache2/sites-enabled/000-default
-# This is also true if you have upgraded from before 2.2.9-3 (i.e. from
-# Debian etch). See /usr/share/doc/apache2.2-common/NEWS.Debian.gz and
-# README.Debian.gz
-
-{% if apache.version == "2.2" %}
-NameVirtualhost *:443
-{% endif %}
-
 {% if varnish_required == True %}
-{% if apache.version == "2.2" %}
-NameVirtualhost *:8080
-{% endif %}
 Listen 8080
 {% else %}
-{% if apache.version == "2.2" %}
-NameVirtualHost *:80
-{% endif %}
 Listen 80
 {% endif %}
 
 {% if not nginx_required | default(False) %}
 {# only listen on 443 in case we don't use nginx to terminate https #}
 <IfModule mod_ssl.c>
-    # If you add NameVirtualHost *:443 here, you will also have to change
-    # the VirtualHost statement in /etc/apache2/sites-available/default-ssl
-    # to <VirtualHost *:443>
-    # Server Name Indication for SSL named virtual hosts is currently not
-    # supported by MSIE on Windows XP.
     Listen 443
 </IfModule>
 

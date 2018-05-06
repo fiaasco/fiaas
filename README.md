@@ -52,7 +52,7 @@ $ ansible-playbook -i inventory/production/ playbooks/icingaserver.yml
 $ ansible-playbook -i inventory/production/ playbooks/backupserver.yml
 $ ansible-playbook -i inventory/production/ playbooks/muninserver.yml
 ```
-Debian Strech is the only supported version for the infra-servers (for the LAMP VMs Jessie and Wheezy also still supported).
+Debian Strech is the only supported version for the infra-servers (for the LAMP VMs Jessie is also still supported).
 
 Create a LAMP VM:
 ```
