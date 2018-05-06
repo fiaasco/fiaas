@@ -1,14 +1,4 @@
 ---
-- name: define fastcgiexternal servers in apache
-  template:
-    src: fastcgiexternal.j2
-    dest: /etc/apache2/conf.d/fastcgiexternal.conf
-    owner: root
-    group: root
-    mode: "0644"
-  notify: reload apache2
-  when: apache.version == "2.2"
-
 - name: remove fpm-pool.d file for defined pools
   file:
     path: "/etc/php5/fpm/pool.d/{{ item.name }}.conf"

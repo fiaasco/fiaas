@@ -69,18 +69,12 @@ ScriptAlias /munin-cgi/munin-cgi-graph /usr/lib/munin/cgi/munin-cgi-graph
   AuthName "Fiaasco Munin"
   AuthType Basic
   require valid-user
-{% if apache.version == "2.2" %}
-        <IfModule mod_fastcgi.c>
-                SetHandler fastcgi-script
-        </IfModule>
-{% else %}
   <IfModule mod_fcgid.c>
       SetHandler fcgid-script
   </IfModule>
   <IfModule !mod_fcgid.c>
       SetHandler cgi-script
   </IfModule>
-{% endif %}
 
 </Location>
 
@@ -93,18 +87,12 @@ ScriptAlias /munin-cgi/munin-cgi-html /usr/lib/munin/cgi/munin-cgi-html
   AuthName "Fiaasco Munin"
   AuthType Basic
   require valid-user
-{% if apache.version == "2.2" %}
-        <IfModule mod_fastcgi.c>
-                SetHandler fastcgi-script
-        </IfModule>
-{% else %}
   <IfModule mod_fcgid.c>
       SetHandler fcgid-script
   </IfModule>
   <IfModule !mod_fcgid.c>
       SetHandler cgi-script
   </IfModule>
-{% endif %}
 
 </Location>
 

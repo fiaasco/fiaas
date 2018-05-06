@@ -24,20 +24,3 @@
     not item.delete|default(False)
     and ansible_distribution_major_version >= '9'
   notify: reload php{{ item.version|default('7.0') }}
-
-- name: define fastcgiexternal servers in apache
-  template:
-    src: fastcgiexternal.j2
-    dest: /etc/apache2/conf.d/fastcgiexternal.conf
-    owner: root
-    group: root
-    mode: "0644"
-  notify: reload apache2
-  when: apache.version == "2.2"
-
-- name: make sure fastcgiexternal config is absent in newer apache versions
-  file:
-    dest: /etc/apache2/conf.d/fastcgiexternal.conf
-    state: absent
-  notify: reload apache2
-  when: apache.version != "2.2"

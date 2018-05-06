@@ -1,9 +1,6 @@
 # Global configuration
 #
 
-{% if apache.version == "2.2" %}
-LockFile ${APACHE_LOCK_DIR}/accept.lock
-{% endif %}
 PidFile ${APACHE_PID_FILE}
 Timeout 300
 KeepAlive {{ httpd_keepalive }}
@@ -110,13 +107,8 @@ ErrorLog ${APACHE_LOG_DIR}/error.log
 LogLevel warn
 
 # Include module configuration:
-{% if apache.version == "2.2" %}
-Include mods-enabled/*.load
-Include mods-enabled/*.conf
-{% else %}
 IncludeOptional mods-enabled/*.load
 IncludeOptional mods-enabled/*.conf
-{% endif %}
 
 # Include list of ports to listen on and which to use for name based vhosts
 Include ports.conf
@@ -145,10 +137,5 @@ Alias /.well-known/acme-challenge/ /var/www/acme/.well-known/acme-challenge/
 
 
 # Include generic snippets of statements
-{% if apache.version == "2.2" %}
-Include conf.d/
-Include sites-enabled/
-{% else %}
 IncludeOptional conf-enabled/
 IncludeOptional sites-enabled/
-{% endif %}

@@ -1,6 +1,0 @@
-customer:
-  customer1:
-    full: "Miriam van de administratie"
-    sshkeys:
-      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIg6IujU7W1xxUODy9PgRhT41By7zqsi7zDro3vfPOH7elxQoYj57fNx3M8ul4wDO8crmeWodnTAcKrbHkD5xWwptUSUvuQGW0vH6h/VfzFuHW5egseuiG2pHfRkhNRBKoGy6VFpyEAo6apd70wh/3t1YjtR49VDlDHET8cg3JEVt7VkBlKhGg9gs9S0v6JI3JdRLNG3rX04XHnm5zQImRFFabe9srzYfDW3RkoZ/uNt28+Uz2na+C9eEWgoZwE6rblyDZ+95T1LhOOnN2EDPlGOENZMPdu3QbDLdnSsx6GwIR0UhsrJAZwvxfwu+96mtAMTYsA/hQfkrM54Q62aH7"
-

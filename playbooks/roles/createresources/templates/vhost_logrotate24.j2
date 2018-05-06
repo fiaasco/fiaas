@@ -6,9 +6,9 @@
 {% if not item.delete|default(False) %}
 
 {{ item.basedir }}/logs/*log {
-  daily
+  {{ logrotate_rotate.when }}
   missingok
-  rotate 365
+  rotate {{ logrotate_rotate.keep }}
   compress
   notifempty
   create 640 root {{ item.owner }}

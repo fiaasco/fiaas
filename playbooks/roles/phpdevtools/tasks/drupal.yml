@@ -6,15 +6,6 @@
     cache_valid_time: 3600
     update_cache: yes
 
-- name: drupal | get drush 8
-  get_url:
-    dest: /usr/local/bin/drush
-    url: http://files.drush.org/drush.phar
-    force: no
-    owner: root
-    group: root
-    mode: "0775"
-
 - stat:
     path: /etc/cron.d/drupal
   register: drupal_cron
