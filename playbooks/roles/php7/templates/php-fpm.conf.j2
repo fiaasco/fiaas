@@ -14,14 +14,14 @@
 ; Pid file
 ; Note: the default prefix is /var
 ; Default Value: none
-pid = /run/php/php7.0-fpm.pid
+pid = /run/php/php{{ php7_version }}-fpm.pid
 
 ; Error log file
 ; If it's set to "syslog", log is sent to syslogd instead of being written
 ; in a local file.
 ; Note: the default prefix is /var
 ; Default Value: log/php-fpm.log
-error_log = /var/log/php7.0-fpm.log
+error_log = /var/log/php{{ php7_version }}-fpm.log
 
 ; syslog_facility is used to specify what type of program is logging the
 ; message. This lets syslogd specify that messages from different facilities
@@ -139,4 +139,4 @@ process.max = 35
 ; Relative path can also be used. They will be prefixed by:
 ;  - the global prefix if it's been set (-p argument)
 ;  - /usr otherwise
-include=/etc/php/7.0/fpm/pool.d/*.conf
+include=/etc/php/{{ php7_version }}/fpm/pool.d/*.conf

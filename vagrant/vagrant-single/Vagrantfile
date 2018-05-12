@@ -4,8 +4,8 @@
 
 DEBIAN8_BOX = "debian82"
 DEBIAN8_BOX_URL = "http://repo.werus.be/vagrant/debian-8.2-amd64.box"
-DEBIAN9_BOX = "debian91"
-DEBIAN9_BOX_URL = "http://delta.exabyte.be/vagrant-boxes/debian-9.1-amd64.box"
+DEBIAN9_BOX = "debian94"
+DEBIAN9_BOX_URL = "http://delta.exabyte.be/vagrant-boxes/debian-9.4-amd64.box"
 
 Vagrant.configure("2") do |config|
 

@@ -1,14 +1,33 @@
 ---
-# we can't have deps on handlers without running the complete role, so just duplicate them :(
-
 - name: reload php5
-  service: name=php5-fpm state=reloaded enabled=yes
+  service:
+    name: php5-fpm
+    state: reloaded
+    enabled: yes
 
-- name: reload php7
-  service: name=php7.0-fpm state=reloaded enabled=yes
+- name: reload php7.0
+  service:
+    name: php7.0-fpm
+    state: reloaded
+    enabled: yes
+
+- name: reload php7.1
+  service:
+    name: php7.1-fpm
+    state: reloaded
+    enabled: yes
+
+- name: reload php7.2
+  service:
+    name: php7.2-fpm
+    state: reloaded
+    enabled: yes
 
 - name: reload apache2
-  service: name=apache2 state=reloaded enabled=yes
+  service:
+    name: apache2
+    state: reloaded
+    enabled: yes
 
 - name: reload nginx
   service:
@@ -17,22 +36,17 @@
     enabled: yes
 
 - name: restart solr-jetty
-  service: name=jetty state=restarted enabled=yes
+  service:
+    name: jetty
+    state: restarted
+    enabled: yes
 
 - name: restart solr-jetty8
-  service: name=jetty8 state=restarted enabled=yes
+  service:
+    name: jetty8
+    state: restarted
+    enabled: yes
 
 - name: reload ufw
-  ufw: state=reloaded
-
-- name: reload apache2
-  service: name=apache2 state=reloaded enabled=yes
-
-- name: restart solr-jetty
-  service: name=jetty state=restarted enabled=yes
-
-- name: restart solr-jetty8
-  service: name=jetty8 state=restarted enabled=yes
-
-- name: reload ufw
-  ufw: state=reloaded
+  ufw:
+    state: reloaded

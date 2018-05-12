@@ -15,6 +15,10 @@ borgbackup_passphrase: jout3tiChe0keetae0Ietei0ohsh3ol8
 
 vm_owner: owner2
 
+php7_versions:
+  - 7.0
+  - 7.1
+
 # defaults = no homedir, no password
 users:
   - name: devuser1
@@ -129,6 +133,7 @@ phppools:
     pm: dynamic
     user: svhost3
     group: svhost3
+    version: 7.1
 
 vhosts:
   - url: "www.svhost1.com"

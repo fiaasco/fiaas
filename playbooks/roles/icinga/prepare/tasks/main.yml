@@ -16,6 +16,14 @@
     state: present
     update_cache: yes
 
+- name: set apt preferences for icinga
+  copy:
+    src: preferences-icinga
+    dest: /etc/apt/preferences.d/icinga
+    owner: root
+    group: root
+    mode: "0644"
+
 - name: open up port in firewall
   ufw:
     rule: allow
