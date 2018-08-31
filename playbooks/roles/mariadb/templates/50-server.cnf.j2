@@ -26,7 +26,11 @@ skip-external-locking
 
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
-bind-address		= 127.0.0.1
+{% if mysql_remote == True %}
+bind-address = ::
+{% else %}
+bind-address = 127.0.0.1
+{% endif %}
 
 #
 # * Fine Tuning
