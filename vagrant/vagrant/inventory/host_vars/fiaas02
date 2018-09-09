@@ -93,7 +93,9 @@ acls:
    recursive: yes
    default: no
 
-symlinks: []
+symlinks:
+  - src: "/var/www/sites/svhost3"
+    dest: "/var/www/sites/symlink"
 
 solr_cores:
   - name: svhost1-core
@@ -126,7 +128,7 @@ phppools:
     user: svhost1
     group: svhost1
   - name: svhost2
-    pm: dynamic
+    pm: ondemand
     user: svhost2
     group: svhost2
   - name: svhost3
@@ -160,13 +162,9 @@ vhosts:
     monitoring: False
 
 
-php_pecl_extra_extensions:
-  - php5-xhprof
-  - php5-geos
-  - php5-ldap
-
 extra_pkgs: []
-#  - python-pyauthenntlm2
 
-php_extra_pkg: []
+php_extra_pkg:
+  - php7.0-ldap
+
 php_pecl_inactive_extensions: []
