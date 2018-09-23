@@ -2,7 +2,7 @@
 - name: install fail2ban
   apt:
     name: fail2ban
-    state: installed
+    state: present
     cache_valid_time: 3600
     update_cache: yes
   notify: start fail2ban

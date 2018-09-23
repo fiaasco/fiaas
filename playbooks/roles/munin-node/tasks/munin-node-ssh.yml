@@ -2,7 +2,7 @@
 - name: install netcat
   apt:
     name: netcat
-    state: installed
+    state: present
 
 - name: create homedir for munin
   user:

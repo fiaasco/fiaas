@@ -1,11 +1,11 @@
 ---
 - name: install default required php packages
-  apt: name={{ item }} state=installed cache_valid_time=3600 update_cache=yes
+  apt: name={{ item }} state=present cache_valid_time=3600 update_cache=yes
   with_items:
     - "{{ php_default_pkgs }}"
 
 - name: install extra required packages
-  apt: name={{ item }} state=installed cache_valid_time=3600 update_cache=yes
+  apt: name={{ item }} state=present cache_valid_time=3600 update_cache=yes
   when: php_extra_pkg is defined
   with_items: 
     - "{{ php_extra_pkg }}"

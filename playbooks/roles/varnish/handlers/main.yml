@@ -1,13 +1,18 @@
 ---
 - name: start varnish
-  service: name=varnish state=started enabled=yes
+  service:
+    name: varnish
+    state: started
+    enabled: yes
 
 - name: restart varnish
-  service: name=varnish state=restarted enabled=yes
-
-- name: reload varnish
-  service: name=varnish state=reloaded enabled=yes
+  service:
+    name: varnish
+    state: restarted
+    enabled: yes
 
 - name: reload systemd and varnish
-  shell: systemctl daemon-reload
-  notify: restart varnish
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: varnish

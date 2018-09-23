@@ -14,7 +14,7 @@
 - name: install apache webserver
   apt:
     name: "{{ item }}"
-    state: installed
+    state: present
     cache_valid_time: 3600
     update_cache: yes
   with_items:
@@ -89,7 +89,7 @@
 - name: Apache | Install extra modules
   apt:
     name: libapache2-mod-{{ item }}
-    state: installed
+    state: present
   with_items: apache_extra_modules
   when: apache_extra_modules is defined
 
@@ -107,7 +107,7 @@
     dest: /var/www/sites/adminhost/index.html
     owner: root
     group: root
-    mode: "0775"
+    mode: "0644"
 
 - name: add our hostname-vhost config
   template:

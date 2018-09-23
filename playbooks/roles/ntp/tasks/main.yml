@@ -1,6 +1,6 @@
 ---
 - name: install ntp
-  apt: name=ntp state=installed
+  apt: name=ntp state=present
 
 - template: src=ntp.conf.j2 dest=/etc/ntp.conf
   notify: restart ntp

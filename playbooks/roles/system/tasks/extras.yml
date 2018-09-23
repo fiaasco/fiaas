@@ -1,5 +1,5 @@
 ---
 - name: extras | install extra packages
-  apt: name={{ item }} state=installed force=yes
+  apt: name={{ item }} state=present force=yes
   with_items: "{{ extra_pkgs }}"
   when: extra_pkgs is defined
