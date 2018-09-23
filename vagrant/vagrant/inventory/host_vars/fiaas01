@@ -2,7 +2,7 @@
 redis_required: True
 varnish_required: True 
 monitoring_over_ssh: True
-solr_required: False
+solr_required: True
 install_vsftpd: False
 memcached_required: False
 
@@ -20,66 +20,44 @@ vm_owner: owner1
 users:
   - name: owner1
   - name: devuser1
+    authorized_keys:
+      - 'ssh-rsa key devuser1@vagrant'
   - name: devuser2
   - name: devuser3
 
-directories:
-  - name: "/var/www/sites/www.vhost1.com"
-    mode: "0755"
-    delete: True
-  - name: "/var/www/sites/www.vhost2.com"
-    mode: "0755"
-  - name: "/var/www/sites/www.vhost3.com"
-    mode: "0755"
 
-symlinks:
-  - src: "/var/www/sites/www.vhost3.com"
-    dest: "/var/www/sites/symlink"
+directories: []
 
 acls:
- - path: /var/www/sites/www.vhost3.com/web
-   entity: devuser2
-   etype: user
+ - path: /var/log/apache2
+   entity: devuser1
+   etype: group
    permissions: rwx
    recursive: yes
-   default: yes
+   default: no
+
+symlinks:
+  - src: "/var/log/apache2"
+    dest: "/home/devuser1/httpd-logs"
 
 databases:
   - name: vhost1db
     pass: vhost1pass
-    delete: True
   - name: vhost2db
     pass: vhost2pass
   - name: vhost3db
     pass: vhost3pass
   - name: extern1
-    user: extuser1
     pass: extpass1
     ip:
       - "37.252.122.240"
-  - name: extern1
-    user: extuser2
-    pass: extpass2
-    ip:
-      - "37.252.122.241"
-  - name: extern2
-    user: extuser3
-    pass: extpass3
-    ip:
-      - "185.24.220.62"
-  - name: extern3
-    user: extuser2
-    pass: extpass2
-    ip:
-      - "185.24.220.62"
-    
+      - '2a00:1450:400e:803::200e'
 
 phppools:
   - name: vhost1 
     pm: dynamic
     user: www-data
     group: www-data
-    delete: True
   - name: vhost2
     user: www-data
     group: www-data
@@ -89,46 +67,38 @@ phppools:
     group: www-data
     pm: ondemand
 
-solr_cores: []
+solr_cores:
+  - name: vhost1core
+    pass: QuieC5eoFae7thus
+  - name: vhost2core
+    pass: reTeech4ao7aGhai
 
 vhosts:
-  - url: "www.vhost1.com"
-    basedir: "/var/www/sites/www.vhost1.com"
-    admin: "admin@vhost1.com"
-    alias: ['alias1.vhost1.com','alias2.vhost1.com']
+  - url: "www.svhost1.com"
+    basedir: /var/www/sites/svhost1
+    admin: "admin9@aladebeste.be"
+    ssl: selfsigned
+    phppool: svhost1
+    owner: devuser1
+    default: yes
+    monitoring: True
+  - url: "www.svhost2.com"
+    basedir: /var/www/sites/svhost2
+    admin: "ain9@aladeessste.be"
+    phppool: svhost2
+    owner: devuser2
+    monitoring: True
+  - url: "www.svhost3.com"
+    basedir: /var/www/sites/svhost3
+    admin: "ain9@aladeessste.be"
     ssl: selfsigned
     ssl_redirect_http: True
-    phppool: vhost1
-    owner: devuser2
-    delete: True
-    monitoring: True
-  - url: "www.vhost2.com"
-    basedir: "/var/www/sites/www.vhost2.com"
-    admin: "admin@vhost2.com"
-    ssl: selfsigned
-    alias: [ "alias.vhost2.com" ]
-    phppool: vhost2
-    owner: devuser2
+    alias: ['alias1.svhost3.com','alias2.svhost3.com']
+    phppool: svhost3
+    owner: devuser3
     monitoring: False
-  - url: "www.vhost3.com"
-    basedir: "/var/www/sites/www.vhost3.com"
-    admin: "admin@vhost3.com"
-    ssl: selfsigned
-    ssl_redirect_http: True
-    phppool: vhost3
-    owner: devuser1
-    monitoring: True
-  - url: "static.vhost3.com"
-    basedir: "/var/www/sites/static.vhost3.com"
-    admin: "admin@vhost3.com"
-    ssl: selfsigned
-    ssl_redirect_http: True
-    alias: ['alias1.vhost3.com','alias2.vhost3.com']
-    phppool: vhost3
-    owner: devuser1
-    monitoring: True
+
 
 extra_pkgs: []
+
 php_extra_pkg: []
-php_pecl_inactive_extensions: []
-php_pecl_extra_extensions: []
