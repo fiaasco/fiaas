@@ -1,0 +1,14 @@
+---
+- name: Converge
+  hosts: all
+  become: yes
+  pre_tasks:
+    - name: inlude distribution vars
+      include_vars: "../../../../os_vars/{{ ansible_distribution_release }}.yml"
+      tags: ['always']
+    - name: update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+  roles:
+    - role: createresources

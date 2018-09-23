@@ -7,7 +7,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 
 def test_symlinks(host):
-  link = host.file('/var/www/sites/symlink')
-  assert link.exists
-  assert link.is_symlink
-  assert link.linked_to == '/var/www/sites/svhost3'
+    link = host.file('/var/www/sites/symlink')
+    assert link.exists
+    assert link.is_symlink
+    assert link.linked_to == '/var/www/sites/svhost3'
