@@ -1,0 +1,34 @@
+---
+scenario:
+  name: fiaas02
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+lint:
+  name: yamllint
+platforms:
+  - name: fiaas02
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 192.168.131.191
+    box: debian94
+    box_url: http://delta.exabyte.be/vagrant-boxes/debian-9.4-amd64.box
+    memory: 1024
+    cpus: 1
+    provider_options:
+      gui: False
+provisioner:
+  name: ansible
+  inventory:
+    links:
+      host_vars: ../../../../../vagrant/vagrant/inventory/host_vars/
+      group_vars: ../../../../../vagrant/vagrant/inventory/group_vars/
+verifier:
+  name: testinfra
+  lint:
+    name: flake8

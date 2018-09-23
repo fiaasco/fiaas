@@ -1,6 +1,6 @@
 ---
 - name: phptools | install extra packages
-  apt: name={{ item }} state=installed cache_valid_time=3600 update_cache=yes
+  apt: name={{ item }} state=present cache_valid_time=3600 update_cache=yes
   with_items:
     - "{{ phptools_pkgs }}"
 

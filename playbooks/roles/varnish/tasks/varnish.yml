@@ -2,7 +2,7 @@
 - name: install varnish
   apt:
     name: "{{ item }}"
-    state: installed
+    state: present
     cache_valid_time: 3600
     update_cache: yes
   with_items:
@@ -48,7 +48,7 @@
     owner: root
     group: root
     mode: "0644"
-  notify: reload varnish
+  notify: restart varnish
 
 - name: grant read-permission for developers to /etc/varnish/secret
   file:

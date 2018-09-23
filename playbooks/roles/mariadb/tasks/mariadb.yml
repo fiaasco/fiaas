@@ -56,7 +56,10 @@
   notify: restart mysql
 
 - name: ensure mariadb is running
-  meta: flush_handlers
+  service:
+    name: mysql
+    state: started
+    enabled: yes
 
 - name: generate random password
   shell: openssl passwd -in /dev/urandom | head -1

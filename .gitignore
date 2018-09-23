@@ -1,1 +1,6 @@
 .vagrant
+__pycache__
+*.pyc
+*.swp
+*.log
+.cache

@@ -61,7 +61,7 @@
 - name: phpmyadmin | install package
   apt:
     name: phpmyadmin
-    state: installed
+    state: present
     cache_valid_time: 3600
     update_cache: yes
 

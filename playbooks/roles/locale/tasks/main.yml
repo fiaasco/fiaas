@@ -1,4 +1,9 @@
 ---
+- name: install locale packages if not available
+  apt:
+    name: locales
+    state: present
+
 - locale_gen:
     name: "{{ item }}"
     state: present

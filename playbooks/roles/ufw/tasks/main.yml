@@ -1,6 +1,6 @@
 ---
 - name: install ufw
-  apt: package=ufw state=installed
+  apt: package=ufw state=present
   notify: enable ufw
 
 - name: ufw default deny

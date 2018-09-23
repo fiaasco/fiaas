@@ -83,42 +83,38 @@ directories:
   - name: /var/www/sites/svhost3/private/vhostftpuser
     owner: vhostftpuser
     group: svhost3
-    mode: "0775"
+    mode: "2775"
 
 acls:
- - path: /var/www/sites/svhost3/logs
+ - path: /var/www/sites/svhost1/private
    entity: svhost2
    etype: group
    permissions: rwx
    recursive: yes
    default: no
 
-symlinks: []
+symlinks:
+  - src: "/var/www/sites/svhost3"
+    dest: "/var/www/sites/symlink"
 
 solr_cores:
-  - name: svhost1-core
+  - name: vhost1core
     pass: QuieC5eoFae7thus
-  - name: svhost2-core
+  - name: vhost2core
     pass: reTeech4ao7aGhai
-  - name: svhost3-core
-    pass: NeyieV2shie3ahne
-
 
 databases:
-  - name: svhost1-db
-    pass: QuieC5eoFae7thus
-  - name: svhost2-db
-    pass: reTeech4ao7aGhai
-  - name: svhost3-db
-    pass: NeyieV2shie3ahne
-  - name: testdieter
+  - name: vhost1db
+    pass: vhost1pass
+  - name: vhost2db
+    pass: vhost2pass
+  - name: vhost3db
+    pass: vhost3pass
+  - name: extern1
+    pass: extpass1
     ip:
-      - '192.168.131.162'
-      - '192.168.131.164'
+      - "37.252.122.240"
       - '2a00:1450:400e:803::200e'
-    user: dietest
-    pass: diepass
-
 
 phppools:
   - name: svhost1
@@ -126,7 +122,7 @@ phppools:
     user: svhost1
     group: svhost1
   - name: svhost2
-    pm: dynamic
+    pm: ondemand
     user: svhost2
     group: svhost2
   - name: svhost3
@@ -154,19 +150,14 @@ vhosts:
     basedir: /var/www/sites/svhost3
     admin: "ain9@aladeessste.be"
     ssl: selfsigned
+    ssl_redirect_http: True
     alias: ['alias1.svhost3.com','alias2.svhost3.com']
     phppool: svhost3
     owner: svhost3
     monitoring: False
 
 
-php_pecl_extra_extensions:
-  - php5-xhprof
-  - php5-geos
-  - php5-ldap
-
 extra_pkgs: []
-#  - python-pyauthenntlm2
 
-php_extra_pkg: []
-php_pecl_inactive_extensions: []
+php_extra_pkg:
+  - php7.0-ldap

@@ -1,3 +1,4 @@
+---
 - name: Install LAMP env.
   hosts: all:!infra
   become: True
@@ -31,7 +32,7 @@
     - role: nginx
       tags: ['nginx']
     - role: fastcgi
-      tags: ['php','httpd']
+      tags: ['php', 'httpd']
       # before Debian Stretch
     - role: mysql
       tags: ['mysql']

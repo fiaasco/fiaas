@@ -19,17 +19,17 @@ Everything is currently built to run all services in one VM.
 Environment setup
 =================
 
-Ansible = 2.4.3(.0) is used for this setup. Ansible versions before 2.4.0 will no longer work.
+Ansible = 2.6.3 is used for this setup. Ansible versions before 2.4.0 will no longer work.
 
   * sudo apt-get -y install python-dev libffi-dev libssl-dev python-virtualenv virtualenv
-  * virtualenv ansible-2.4.3
-  * source ansible-2.4.3/bin/activate
-  * pip install ansible==2.4.3.0
+  * virtualenv ansible-2.6.3
+  * source ansible-2.6.3/bin/activate
+  * pip install -r requirements.txt
 
 Executing (vagrant)
 ===================
 
-  * source ansible-2.4.3/bin/activate
+  * source ansible-2.6.3/bin/activate
   * cd vagrant/somevagrantsetup/
   * vagrant up --no-provision
   * provisioning:
@@ -43,7 +43,7 @@ Executing
 =========
 
 ```
-$ source ansible-2.4.3/bin/activate
+$ source ansible-2.6.3/bin/activate
 ```
 
 Assign the infra VMs in your inventory for monitoring and backups and run:
@@ -177,6 +177,15 @@ To delete something you created, set delete: True and use the deleteresources pl
 
 Important:
 Always use a fully qualified domainname in your inventory when you define a server, the same fqdn will also be configured as the server hostname (`hostname -f`) if that's not already the case. Don't forget that a default "admin vhost" is added with the servername "{{ inventory\_hostname }}", so you won't be able to add an additional vhost with the fqdn of your server. Per default a Letsencrypt certificate will be requested for the server FQDN, if you are behind a firewall or run in vagrant, configure adminhost\_ssl and use selfsigned or commercial instead of letsencrypt.
+
+Testing
+=======
+Molecule tests are being added.
+Currently the project has Vagrant based Molecule tests in the createresources role. The box is prepared with the lamp playbook, so running the tests for this role can be considered as the integration test for the project. The tests will check if the resources are created and the main services are running after creation.
+Run the tests with:
+$ molecule test --scenario-name fiaas01
+$ molecule test --scenario-name fiaas01-debian8
+$ molecule test --scenario-name fiaas02
 
 Support
 =======

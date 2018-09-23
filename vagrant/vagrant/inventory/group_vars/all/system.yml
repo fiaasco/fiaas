@@ -1,5 +1,5 @@
 ---
-platform: vagrant
+stage: vagrant
 adminhost_ssl: selfsigned
 
 ntp_servers:

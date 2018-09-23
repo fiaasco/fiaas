@@ -4,7 +4,7 @@
     dest: "{{ solr_installPath }}/{{ solr_multicoreRoot }}/solr/{{ item.name }}/conf"
     state: directory
     owner: "{{ solr_user }}"
-    group: "{{ solr_user }}" 
+    group: "{{ solr_user }}"
     mode: 0755
   with_items: "{{ solr_cores }}"
   when: not item.delete|default(False)

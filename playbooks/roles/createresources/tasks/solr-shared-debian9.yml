@@ -4,7 +4,7 @@
     src: multicore-solr-solr.xml.j2
     dest: "{{ solr_installPath }}/{{ solr_multicoreRoot }}/solr/solr.xml"
     owner: "{{ solr_user }}"
-    group: "{{ solr_user }}" 
+    group: "{{ solr_user }}"
     mode: 0644
   notify: restart solr
 
@@ -13,7 +13,7 @@
     src: "solr-multicore-{{ item }}.j2"
     dest: "{{ solr_installPath }}/{{ solr_multicoreRoot }}/etc/{{ item }}"
     owner: "{{ solr_user }}"
-    group: "{{ solr_user }}" 
+    group: "{{ solr_user }}"
     mode: 0644
   with_items:
     - "realm.properties"

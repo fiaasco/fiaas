@@ -26,7 +26,7 @@
 - name: install nginx
   apt:
     name: nginx
-    state: installed
+    state: present
   notify: start nginx
 
 - name: disable default vhost listening on :80 where Apache is

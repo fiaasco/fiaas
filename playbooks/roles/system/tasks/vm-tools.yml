@@ -4,6 +4,6 @@
   register: vmware.legacy
 
 - name: install open-vm-tools on VMware
-  apt: name=open-vm-tools state=installed cache_valid_time=3600 update_cache=yes
+  apt: name=open-vm-tools state=present cache_valid_time=3600 update_cache=yes
   when: ansible_virtualization_type == "VMware"
 

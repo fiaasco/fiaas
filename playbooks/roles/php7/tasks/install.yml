@@ -6,7 +6,7 @@
 - name: install default required php packages | {{ php7_version }}
   apt:
     name: "php{{ php7_version }}-{{ item }}"
-    state: installed
+    state: present
     cache_valid_time: 3600
     update_cache: yes
   with_items:
@@ -15,7 +15,7 @@
 - name: install php 7.0 only packages
   apt:
     name: "{{ item }}"
-    state: installed
+    state: present
     cache_valid_time: 3600
     update_cache: yes
   when: php7_version == "7.0"
@@ -28,7 +28,7 @@
 - name: install extra required packages
   apt:
     name: "{{ item }}"
-    state: installed
+    state: present
     cache_valid_time: 3600
     update_cache: yes
   with_items: 
@@ -61,7 +61,7 @@
     mode: "0644"
   notify: restart php
 
-- name: make sure libapache2-mod-php{{ php7_version }} is not installed, use fpm!
+- name: make sure libapache2-mod-php{{ php7_version }} is not present, use fpm!
   apt:
     name: "{{ item }}"
     state: absent

@@ -1,5 +1,10 @@
 ---
 - name: create directories
-  file: path={{ item.name }} state=directory owner={{ item.owner|default("root") }} group={{ item.group|default("root") }} mode={{ item.mode|default("0770")|int }}
+  file:
+    path: "{{ item.name }}"
+    state: directory
+    owner: "{{ item.owner|default('root') }}"
+    group: "{{ item.group|default('root') }}"
+    mode: "{{ item.mode|default('0770')|int }}"
   with_items: "{{ directories }}"
   when: not item.delete|default(False)

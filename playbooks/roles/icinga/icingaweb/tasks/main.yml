@@ -2,8 +2,8 @@
 # Icingaweb2 manual setup steps taken from
 # https://github.com/Icinga/icingaweb2/blob/master/doc/installation.md
 
-- name: make sure required packages are installed
-  apt: name={{ item }} state=installed
+- name: make sure required packages are present
+  apt: name={{ item }} state=present
   with_items:
     - icingaweb2
     - icinga2-ido-mysql

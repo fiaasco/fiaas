@@ -23,7 +23,7 @@
 - name: install vsftpd
   apt:
     name: vsftpd
-    state: installed
+    state: present
   when: ansible_distribution == 'Debian' and ansible_distribution_major_version >= "8"
 
 - name: open up port in firewall

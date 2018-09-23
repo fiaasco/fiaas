@@ -10,7 +10,7 @@
 - name: install apt-transport-https
   apt:
     name: apt-transport-https
-    state: installed
+    state: present
 
 - apt_key:
     url: "https://packages.sury.org/php/apt.gpg"
