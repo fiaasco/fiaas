@@ -1,0 +1,13 @@
+---
+- name: vi | set vim.tiny as default editor
+  alternatives:
+    name: editor
+    path: /usr/bin/vim.tiny
+
+- name: vi | configure vimrc.local
+  copy:
+    src: vimrc.local
+    dest: /etc/vim/vimrc.local
+    owner: root
+    group: root
+    mode: "0644"

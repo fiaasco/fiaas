@@ -1,6 +1,5 @@
 ---
-- name: system | set vim.tiny as default editor
-  alternatives: name=editor path=/usr/bin/vim.tiny
+- import_tasks: vim.yml
 
 - import_tasks: hostname.yml
 
