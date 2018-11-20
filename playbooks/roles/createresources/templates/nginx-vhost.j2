@@ -34,9 +34,6 @@ server {
         # Diffie-Hellman parameter for DHE ciphersuites, recommended 2048 bits
         ssl_dhparam /etc/ssl/certs/dhparam.pem;
 
-        # intermediate configuration. tweak to your needs.
-        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-
   {% if item.hsts is defined %}
         # HSTS (ngx_http_headers_module is required) (15768000 seconds = 6 months)
         add_header Strict-Transport-Security max-age=15768000;
