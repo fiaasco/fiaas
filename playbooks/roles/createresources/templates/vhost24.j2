@@ -36,7 +36,11 @@ _xfwded{% endif %}
     {% if item.ssl_redirect_http | default(False) %}
       RewriteEngine On
       RewriteCond %{HTTP:X-Forwarded-Proto} !^https$
-      RewriteRule ^(.*)$	https://{{ item.url }}$1 [R=301,L]
+      {% if item.ssl_redirect_to_default|default(True) %}
+      RewriteRule ^(.*)$    https://{{ item.url }}$1 [R=301,L]
+      {% else %}
+      RewriteRule ^(.*)$    https://%{HTTP_HOST}$1 [R=301,L]
+      {% endif %}
     {% endif %}
   {% endif %}
 
