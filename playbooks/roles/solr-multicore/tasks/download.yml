@@ -1,12 +1,11 @@
 ---
 - name: Ensure java is installed
   apt:
-    name: "{{ item }}"
+    name:
+      - curl
+      - rsync
+      - default-jre-headless
     state: present
-  with_items: 
-    - curl
-    - rsync
-    - default-jre-headless
 
 - name: Create directories
   file:

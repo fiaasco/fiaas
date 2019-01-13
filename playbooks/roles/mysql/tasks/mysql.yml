@@ -1,10 +1,13 @@
 ---
 - name: install mysql
-  apt: name={{ item }} state=latest cache_valid_time=3600 update_cache=yes
-  with_items:
-    - automysqlbackup
-    - mysql-server
-    - python-mysqldb
+  apt:
+    name:
+      - automysqlbackup
+      - mysql-server
+      - python-mysqldb
+    state: present
+    cache_valid_time: 3600
+    update_cache: yes
   register: mysqlinstall
   notify: start mysql
 
@@ -17,7 +20,10 @@
   notify: restart mysql
 
 - name: ensure mysql is running
-  meta: flush_handlers
+  service:
+    name: mysql
+    state: started
+    enabled: yes
 
 - name: generate random password
   shell: openssl passwd -in /dev/urandom | head -1

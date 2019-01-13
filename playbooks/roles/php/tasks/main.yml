@@ -1,14 +1,10 @@
 ---
 - name: install default required php packages
-  apt: name={{ item }} state=present cache_valid_time=3600 update_cache=yes
-  with_items:
-    - "{{ php_default_pkgs }}"
+  apt: name={{ php_default_pkgs }} state=present cache_valid_time=3600 update_cache=yes
 
 - name: install extra required packages
-  apt: name={{ item }} state=present cache_valid_time=3600 update_cache=yes
+  apt: name={{ php_extra_pkg }} state=present cache_valid_time=3600 update_cache=yes
   when: php_extra_pkg is defined
-  with_items: 
-    - "{{ php_extra_pkg }}"
 
 - name: put php.ini
   template: src=php.ini.{{ ansible_distribution_release }}.j2 dest=/etc/php5/fpm/php.ini owner=root group=root mode=0644

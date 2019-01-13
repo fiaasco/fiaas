@@ -1,13 +1,12 @@
 ---
 - name: install varnish
   apt:
-    name: "{{ item }}"
+    name:
+      - libxml-parser-perl
+      - varnish
     state: present
     cache_valid_time: 3600
     update_cache: yes
-  with_items:
-    - libxml-parser-perl
-    - varnish
 
 - name: put /etc/default/varnish
   template:

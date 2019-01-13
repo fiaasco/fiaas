@@ -3,36 +3,38 @@
   include_tasks: repo.yml
   when: php7_version != "7.0"
 
+- name: create temporary list to add phpxx- to the package names
+  set_fact:
+    temp_list: "{% for item in php_default_pkgs %}php{{ php7_version }}-{{ item }} {% endfor %}"
+
+- set_fact:
+    package_list: "{{ temp_list.split() }}"
+
 - name: install default required php packages | {{ php7_version }}
   apt:
-    name: "php{{ php7_version }}-{{ item }}"
+    name: "{{ package_list }}"
     state: present
     cache_valid_time: 3600
     update_cache: yes
-  with_items:
-    - "{{ php_default_pkgs }}"
 
 - name: install php 7.0 only packages
   apt:
-    name: "{{ item }}"
+    name:
+      - php-pear
+      - php-imagick
+      - php-uploadprogress
+      - php-mcrypt
     state: present
     cache_valid_time: 3600
     update_cache: yes
   when: php7_version == "7.0"
-  with_items:
-    - php-pear
-    - php-imagick
-    - php-uploadprogress
-    - php-mcrypt
 
 - name: install extra required packages
   apt:
-    name: "{{ item }}"
+    name: "{{ php_extra_pkg }}"
     state: present
     cache_valid_time: 3600
     update_cache: yes
-  with_items: 
-    - "{{ php_extra_pkg }}"
 
 - name: put php.ini | {{ php7_version }}
   template:
@@ -63,9 +65,8 @@
 
 - name: make sure libapache2-mod-php{{ php7_version }} is not present, use fpm!
   apt:
-    name: "{{ item }}"
+    name:
+      - "libapache2-mod-php{{ php7_version }}"
+      - libapache2-mod-php
     state: absent
-  with_items:
-    - "libapache2-mod-php{{ php7_version }}"
-    - libapache2-mod-php
   notify: restart apache2

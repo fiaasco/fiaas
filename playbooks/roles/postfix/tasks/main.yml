@@ -1,14 +1,21 @@
 ---
 - name: install postfix
-  apt: name={{ item }} state=present cache_valid_time=3600 update_cache=yes
+  apt:
+    name:
+      - postfix
+      - mailutils
+    state: present
+    cache_valid_time: 3600
+    update_cache: yes
+
+- name: put postfix configuration
+  template:
+    src: mailname.j2
+    dest: /etc/mailname
+    owner: root
+    group: root
+    mode: "0644"
   with_items:
-    - postfix
-    - mailutils
-
-- name: put mailname
-  template: src=mailname.j2 dest=/etc/mailname owner=root group=root mode=0644
-  notify: restart postfix
-
-- name: put main.cf
-  template: src=main.cf.j2 dest=/etc/postfix/main.cf owner=root group=root mode=0644
+    - mailname.j2
+    - main.cf.j2
   notify: restart postfix
