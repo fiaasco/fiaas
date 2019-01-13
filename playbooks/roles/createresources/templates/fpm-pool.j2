@@ -1,3 +1,4 @@
+#jinja2: trim_blocks: "false", lstrip_blocks: "false"
 ; {{ ansible_managed }}
 
 {% set factor = 2 %}
@@ -26,12 +27,11 @@ pm = dynamic
 pm.start_servers = {{ 1*factor }}
 pm.min_spare_servers = {{ 1*factor }}
 pm.max_spare_servers = {{ 1*factor }}
-pm.max_children = {% if item.max_children is defined %}{{ item.max_children }}{% else %}{{ 4*factor + 2 }}
-{% endif %}
+pm.max_children = {{ item.max_children|default(4*factor + 2) }}
 {% else %}
 pm = ondemand
-pm.max_children = {% if item.max_children is defined %}{{ item.max_children }}{% else %}{{ 2*factor + 2 }}
-{% endif %}
+pm.max_children = {{ item.max_children|default(2*factor + 2) }}
+
 pm.process_idle_timeout = 60
 {% endif %}
 
