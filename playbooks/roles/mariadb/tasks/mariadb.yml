@@ -1,13 +1,12 @@
 ---
 - name: remove conflicting mysql packages
   apt:
-    name: "{{ item }}"
+    name:
+      - mysql-client-5.5
+      - mysql-server-5.5
+      - mysql-server-core-5.5
+      - libmysqlclient18
     state: absent
-  with_items:
-    - mysql-client-5.5
-    - mysql-server-5.5
-    - mysql-server-core-5.5
-    - libmysqlclient18
 
 - name: remove obsolete config files (my.cnf alternative will try to use it otherwise)
   file:
@@ -18,15 +17,14 @@
 
 - name: install mariadb
   apt:
-    name: "{{ item }}"
+    name:
+      - mariadb-client
+      - mariadb-server
+      - automysqlbackup
+      - python-mysqldb
     state: latest
     cache_valid_time: 3600
     update_cache: yes
-  with_items:
-    - mariadb-client
-    - mariadb-server
-    - automysqlbackup
-    - python-mysqldb
   register: mysqlinstall
   notify: start mysql
 

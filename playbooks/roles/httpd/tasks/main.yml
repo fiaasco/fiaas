@@ -13,13 +13,12 @@
 
 - name: install apache webserver
   apt:
-    name: "{{ item }}"
+    name:
+      - apache2
+      - liblwp-useragent-determined-perl
     state: present
     cache_valid_time: 3600
     update_cache: yes
-  with_items:
-    - apache2
-    - liblwp-useragent-determined-perl
   notify: start apache2
 
 - name: put ssl.conf
@@ -86,11 +85,19 @@
     state: present
   when: varnish_required == True
 
+- name: create temporary list to add libapache2-mod- to the package names
+  set_fact:
+    temp_list: "{% for item in apache_extra_modules %}libapache2-mod-{{ item }} {% endfor %}"
+  when: apache_extra_modules is defined
+
+- set_fact:
+    modules_list: "{{ temp_list.split() }}"
+  when: apache_extra_modules is defined
+
 - name: Apache | Install extra modules
   apt:
-    name: libapache2-mod-{{ item }}
+    name: "{{ modules_list }}"
     state: present
-  with_items: apache_extra_modules
   when: apache_extra_modules is defined
 
 - name: Apache | Enable extra modules

@@ -1,12 +1,20 @@
 ---
 - name: install memcached
-  apt: name={{ item }} state=present cache_valid_time=3600 update_cache=yes
-  with_items:
-    - memcached
-    - libcache-memcached-perl
-    - munin-plugins-extra
+  apt:
+    name:
+      - memcached
+      - libcache-memcached-perl
+      - munin-plugins-extra
+    state: present
+    cache_valid_time: 3600
+    update_cache: yes
   notify: start memcached
 
 - name: put memcached config file
-  template: src=memcached.conf.j2 dest=/etc/memcached.conf owner=root group=root mode=0644
+  template:
+    src: memcached.conf.j2
+    dest: /etc/memcached.conf
+    owner: root
+    group: root
+    mode: "0644"
   notify: restart memcached
