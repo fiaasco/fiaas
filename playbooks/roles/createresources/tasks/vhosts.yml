@@ -136,7 +136,7 @@
 
 - name: vhosts | create web dirs
   file:
-    dest: "{{ item.basedir }}/web"
+    dest: "{{ item.basedir }}/{{ item.webdir|default('web') }}"
     owner: "{{ item.owner }}"
     group: "{{ item.owner }}"
     state: directory
@@ -169,7 +169,7 @@
 
 - name: vhosts | create index.html for vagrant
   lineinfile:
-    dest: "{{ item.basedir }}/web/index.html"
+    dest: "{{ item.basedir }}/{{ item.webdir|default('web') }}/index.html"
     line: '^<html><body><p>yes</p></body></html>'
     state: present
     create: yes
@@ -182,7 +182,7 @@
 
 - name: vhosts | create index.php for vagrant
   lineinfile:
-    dest: "{{ item.basedir }}/web/index.php"
+    dest: "{{ item.basedir }}/{{ item.webdir|default('web') }}/index.php"
     line: '^<?php phpinfo(); ?>'
     state: present
     create: yes
