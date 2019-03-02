@@ -20,7 +20,7 @@ def test_apache_vhost_config(host):
     config = host.file('/etc/apache2/sites-available/www.svhost3.com.conf')
     assert config.exists
     assert config.contains('ServerName www.svhost3.com')
-    assert config.contains('DocumentRoot /var/www/sites/svhost3/web')
+    assert config.contains('DocumentRoot /var/www/sites/svhost3/web/public')
     assert config.contains('fcgi://svhost3/')
     assert config.contains('alias1.svhost3.com')
     assert config.contains('alias2.svhost3.com')

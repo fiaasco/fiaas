@@ -10,7 +10,7 @@ def test_vhost_config(host):
     config = host.file('/etc/apache2/sites-available/www.svhost1.com.conf')
     assert config.exists
     assert config.contains('ServerName www.svhost1.com')
-    assert config.contains('DocumentRoot /var/www/sites/svhost1/web')
+    assert config.contains('DocumentRoot /var/www/sites/svhost1/web/public')
     assert config.contains('fcgi://svhost1/')
     config = host.file('/etc/apache2/sites-available/www.svhost2.com.conf')
     assert config.exists

@@ -9,7 +9,7 @@
   {% endif %}
 
   ServerAdmin {{ item.admin }}
-  DocumentRoot {{ item.basedir }}/web
+  DocumentRoot {{ item.basedir }}/{{ item.webdir|default('web') }}
 
   {% if item.phppool is defined %}
   <filesmatch "\.php">
@@ -21,7 +21,7 @@
   </Proxy>
   {% endif %}
 
-  <Directory {{ item.basedir }}/web>
+  <Directory {{ item.basedir }}/{{ item.webdir|default('web') }}>
       Options FollowSymLinks
       Require all granted
       AllowOverride All
@@ -79,9 +79,9 @@ _xfwded{% endif %}
 	  ProxySet connectiontimeout=5 timeout=121 acquire=1000
         </Proxy>
       {% endif %}
-      DocumentRoot {{ item.basedir }}/web
+      DocumentRoot {{ item.basedir }}/{{ item.webdir|default('web') }}
 
-      <Directory {{ item.basedir }}/web>
+      <Directory {{ item.basedir }}/{{ item.webdir|default('web') }}>
         Options FollowSymLinks
         Require all granted
         AllowOverride All
