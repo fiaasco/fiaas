@@ -148,6 +148,7 @@ vhosts:
     monitoring: True
   - url: "www.svhost3.com"
     basedir: /var/www/sites/svhost3
+    webdir: web/public
     admin: "ain9@aladeessste.be"
     ssl: selfsigned
     ssl_redirect_http: True

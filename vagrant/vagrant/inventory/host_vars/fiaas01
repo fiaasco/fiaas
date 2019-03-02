@@ -76,6 +76,7 @@ solr_cores:
 vhosts:
   - url: "www.svhost1.com"
     basedir: /var/www/sites/svhost1
+    webdir: web/public
     admin: "admin9@aladebeste.be"
     ssl: selfsigned
     phppool: svhost1
