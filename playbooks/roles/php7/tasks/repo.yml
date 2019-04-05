@@ -2,7 +2,7 @@
 - name: set apt preferences
   copy:
     src: preferences.conf
-    dest: /etc/apt/preferences.d/prefer-stable
+    dest: /etc/apt/preferences.d/php-preferences
     owner: root
     group: root
     mode: "0644"
