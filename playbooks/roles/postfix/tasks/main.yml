@@ -16,6 +16,11 @@
     group: root
     mode: "0644"
 
+- name: test if certificate exists
+  stat:
+    path: "{{ postfix_certificate }}"
+  register: cert_path
+
 - name: put postfix configuration
   template:
     src: main.cf.j2

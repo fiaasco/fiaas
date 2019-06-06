@@ -4,3 +4,6 @@ relayhost: ""
 # postfix outbound tls settings
 # http://www.postfix.org/postconf.5.html#smtp_tls_security_level
 postfix_outbound_tls: may
+
+postfix_certificate: "/etc/ssl/{{ inventory_hostname }}/fullchain.cer"
+postfix_key: "/etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.key"

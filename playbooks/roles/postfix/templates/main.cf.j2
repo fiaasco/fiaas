@@ -18,12 +18,12 @@ append_dot_mydomain = no
 readme_directory = no
 
 # TLS parameters
-{% if '/etc/ssl/' + inventory_hostname + '/fullchain.cer' %}
+{% if cert_path.stat.exists %}
 # use letsencrypt cert
-smtpd_tls_cert_file=/etc/ssl/{{ inventory_hostname }}/fullchain.cer
-smtpd_tls_key_file=/etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.key
+smtpd_tls_cert_file={{ postfix_certificate }}
+smtpd_tls_key_file={{ postfix_key }}
 {% else %}
-# snakeoil default cert if no letsencrypt cert found
+# snakeoil default cert if no certificate found
 smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
 smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
 {% endif %}
