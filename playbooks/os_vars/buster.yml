@@ -1,0 +1,13 @@
+---
+pip_exec: "pip3"
+apache:
+  version: "2.4"
+  defaultsite: "000-default"
+  confdir: "conf-available"
+python3:
+  - "/usr/bin/python3"
+  - "/usr/bin/python3.7"
+  - "/usr/bin/python3.7mu"
+
+varnish:
+  major_version: 6
