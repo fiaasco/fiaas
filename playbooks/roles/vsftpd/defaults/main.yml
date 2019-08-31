@@ -2,7 +2,7 @@
 
 install_vsftpd: no
 
-vsftpd_listen_port: 990
+vsftpd_listen_port: "990"
 
-vsftpd_pasv_min_port: 50000
-vsftpd_pasv_max_port: 50100
+vsftpd_pasv_min_port: "50000"
+vsftpd_pasv_max_port: "50100"

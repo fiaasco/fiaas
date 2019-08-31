@@ -1,30 +1,8 @@
 ---
-- name: add repo for working vsftpd on Debian Wheezy
-  apt_repository:
-    repo: "deb http://ftp.cyconet.org/debian wheezy-updates main non-free contrib"
-    update_cache: yes
-  when: ansible_distribution == 'Debian' and ansible_distribution_major_version == "7"
-
-- name: install vsftpd on Wheezy
-  apt:
-    name: vsftpd
-    state: latest
-    default_release: wheezy-updates
-    force: yes
-  when: ansible_distribution == 'Debian' and ansible_distribution_major_version == "7"
-
-- name: remove wheezy repo on Jessie
-  apt_repository:
-    repo: "deb http://ftp.cyconet.org/debian wheezy-updates main non-free contrib"
-    state: absent
-    update_cache: yes
-  when: ansible_distribution == 'Debian' and ansible_distribution_major_version >= "8"
-
 - name: install vsftpd
   apt:
     name: vsftpd
     state: present
-  when: ansible_distribution == 'Debian' and ansible_distribution_major_version >= "8"
 
 - name: open up port in firewall
   ufw:
