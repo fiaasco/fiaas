@@ -1,3 +1,3 @@
 ---
 - import_tasks: varnish.yml
-  when: varnish_required == True
+  when: varnish_required|bool
