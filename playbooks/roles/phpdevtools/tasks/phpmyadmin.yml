@@ -67,7 +67,7 @@
 
 - name: phpmyadmin | put apache config
   template:
-    src: "phpmyadmin/{{ apache.version }}.phpmy-apache.conf.j2"
+    src: "phpmyadmin/phpmy-apache.conf.j2"
     dest: /etc/phpmyadmin/apache.conf
     owner: root
     group: root
