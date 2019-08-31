@@ -40,9 +40,6 @@
     - role: php
       tags: ['php']
       when: ansible_distribution == 'Debian' and ansible_distribution_major_version is version('9', '<')
-    - role: php-pecl
-      tags: ['php']
-      when: ansible_distribution == 'Debian' and ansible_distribution_major_version is version('9', '<')
       # Debian Stretch
     - role: mariadb
       tags: ['mysql', 'mariadb']
