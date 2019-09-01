@@ -18,6 +18,8 @@ vm_owner: owner2
 php7_versions:
   - 7.0
   - 7.1
+  - 7.2
+  - 7.3
 
 # defaults = no homedir, no password
 users:
@@ -129,7 +131,7 @@ phppools:
     pm: dynamic
     user: svhost3
     group: svhost3
-    version: 7.1
+    version: 7.2
 
 vhosts:
   - url: "www.svhost1.com"

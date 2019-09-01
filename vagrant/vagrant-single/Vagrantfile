@@ -2,10 +2,10 @@
 # vi: set ft=ruby :
 #
 
-DEBIAN8_BOX = "debian82"
-DEBIAN8_BOX_URL = "http://repo.werus.be/vagrant/debian-8.2-amd64.box"
 DEBIAN9_BOX = "debian94"
 DEBIAN9_BOX_URL = "http://delta.exabyte.be/vagrant-boxes/debian-9.4-amd64.box"
+DEBIAN10_BOX = "debian10"
+DEBIAN10_BOX_URL = "http://delta.exabyte.be/vagrant-boxes/debian-10.1-amd64.box"
 
 Vagrant.configure("2") do |config|
 
@@ -16,8 +16,8 @@ Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
 
   config.vm.define "fiaas01" do |v|
-    v.vm.box = DEBIAN9_BOX
-    v.vm.box_url = DEBIAN9_BOX_URL
+    v.vm.box = DEBIAN10_BOX
+    v.vm.box_url = DEBIAN10_BOX_URL
     v.vm.hostname = "fiaas01"
     v.vm.network :private_network, ip: "192.168.131.190"
     v.vm.network :forwarded_port, guest: 22, host: 2163, id: 'ssh'
