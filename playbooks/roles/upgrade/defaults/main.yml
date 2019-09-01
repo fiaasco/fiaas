@@ -1,4 +1,8 @@
 ---
+# description: ansible apt module upgrade mode
+# choices: ['safe', 'dist', 'full']
+upgrade_mode: safe
+
 # keep configurations by default for normal security upgrades
 dpkg_options: force-confold,force-confdef
 log_dir: /var/log/updates
