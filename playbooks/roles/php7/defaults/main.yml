@@ -1,9 +1,14 @@
 ---
-php7_versions:
-  - 7.0
+# description: php 7 versions to deploy
+#              distribution specific var, defaults defined in vars/
+# choices: ["7.0", "7.1", "7.2", "7.3"]
+# type: list
+# php7_versions: []
 
-# only the part after the dash for:
-# name: "php{{ php7_version }}-{{ item }}"
+# description: php 7 packages to install
+#              only the part after the dash for:
+#              "php{{ php7_version }}-{{ item }}"
+# type: list
 php_default_pkgs:
   - fpm
   - common
@@ -20,4 +25,8 @@ php_default_pkgs:
   - xmlrpc
   - zip
 
+# description: extra php 7 packages to deploy
+#              only the part after the dash for:
+#              "php{{ php7_version }}-{{ item }}"
+# type: list
 php_extra_pkg: []

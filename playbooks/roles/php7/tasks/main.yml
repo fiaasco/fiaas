@@ -1,5 +1,14 @@
 ---
+- name: Include dynamic vars
+  include_tasks: load_vars.yml
+  loop:
+    - "php7_versions"
+  vars:
+    var: "{{ main_item }}"
+  loop_control:
+    loop_var: main_item
+
 - include_tasks: install.yml
-  with_items: "{{ php7_versions }}"
+  loop: "{{ php7_versions }}"
   loop_control:
     loop_var: php7_version 
