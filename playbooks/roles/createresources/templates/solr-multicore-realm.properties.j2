@@ -1,1 +1,6 @@
-jetty-realm.properties.j2
+{% for core in solr_cores %}
+{% if core.name is defined %}
+{{ core.name }}: {{ core.pass }}, {{ core.name }}-role
+{% endif %}
+{% endfor %}
+

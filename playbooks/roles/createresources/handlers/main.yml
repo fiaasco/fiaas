@@ -23,6 +23,12 @@
     state: reloaded
     enabled: yes
 
+- name: reload php7.3
+  service:
+    name: php7.3-fpm
+    state: reloaded
+    enabled: yes
+
 - name: reload apache2
   service:
     name: apache2

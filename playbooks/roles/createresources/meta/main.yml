@@ -1,3 +1,16 @@
 ---
+galaxy_info:
+  author: Luc Stroobant
+  description: Create lamp server resources
+  company: fiaas.co
+  license: MIT
+  platforms:
+    - name: Debian
+      versions:
+        - 8
+        - 9
+        - 10
+  min_ansible_version: 2.4
+
 dependencies:
   - solr-multicore

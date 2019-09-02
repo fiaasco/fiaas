@@ -7,12 +7,12 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 
 def test_pool_config(host):
-    config = host.file('/etc/php/7.0/fpm/pool.d/svhost1.conf')
+    config = host.file('/etc/php/7.3/fpm/pool.d/svhost1.conf')
     assert config.exists
     assert config.contains('pm = dynamic')
     assert config.contains('user = svhost1')
     assert config.contains('group = svhost1')
-    config = host.file('/etc/php/7.0/fpm/pool.d/svhost2.conf')
+    config = host.file('/etc/php/7.3/fpm/pool.d/svhost2.conf')
     assert config.exists
     assert config.contains('pm = ondemand')
     assert config.contains('user = svhost2')

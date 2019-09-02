@@ -1,6 +1,6 @@
 ---
 scenario:
-  name: fiaas01-debian8
+  name: fiaas01-debian10
 dependency:
   name: galaxy
 driver:
@@ -16,8 +16,8 @@ platforms:
         network_name: private_network
         type: static
         ip: 192.168.131.190
-    box: debian82
-    box_url: http://repo.werus.be/vagrant/debian-8.2-amd64.box
+    box: debian10
+    box_url: http://delta.exabyte.be/vagrant-boxes/debian-10.0-amd64.box
     memory: 1024
     cpus: 1
     provider_options:

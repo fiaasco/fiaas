@@ -19,7 +19,7 @@
 
 # letsencrypt
 - name: vhosts | generate letsencrypt certificates
-  shell: /root/ssl/request-{{ item.url }}.sh
+  command: /root/ssl/request-{{ item.url }}.sh
   args:
     creates: "/root/.acme.sh/{{ item.url }}/{{ item.url }}.cer"
   when: >
@@ -39,7 +39,7 @@
 
 # halt playbook on current host when commercial certificate is not found
 - name: vhosts | check for commercial certificate
-  shell: file /etc/ssl/{{ item.url }}/{{ item.url }}.crt /etc/ssl/{{ item.url }}/{{ item.url }}.key
+  command: file /etc/ssl/{{ item.url }}/{{ item.url }}.crt /etc/ssl/{{ item.url }}/{{ item.url }}.key
   with_items: "{{ vhosts }}"
   when: >
     item.ssl|default(False) == "commercial"
@@ -80,7 +80,7 @@
   notify: reload nginx
 
 - name: vhosts | enable site when it's not default
-  shell: a2ensite {{ item.url }}.conf
+  command: a2ensite {{ item.url }}.conf
   args:
     creates: "/etc/apache2/sites-enabled/{{ item.url }}.conf"
   with_items: "{{ vhosts }}"
