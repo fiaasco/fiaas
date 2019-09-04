@@ -20,12 +20,12 @@
   tags:
     - vhosts
 
-- include_tasks: "solr-shared-debian{{ ansible_distribution_major_version }}.yml"
+- include_tasks: "solr-shared.yml"
   when: solr_required == True
   tags:
     - solr
 
-- include_tasks: "solr-cores-debian{{ ansible_distribution_major_version }}.yml"
+- include_tasks: "solr-cores.yml"
   when: solr_required == True
   tags:
     - solr

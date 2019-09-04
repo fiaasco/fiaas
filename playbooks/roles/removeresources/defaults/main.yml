@@ -3,3 +3,7 @@
 nginx_required: False
 
 acls: []
+
+logrotate_rotate:
+  when: daily
+  keep: 90

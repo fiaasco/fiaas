@@ -40,12 +40,12 @@
   tags:
     - databases
 
-- include_tasks: "solr-shared-debian.yml"
+- include_tasks: "solr-shared.yml"
   when: solr_required|bool
   tags:
     - solr
 
-- include_tasks: "solr-cores-debian.yml"
+- include_tasks: "solr-cores.yml"
   when: solr_required|bool
   tags:
     - solr
