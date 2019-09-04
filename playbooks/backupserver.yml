@@ -9,8 +9,8 @@
         cache_valid_time: '3600'
 
   roles:
-    - fail2ban
-    - ufw
-    - system
-    - role: borgbackup
+    - role: fail2ban
+    - role: ufw
+    - role: system
+    - role: FiaasCo.borgbackup
       tags: ['backup']

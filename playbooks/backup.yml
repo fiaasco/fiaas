@@ -9,6 +9,6 @@
         cache_valid_time: '3600'
 
   roles:
-    - system
-    - role: borgbackup
+    - role: system
+    - role: FiaasCo.borgbackup
       tags: ['backup']
