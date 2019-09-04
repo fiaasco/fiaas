@@ -1,2 +1,2 @@
 export ANSIBLE_HOST_KEY_CHECKING=False
-ansible-playbook -i inventory -u vagrant --private-key=~/.vagrant.d/insecure_private_key -s $@
+ansible-playbook -i inventory -u vagrant --private-key=~/.vagrant.d/insecure_private_key -b $@
