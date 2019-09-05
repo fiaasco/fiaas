@@ -17,7 +17,7 @@ def test_pool_config(host):
     assert config.contains('pm = ondemand')
     assert config.contains('user = svhost2')
     assert config.contains('group = svhost2')
-    config = host.file('/etc/php/7.1/fpm/pool.d/svhost3.conf')
+    config = host.file('/etc/php/7.2/fpm/pool.d/svhost3.conf')
     assert config.exists
     assert config.contains('pm = dynamic')
     assert config.contains('user = svhost3')

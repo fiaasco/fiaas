@@ -18,5 +18,5 @@
 
 - name: add sury repo
   apt_repository:
-    repo: "deb https://packages.sury.org/php/ stretch main"
+    repo: "deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main"
     update_cache: yes

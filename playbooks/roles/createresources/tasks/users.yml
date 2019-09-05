@@ -41,4 +41,4 @@
     line: '{{ vm_owner }}'
     state: present
     create: yes
-  when: install_vsftpd == True
+  when: install_vsftpd|bool

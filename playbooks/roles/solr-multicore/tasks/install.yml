@@ -2,12 +2,12 @@
 ### Basic multicore solr preparation
 ### Cores are configured in the createresources role
 
-- name: Ensure that solr group is present  
+- name: Ensure that solr group is present
   group:
     name: "{{ solr_user }}"
     state: present
 
-- name: Ensure that solr user is present  
+- name: Ensure that solr user is present
   user:
     name: "{{ solr_user }}"
     group: "{{ solr_user }}"
@@ -20,7 +20,7 @@
     dest: "{{ solr_installPath }}"
     state: directory
     owner: "{{ solr_user }}"
-    group: "{{ solr_user }}" 
+    group: "{{ solr_user }}"
     mode: 0755
 
 - name: Extract Apache Solr
@@ -40,13 +40,15 @@
     dest: "{{ solr_installPath }}/{{ solr_multicoreRoot }}"
     state: directory
     owner: "{{ solr_user }}"
-    group: "{{ solr_user }}" 
+    group: "{{ solr_user }}"
     mode: 0755
 
 - name: Copy solr/example contents to multicore configuration root
   command: rsync -av {{ solr_installPath }}/example/ {{ solr_installPath }}/{{ solr_multicoreRoot }}/
   args:
     creates: "{{ solr_installPath }}/{{ solr_multicoreRoot }}/start.jar"
+  tags:
+    - skip_ansible_lint
 
 - name: Ensure that unnecessary folders in example are removed
   file:
@@ -64,7 +66,7 @@
     src: "{{ solr_apachesolrConfPath }}/"
     dest: "{{ solr_installPath }}/{{ solr_multicoreRoot }}/solr/collection1/conf/"
     owner: "{{ solr_user }}"
-    group: "{{ solr_user }}" 
+    group: "{{ solr_user }}"
 
 - name: Copy systemd unit
   template:
@@ -80,7 +82,7 @@
     src: jetty.xml
     dest: "{{ solr_installPath }}/{{ solr_multicoreRoot }}/etc/jetty.xml"
     owner: "{{ solr_user }}"
-    group: "{{ solr_user }}" 
+    group: "{{ solr_user }}"
     mode: 0644
   notify: restart solr
 
@@ -90,4 +92,4 @@
     state: directory
     recurse: yes
     owner: "{{ solr_user }}"
-    group: "{{ solr_user }}" 
+    group: "{{ solr_user }}"

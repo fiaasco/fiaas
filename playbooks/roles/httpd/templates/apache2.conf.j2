@@ -114,13 +114,11 @@ IncludeOptional mods-enabled/*.conf
 Include ports.conf
 
 LogFormat "%v:%p %h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" vhost_combined
-{% if apache.version == "2.4" and varnish_required == True %}
 <IfModule remoteip_module>
 RemoteIPHeader X-Forwarded-For
 RemoteIPInternalProxy 127.0.0.1
 </IfModule>
 LogFormat "%a %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combined_xfwded
-{% endif %}
 LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combined
 LogFormat "%h %l %u %t \"%r\" %>s %O" common
 LogFormat "%{Referer}i -> %U" referer

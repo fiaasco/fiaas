@@ -1,29 +1,50 @@
 ---
 - name: install munin
-  apt: name={{ item }} state=present cache_valid_time=3600 update_cache=yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    cache_valid_time: "3600"
+    update_cache: true
   with_items:
     - apache2
     - munin
 
 - name: create munin dotssh
-  file: dest=~munin/.ssh owner=munin group=munin mode=0700 state=directory
+  file:
+    dest: ~munin/.ssh
+    owner: munin
+    group: munin
+    mode: "0700"
+    state: directory
 
 - name: copy over private key for munin-checks over ssh
-  template: src=id_rsa_munin.j2 dest=~munin/.ssh/id_rsa owner=munin group=munin mode=0600
+  template:
+    src: id_rsa_munin.j2
+    dest: ~munin/.ssh/id_rsa
+    owner: munin
+    group: munin
+    mode: "0600"
 
 - name: place munin-config
-  template: src={{ item }}.j2 dest=/etc/munin/{{ item }} owner=root group=root mode=0644
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/munin/{{ item }}"
+    owner: root
+    group: root
+    mode: "0644"
   with_items:
     - apache.conf
     - munin.conf
   notify: restart apache2
 
 - name: link apache-munin to apache
-  file: src=/etc/munin/apache.conf dest=/etc/apache2/{{ apache.confdir }}/munin.conf state=link 
+  file:
+    src: /etc/munin/apache.conf
+    dest: /etc/apache2/conf-available/munin.conf
+    state: link
   notify: restart apache2
 
 - name: enable munin
-  shell: a2enconf munin creates=/etc/apache2/conf-enabled/munin.conf
-  when: ansible_distribution_release == "trusty" or ansible_distribution_release == "jessie"
-
-
+  command: a2enconf munin
+  args:
+    creates: /etc/apache2/conf-enabled/munin.conf

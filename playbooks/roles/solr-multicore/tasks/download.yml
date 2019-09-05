@@ -26,7 +26,7 @@
     - name: remove existing solr installation
       file:
         path: "{{ solr_installPath }}"
-        state: absent 
+        state: absent
 
     - name: (re)install
       import_tasks: install.yml

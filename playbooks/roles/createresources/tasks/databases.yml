@@ -34,7 +34,7 @@
     direction: in
     src: "{{ item.1 }}"
     proto: tcp
-    to_port: 3306
+    to_port: "3306"
   with_subelements:
     - "{{ databases }}"
     - ip

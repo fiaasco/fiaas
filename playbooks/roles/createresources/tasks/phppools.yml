@@ -9,18 +9,18 @@
   with_items: "{{ phppools }}"
   when: >
     not item.delete|default(False)
-    and ansible_distribution_major_version < '9'
+    and ansible_distribution_major_version is version('9', '<')
   notify: reload php5
 
 - name: put fpm-pool.d file for defined pools
   template:
     src: fpm-pool.j2
-    dest: "/etc/php/{{ item.version|default('7.0') }}/fpm/pool.d/{{ item.name }}.conf"
+    dest: "/etc/php/{{ item.version|default(php7_distro_version) }}/fpm/pool.d/{{ item.name }}.conf"
     owner: root
     group: root
     mode: "0644"
   with_items: "{{ phppools }}"
   when: >
     not item.delete|default(False)
-    and ansible_distribution_major_version >= '9'
-  notify: reload php{{ item.version|default('7.0') }}
+    and ansible_distribution_major_version is version('9', '>=')
+  notify: reload php{{ item.version|default(php7_distro_version) }}

@@ -2,7 +2,7 @@
 - name: reduce vm.swappiness
   sysctl:
     name: vm.swappiness
-    value: 10
+    value: "10"
     sysctl_file: /etc/sysctl.d/99-fiaas.conf
     state: present
     reload: yes

@@ -1,0 +1,20 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint:
+  name: yamllint
+platforms:
+  - name: fiaas01
+    image: jgoerzen/debian-base-standard
+provisioner:
+  name: ansible
+  inventory:
+    links:
+      host_vars: ../../../../../molecule/inventory/host_vars/
+      group_vars: ../../../../../molecule/inventory/group_vars/
+verifier:
+  name: testinfra
+  lint:
+    name: flake8

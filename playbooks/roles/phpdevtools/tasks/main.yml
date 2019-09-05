@@ -7,6 +7,10 @@
 - import_tasks: drupal.yml
 
 # warning: don't install phpmyadmin before php-fpm or you'll get mod-php with it!
+# no phpmyadmin in buster, skip for now
 - import_tasks: phpmyadmin.yml
+  when: >
+    ansible_distribution == 'Debian'
+    and ansible_distribution_major_version is version('10', '<')
 
 - import_tasks: composer.yml

@@ -48,9 +48,9 @@
     mode: "0644"
   notify: restart apache2
 
-- name: put apache 2.4 security config
+- name: put apache security config
   template:
-    src: 24-security.conf
+    src: security.conf
     dest: /etc/apache2/conf-available/security.conf
     owner: root
     group: root
@@ -130,7 +130,7 @@
     creates: /etc/apache2/sites-enabled/admin-vhost.conf
   notify: reload apache2
 
-- name: disable default default for 2.4
+- name: disable default default site
   shell: a2dissite 000-default
   args:
     removes: /etc/apache2/sites-enabled/000-default.conf

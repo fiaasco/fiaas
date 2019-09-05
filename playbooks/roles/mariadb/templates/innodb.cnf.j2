@@ -2,7 +2,6 @@
 # InnoDB settings
 default-storage-engine          = innodb
 innodb_buffer_pool_size         = {{ mysql_innodb_buffer_pool_size|default((ansible_memtotal_mb/8)|round|int) }}M
-innodb_additional_mem_pool_size = 10M
 #innodb_log_file_size            = 256M
 innodb_log_buffer_size          = 8M
 innodb_thread_concurrency       = {{ mysql_innodb_thread_concurrency|default(0) }}

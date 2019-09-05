@@ -1,0 +1,9 @@
+---
+
+- name: Include distribution specific vars
+  include_vars: "{{ ansible_distribution_release }}.yml"
+
+- name: set vars
+  set_fact:
+    "{{ var }}": "{{ lookup('vars', '__' + var) }}"
+  when: not lookup('vars', var, default=false)
