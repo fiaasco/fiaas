@@ -2,9 +2,11 @@
 # {{ ansible_managed }}
 # include all vhosts in one file, only execute postscripts on last item
 # (to avoid segfaults with apache2 restarts)
+{% set existingdirs = [] %}
 {% for item in vhosts %}
 {% if not item.delete|default(False) %}
-
+{% if item.basedir not in existingdirs %}
+{% set existingdirs = existingdirs.append(item.basedir) %}
 {{ item.basedir }}/logs/*log {
   {{ logrotate_rotate.when }}
   missingok
@@ -16,7 +18,7 @@
   sharedscripts
   postrotate
     if /etc/init.d/apache2 status > /dev/null ; then \
-      /etc/init.d/apache2 reload > /dev/null; \
+      /etc/init.d/apache2 restart > /dev/null; \
     fi;
   endscript
   prerotate
@@ -26,5 +28,6 @@
   endscript
   {% endif %}
 }
+{% endif %}
 {% endif %}
 {% endfor %}
