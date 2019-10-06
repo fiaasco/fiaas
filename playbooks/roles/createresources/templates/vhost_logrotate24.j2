@@ -20,6 +20,10 @@
     if /etc/init.d/apache2 status > /dev/null ; then \
       /etc/init.d/apache2 restart > /dev/null; \
     fi;
+    # also restart nginx reverse proxy (*ssl* logs) if available
+    if /etc/init.d/nginx status > /dev/null ; then \
+      /etc/init.d/nginx restart > /dev/null; \
+    fi;
   endscript
   prerotate
     if [ -d /etc/logrotate.d/httpd-prerotate ]; then \
