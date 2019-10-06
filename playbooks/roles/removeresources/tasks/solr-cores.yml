@@ -1,12 +1,19 @@
 ---
 - name: solr | remove core data
-  file: dest=/var/lib/solr/{{ item.name }}/conf state=directory owner=jetty group=root mode=0750
+  file:
+    dest: "/var/lib/solr/{{ item.name }}/conf"
+    state: directory
+    owner: solr
+    group: root
+    mode: "0750"
   with_items: "{{ solr_cores }}"
   when: item.delete|default(False)
-  notify: restart solr-jetty
+  notify: restart solr
 
 - name: solr | remove core link
-  file: dest=/usr/share/solr/{{ item.name }} state=absent
+  file:
+    dest: "/usr/share/solr/{{ item.name }}"
+    state: absent
   with_items: "{{ solr_cores }}"
   when: item.delete|default(False)
-  notify: restart solr-jetty
+  notify: restart solr
