@@ -5,3 +5,6 @@
 
 - name: create directory to put ssl request scripts
   file: path=/root/ssl state=directory owner=root group=root mode=0700
+
+- name: flush handlers to install acme.sh
+  meta: flush_handlers
