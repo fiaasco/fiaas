@@ -10,3 +10,7 @@ phptools_pkgs:
 composer_version: "1.3.2"
 composer_url: "https://getcomposer.org/download/{{ composer_version }}/composer.phar"
 composer_checksum: "sha256:6a4f761aa34bb69fca86bc411a5e9836ca8246f0fcd29f3804b174fee9fb0569"
+
+drush_launcher_version: "0.6.0"
+drush_launcher_url: "https://github.com/drush-ops/drush-launcher/releases/download/{{ drush_launcher_version }}/drush.phar"
+drush_launcher_checksum: "sha256:c3f32a800a2f18470b0010cd71c49e49ef5c087f8131eecfe9b686dc1f3f3d4e"

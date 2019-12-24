@@ -1,0 +1,9 @@
+---
+- name: install drush launcher
+  get_url:
+    dest: "/usr/local/bin/drush"
+    checksum: "{{ drush_launcher_checksum }}"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    url: "{{ drush_launcher_url }}"
