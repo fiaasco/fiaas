@@ -51,3 +51,5 @@ ssl_ciphers_intermediate:
   - AES128-SHA
   - AES256-SHA
   - "!DSS"
+
+varnish_required: false
