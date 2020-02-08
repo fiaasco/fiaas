@@ -1,9 +1,11 @@
 ---
 - name: Install munin node
-  apt: name={{ item }} state=installed cache_valid_time=3600 update_cache=yes
-  with_items:
-    - libnet-cidr-perl
-    - munin-node
+  apt:
+    name:
+      - libnet-cidr-perl
+      - munin-node
+    state: present
+    cache_valid_time: 3600
 
 - name: create logdir when needed
   file: dest=/var/log/munin state=directory owner=munin group=www-data mode=0755

@@ -1,13 +1,10 @@
 ---
 - name: install munin
   apt:
-    name: "{{ item }}"
+    name: munin
     state: present
     cache_valid_time: "3600"
     update_cache: true
-  with_items:
-    - apache2
-    - munin
 
 - name: create munin dotssh
   file:
