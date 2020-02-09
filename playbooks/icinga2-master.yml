@@ -1,0 +1,43 @@
+---
+- name: icinga2 master
+  hosts: icinga2master
+  become: true
+  collections:
+   - fiaasco.icinga2
+
+  pre_tasks:
+    - name: update apt cache
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+      when: ansible_os_family == 'Debian'
+
+
+  roles:
+    - role: fiaasco.mariadb
+      tags:
+        - mariadb
+    - role: fiaasco.apache2
+      tags:
+        - apache2
+      when: ansible_os_family == 'Debian'
+    - role: fiaasco.php7
+      tags:
+        - php7
+    - role: monitoring_plugins
+      tags:
+        - plugins
+        - monitoring-plugins
+    - role: icinga2_master
+      tags:
+        - master
+    - role: icinga2_hostconfig
+    - role: icinga2_checks
+      tags:
+        - checks
+    - role: icinga2_hostconfig
+      tags:
+        - hostconfig
+    - role: icinga2_icingaweb2
+      tags:
+        - icingaweb

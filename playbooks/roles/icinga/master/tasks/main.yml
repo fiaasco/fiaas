@@ -1,7 +1,0 @@
----
-- import_tasks: install.yml
-
-- import_tasks: configure-master.yml
-
-- import_tasks: slack.yml
-  when: slack_notifications == True

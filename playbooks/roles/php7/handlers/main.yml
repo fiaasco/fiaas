@@ -1,4 +1,10 @@
 ---
+- name: restart apache2
+  service:
+    name: apache2
+    state: reloaded
+    enabled: yes
+
 - name: restart php7.0
   service:
     name: php7.0-fpm

@@ -1,9 +1,0 @@
----
-- name: restart icinga2
-  service: name=icinga2 state=restarted
-
-- name: restart master icinga2
-  service: name=icinga2 state=restarted
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups.icingaservers }}"
-  run_once: yes

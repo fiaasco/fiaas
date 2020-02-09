@@ -1,5 +1,0 @@
----
-monitoring_over_ssh: False
-
-icinga_user: nagios
-monitoring_plugins_path: /usr/lib/nagios/plugins

@@ -1,7 +1,7 @@
 ---
 - name: Install LAMP env.
   hosts: all:!infra
-  become: True
+  become: true
 
   pre_tasks:
     - apt:
@@ -23,27 +23,63 @@
       tags: ['ntp']
     - role: postfix
       tags: ['postfix']
+
+- hosts: httpd
+  become: true
+  roles:
     - role: letsencrypt
       tags: ['letsencrypt', 'acme']
     - role: httpd
       tags: ['httpd']
+
+- hosts: varnish
+  become: true
+  roles:
     - role: varnish
       tags: ['varnish']
+
+- hosts: nginx
+  become: true
+  roles:
     - role: nginx
       tags: ['nginx']
-    - role: fastcgi
-      tags: ['php', 'httpd']
+
+- hosts: mysql
+  become: true
+  roles:
     - role: mariadb
       tags: ['mysql', 'mariadb']
+
+- hosts: php7
+  become: true
+  roles:
+    - role: fastcgi
+      tags: ['php', 'httpd']
     - role: php7
       tags: ['php']
     - role: phpdevtools
       tags: ['phpdevtools']
+
+- hosts: solr
+  become: true
+  roles:
     - role: solr-multicore
       tags: ['solr']
+
+- hosts: redis
+  become: true
+  roles:
     - role: redis
       tags: ['redis']
+
+- hosts: memcached
+  become: true
+  roles:
     - role: memcached
       tags: ['memcached']
+
+- hosts: vsftpd
+  become: true
+  roles:
     - role: vsftpd
       tags: ['vsftpd']

@@ -2,9 +2,11 @@
 - name: Create resources and update monitoring
   hosts: all:!infra
   become: True
+  collections:
+   - fiaasco.icinga2
 
   roles:
     - createresources
     - removeresources
     - readme
-    - icinga/hostconfig
+    - icinga2_hostconfig

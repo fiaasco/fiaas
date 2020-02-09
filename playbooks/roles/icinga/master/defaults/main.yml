@@ -1,5 +1,0 @@
----
-icinga_user: nagios
-
-slack_notifications: False
-slack_notify_interval: 5m

@@ -1,9 +1,0 @@
----
-- apt:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - icinga2
-    - icinga2-ido-mysql
-    - monitoring-plugins
-  notify: restart icinga

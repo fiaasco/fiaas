@@ -1,6 +1,0 @@
----
-- import_tasks: install.yml
-
-- import_tasks: configure-client.yml
-
-- import_tasks: plugins.yml

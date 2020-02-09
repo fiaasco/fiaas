@@ -1,7 +1,9 @@
 ---
 - name: Configure monitored hosts
-  hosts: all:!icingaservers
+  hosts: all:!icinga2master
   become: True
+  collections:
+   - fiaasco.icinga2
 
   pre_tasks:
     - apt:
@@ -9,13 +11,19 @@
         cache_valid_time: '3600'
 
   roles:
-    - role: icinga/prepare
-      tags: ['icinga', 'prepare']
-    - role: icinga/client
-      tags: ['icinga', 'client']
-    - role: icinga/hostconfig
-      tags: ['icinga', 'hostconfig']
+    - role: icinga2_client
+      tags:
+        - icinga
+        - client
+    - role: icinga2_hostconfig
+      tags:
+        - icinga
+        - hostconfig
     - role: munin-node
-      tags: ['munin', 'monitoring']
-    - role: munin-plugins
-      tags: ['munin', 'monitoring']
+      tags:
+        - munin
+        - monitoring
+    - role: monitoring_plugins
+      tags:
+        - munin
+        - monitoring
