@@ -1,32 +1,14 @@
 ---
-idodbname: icinga2
-idodbuser: icinga2
-idodbpass: aquaiYothaGhoo8i
-
-# Icinga2 api users
-icinga2_api_users:
-  - name: root
-    pass: dahxoh8ahghoh1eY
-    permissions:
-      - "*"
-  - name: anag
-    pass: cekeiF2aj1cee8nu
-    permissions:
-      - "objects/query/*"
-      - "actions/*"
-
-# Icingaweb2
-webdbname: icingaweb2
-webdbuser: icingaweb2
-webdbpass: aiphaiGhiegie5ko
-
-webusers:
-    # demo user, username = pass
-    # openssl passwd -1 icingaadmin
-  - name: icingaadmin
-    desc: Icinga 2 Admin
-    mail: root@localhost
-    pass: $1$nvfR7TSj$POQPIsM9bBhEb.24AAIV10
+icinga2_admin_email: not@available.invalid
+icinga2_idodb_pass: idodbpass
+icingaweb_db_pass: webdbpass
+icingaweb_password_salt: eemoojee8
+icingaweb_admin_pass: password
+icingaweb_roles:
+  - name: Testrole
+    groups: Testgroup
+    permissions: "module/grafana, module/monitoring, monitoring/command/schedule-check, monitoring/command/acknowledge-problem, monitoring/command/remove-acknowledgement, monitoring/command/comment/*, monitoring/command/comment/add, monitoring/command/downtime/*, monitoring/command/downtime/schedule, monitoring/command/downtime/delete"
+    filter: "(host_name=*test*|host_name=test*)"
 
 # htpasswd users
 htpasswd:

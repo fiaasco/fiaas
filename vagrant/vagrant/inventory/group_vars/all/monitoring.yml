@@ -1,6 +1,6 @@
 ---
 # Put Icinga2 ticketsalt in all for easier ticket generation
-ticketsalt: fn9bc170b6489aaff4bf2e1c9504f572
+icinga2_ticketsalt: fn9bc170b6489aaff4bf2e1c9504f572
 
 monitor_mysql:
   checks:
