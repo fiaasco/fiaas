@@ -1,1 +1,7 @@
-- src: fiaasco.borgbackup
+---
+roles:
+  - src: fiaasco.chrony
+
+collections:
+  - name: fiaasco.icinga2
+    version: '1.0.3'

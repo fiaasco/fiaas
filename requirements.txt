@@ -1,4 +1,4 @@
-ansible>=2.8.0,<2.9.0
+ansible>=2.9.0,<2.10.0
 molecule
 python-vagrant
 paramiko
