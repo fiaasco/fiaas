@@ -19,18 +19,19 @@ Everything is currently built to run all services in one VM.
 Environment setup
 =================
 
-Ansible = 2.8 is used for this setup. Ansible versions before 2.4.0 will no longer work.
+Ansible = 2.9 is required for this setup.
 
   * sudo apt-get -y install python-dev libffi-dev libssl-dev python-virtualenv virtualenv
-  * virtualenv ansible-2.8.4
-  * source ansible-2.8.4/bin/activate
+  * virtualenv ansible-2.9.4
+  * source ansible-2.9.4/bin/activate
   * pip install -r requirements.txt
   * ansible-galaxy install -r requirements.yml
+  * ansible-galaxy collection install -r requirements.yml
 
 Executing (vagrant)
 ===================
 
-  * source ansible-2.8.4/bin/activate
+  * source ansible-2.9.4/bin/activate
   * cd vagrant/somevagrantsetup/
   * vagrant up --no-provision
   * provisioning:
@@ -44,7 +45,7 @@ Executing
 =========
 
 ```
-$ source ansible-2.8.4/bin/activate
+$ source ansible-2.9.4/bin/activate
 ```
 
 Assign the infra VMs in your inventory for monitoring and backups and run:
@@ -185,8 +186,8 @@ Molecule tests are being added.
 Currently the project has Vagrant based Molecule tests in the createresources role. The box is prepared with the lamp playbook, so running the tests for this role can be considered as the integration test for the project. The tests will check if the resources are created and the main services are running after creation.
 Run the tests with:
 $ molecule test --scenario-name fiaas01
-$ molecule test --scenario-name fiaas01-debian8
-$ molecule test --scenario-name fiaas02
+$ molecule test --scenario-name fiaas01-debian10
+$ molecule test --scenario-name fiaas02-debian10
 
 Support
 =======

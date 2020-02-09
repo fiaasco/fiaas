@@ -1,0 +1,3 @@
+---
+memcached_required: true
+memcached: true

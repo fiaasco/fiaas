@@ -16,3 +16,9 @@
     state: restarted
     daemon_reload: yes
     name: varnish
+
+- name: reload apache2
+  service:
+    name: apache2
+    state: reloaded
+    enabled: yes

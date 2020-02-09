@@ -1,0 +1,51 @@
+---
+icinga2_admin_email: not@available.invalid
+icinga2_idodb_pass: idodbpass
+icingaweb_db_pass: webdbpass
+icingaweb_password_salt: eemoojee8
+icingaweb_admin_pass: password
+icingaweb_roles:
+  - name: Testrole
+    groups: Testgroup
+    permissions: "module/grafana, module/monitoring, monitoring/command/schedule-check, monitoring/command/acknowledge-problem, monitoring/command/remove-acknowledgement, monitoring/command/comment/*, monitoring/command/comment/add, monitoring/command/downtime/*, monitoring/command/downtime/schedule, monitoring/command/downtime/delete"
+    filter: "(host_name=*test*|host_name=test*)"
+
+# htpasswd users
+htpasswd:
+  - user: user1
+    hash: "$apr1$A9sGbTcc$1vc5AXweNKKOc3R1RqCRR1"
+
+# icinga slack notifications
+slack_notifications: True
+slack_webhook: "https://hooks.slack.com/YOUR-URL-HERE"
+slack_channel: "#alerts"
+
+# (only useful for clients behind firewall)
+monitoring_over_ssh_privkey: |
+  -----BEGIN RSA PRIVATE KEY-----
+  MIIEpAIBAAKCAQEAuZwqYbCy51ZfFxfhosCIZ9wl6ZVtUBOt1aZnGr64PDHiyrXC
+  G7X4ZZqXElq936BYFj2OHvuPx4dJV9m96o5WS8ck8bUouTijSd7T4MoNqKK5T07y
+  1Vg6g9XdaLAJ6ahvw9n8tZ8C2xN/fU7WgUtzSC0mJcK9CZYWv76QtJ1S62R2h2I3
+  YT7GkN6nokauKgLDF7WC1pm+E+9TpKz59ndbSDvvwg8lDSadlW9kBs+OhMckjTab
+  djHHZ5VmntdwdV1H0YtPRdOFnk9ZTMJPJsL48qjWlUY4sahG8L2f+4Ttq9ay3tX/
+  8rUJehedLC2b4nt+woPpcEeS0c34BqMCnycSLQIDAQABAoIBAF7Pw+J1BV4gg6Bj
+  RZICcWtETGV+PAGMm96oCsDhrXCqNuQ/ZjELiiA0kHkCuzzxRi3OMbvn2rEcjT1/
+  74BSRwicaGXDmVLL+LUySt7nt4Rt4uT9OhP65qETbO8eBWJC9RyBTJJl8GqCEjyr
+  Oe1/4hp7XaIqULAF6Ab4TCjGuGWe4wP1BhOqoaidRhBmNc8Cv/9sRsvCqlFekY2W
+  0ANaqIPw2Kq9QkBAHe+KUoJrqPM8/vAS0NDMSmImLLVxfEh8Uk+TDnG/EPnIYMUv
+  WdGTiC2tW9QznfpfqYuRDzocFSOl7+wxISGwMx6cixge9VOSzgzXF61f7zyq6AqH
+  pfr8Ni0CgYEA8XNhip2L9Q0JgmFTkJelzwS93Ekm8i+r7QDOOptWmcYv4vP2MbRs
+  vbw1murAEqCg3rBs4cPrSKaj6FOl58h441rUNbCsDq286Ht3usSkoznQZbwLk9rK
+  x3ABz0NrvObMTmRHEYzkY85+p6FNx5PDfSRUvKSFtrO2AVlIQwHcePcCgYEAxMti
+  0wpOTZ/j3lhe1nm6SwrlzPx80jU1RRGCtfLmuyvyPoeAI8taN1VT3JLDo0RAEpqS
+  +yZ+ifX8kT0FpFezEhFR/425mBNVMPnKBH1NEVsckH7QkBHtE2EtZfzzMrbPEe2N
+  27HHOEXuwt47/PCXIH3h0EVTQ35I3l8cwfcBSPsCgYEA11VfmJAJUfLemDjUng+h
+  AI/qA5v57+Q0IJqnUf1Xrqzh6DZLSujuUgiYhiD2S6aV0gTmFjL0k0aKx5hSTfSs
+  W5eVyoxV5oFsCKqUjSzy59+XzCN479QhJNzvwDkQzNfJPeCQwUY2KgzvR/DDvUo6
+  /lB4ggT4e4iquWk22Qu/5OECgYB18OK4Ukvdb77UKagk5+1DPjO9J3DzVlonm7f3
+  raykblEPMowUZ7IYyXWqEvdW6Pdxbtw50rcxnZARxz2TYc/7OxAmlVyujJ+Y64ss
+  J6BBj5ZN7wK15VhtLedUYUWrli4Bs5o6GZCo5BiVBzVygQpBuc/Uz0d4gr3PL7d/
+  c7Z8cwKBgQDduILvCdbSNRS6DCMBHGmDElDsVm2+EHR0KBPkQ6wc2HXiBAXtbY6T
+  4Nd5DuQapGyQsPv71s2sKls2eQGZuymh6dhHHXAbWAqSd05Gu2jq7xMzqHNYEROn
+  7LhZ78iBVrIlFnNBWzOtlyJeUXz9DGc2YbXuIRSu/rIMlbLbY7uI5g==
+  -----END RSA PRIVATE KEY-----

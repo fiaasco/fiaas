@@ -1,0 +1,3 @@
+---
+nginx: true
+nginx_required: true

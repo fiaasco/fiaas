@@ -2,10 +2,8 @@
 # vi: set ft=ruby :
 #
 
-DEBIAN9_BOX = "debian94"
-DEBIAN9_BOX_URL = "http://delta.exabyte.be/vagrant-boxes/debian-9.4-amd64.box"
-DEBIAN10_BOX = "debian10"
-DEBIAN10_BOX_URL = "http://delta.exabyte.be/vagrant-boxes/debian-10.1-amd64.box"
+DEBIAN9_BOX = "debian/stretch64"
+DEBIAN10_BOX = "debian/buster64"
 
 
 Vagrant.configure("2") do |config|
@@ -18,7 +16,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "fiaas01" do |v|
     v.vm.box = DEBIAN10_BOX
-    v.vm.box_url = DEBIAN10_BOX_URL
     v.vm.hostname = "fiaas01"
     v.vm.network :private_network, ip: "192.168.131.190"
     v.vm.network :forwarded_port, guest: 22, host: 10190, id: 'ssh'
@@ -27,7 +24,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "fiaas02" do |v|
     v.vm.box = DEBIAN9_BOX
-    v.vm.box_url = DEBIAN9_BOX_URL
     v.vm.hostname = "fiaas02"
     v.vm.network :private_network, ip: "192.168.131.191"
     v.vm.network :forwarded_port, guest: 22, host: 10191, id: 'ssh'
@@ -42,7 +38,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "fiaas03" do |v|
     v.vm.box = DEBIAN10_BOX
-    v.vm.box_url = DEBIAN10_BOX_URL
     v.vm.hostname = "fiaas03"
     v.vm.network :private_network, ip: "192.168.131.192"
     v.vm.network :forwarded_port, guest: 22, host: 10192, id: 'ssh'

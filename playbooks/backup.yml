@@ -1,7 +1,7 @@
 ---
 - name: Configure backups
-  hosts: all:!borgbackup_servers
-  become: True
+  hosts: backup:!borgbackup_servers
+  become: true
 
   pre_tasks:
     - apt:
@@ -10,5 +10,5 @@
 
   roles:
     - role: system
-    - role: FiaasCo.borgbackup
+    - role: fiaasco.borgbackup
       tags: ['backup']
