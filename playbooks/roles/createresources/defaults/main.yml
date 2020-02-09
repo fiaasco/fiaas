@@ -7,3 +7,5 @@ acls: []
 logrotate_rotate:
   when: daily
   keep: 90
+
+install_vsftpd: false

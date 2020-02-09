@@ -2,3 +2,7 @@
 monitoring: yes
 monitoring_over_ssh: false
 monitoring_over_ssh_pubkey: ''
+varnish_required: false
+solr_required: false
+memcached_required: false
+redis_required: false
