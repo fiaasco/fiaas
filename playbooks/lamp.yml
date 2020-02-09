@@ -1,6 +1,6 @@
 ---
 - name: Install LAMP env.
-  hosts: all:!infra
+  hosts: all
   become: true
 
   pre_tasks:
@@ -19,7 +19,7 @@
       tags: ['users']
     - role: ufw
       tags: ['ufw']
-    - role: ntp
+    - role: fiaasco.chrony
       tags: ['ntp']
     - role: postfix
       tags: ['postfix']
