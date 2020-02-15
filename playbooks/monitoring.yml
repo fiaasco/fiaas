@@ -1,6 +1,6 @@
 ---
 - name: Configure monitored hosts
-  hosts: all:!icinga2master
+  hosts: all:!icinga2master:!offline
   become: True
   collections:
    - fiaasco.icinga2
