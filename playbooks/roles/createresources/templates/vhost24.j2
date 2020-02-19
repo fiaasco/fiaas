@@ -1,6 +1,6 @@
 #jinja2: trim_blocks: "true", lstrip_blocks: "true"
 # {{ ansible_managed }}
-<VirtualHost *:{% if varnish_required == True %}8080{% else %}80{% endif %}>
+<VirtualHost *:{% if varnish_required|default(false) == true %}8080{% else %}80{% endif %}>
   ServerName {{ item.url }}
   {% if item.alias is defined %}
     {% for alias in item.alias %}
@@ -28,7 +28,7 @@
   </Directory>
 
   ErrorLog {{ item.basedir }}/logs/{{ item.url }}-error.log
-  CustomLog {{ item.basedir }}/logs/{{ item.url }}-access.log combined{% if varnish_required == True %}
+  CustomLog {{ item.basedir }}/logs/{{ item.url }}-access.log combined{% if varnish_required|default(false) == true %}
 _xfwded{% endif %}
 
   include extra.d/extra.{{ item.url }}.conf
@@ -58,7 +58,7 @@ _xfwded{% endif %}
       {% endfor %}
     {% endif %}
 
-    {% if varnish_required == True %}  # Terminate SSL to varnish
+    {% if varnish_required|default(false) == true %}  # Terminate SSL to varnish
       RequestHeader set X-Forwarded-Proto "https"
 
       ProxyPreserveHost On
