@@ -185,9 +185,11 @@ Testing
 Molecule tests are being added.
 Currently the project has Vagrant based Molecule tests in the createresources role. The box is prepared with the lamp playbook, so running the tests for this role can be considered as the integration test for the project. The tests will check if the resources are created and the main services are running after creation.
 Run the tests with:
+```
 $ molecule test --scenario-name fiaas01
 $ molecule test --scenario-name fiaas01-debian10
 $ molecule test --scenario-name fiaas02-debian10
+```
 
 Support
 =======
