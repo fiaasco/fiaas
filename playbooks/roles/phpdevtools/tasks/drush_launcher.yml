@@ -7,3 +7,13 @@
     group: "root"
     mode: "0755"
     url: "{{ drush_launcher_url }}"
+
+- name: install drush8
+  get_url:
+    dest: "/usr/local/bin/drush8"
+    checksum: "{{ drush8_checksum }}"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    url: "{{ drush8_url }}"
+  when: drush8
