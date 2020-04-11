@@ -2,6 +2,7 @@
 roles:
   - src: fiaasco.chrony
   - src: fiaasco.mariadb
+    version: '0.8.1'
   - src: fiaasco.apache2
   - src: fiaasco.php7
 

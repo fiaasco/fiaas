@@ -47,7 +47,7 @@
 - hosts: mysql
   become: true
   roles:
-    - role: mariadb
+    - role: fiaasco.mariadb
       tags: ['mysql', 'mariadb']
 
 - hosts: php7

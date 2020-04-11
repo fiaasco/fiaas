@@ -1,3 +1,0 @@
----
-- import_tasks: mariadb.yml
-  when: mysql_required == True
