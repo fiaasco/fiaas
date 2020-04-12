@@ -5,6 +5,8 @@ nginx_max_body_size: 32M
 ssl_protocols: "{{ ssl_protocols_modern }}"
 ssl_ciphers: "{{ ssl_ciphers_modern }}"
 
+adminhost_ssl: letsencrypt
+
 ssl_protocols_modern: "TLSv1.2"
 ssl_ciphers_modern:
   - ECDHE-ECDSA-AES256-GCM-SHA384
