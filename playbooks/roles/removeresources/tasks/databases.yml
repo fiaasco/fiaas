@@ -16,6 +16,7 @@
 
 - name: databases | delete ufw rules for these special databases
   ufw: rule=allow interface={{ public_interface }} direction=in proto=tcp src={{ item.ip }} to_port=3306 delete=yes
+  ignore_errors: true
   with_items: "{{ databases }}"
   when: item.ip is defined and item.delete|default(False)
   notify: reload ufw
