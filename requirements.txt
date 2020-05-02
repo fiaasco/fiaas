@@ -1,4 +1,4 @@
 ansible>=2.9.0,<2.10.0
-molecule
+molecule==2.22
 python-vagrant
 paramiko

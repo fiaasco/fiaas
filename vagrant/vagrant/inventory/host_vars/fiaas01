@@ -25,6 +25,9 @@ users:
   - name: devuser2
   - name: devuser3
 
+php7_versions:
+  - "7.0"
+  - "7.3"
 
 directories: []
 

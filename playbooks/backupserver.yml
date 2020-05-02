@@ -12,5 +12,5 @@
     - role: fail2ban
     - role: ufw
     - role: system
-    - role: FiaasCo.borgbackup
+    - role: fiaasco.borgbackup
       tags: ['backup']
