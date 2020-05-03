@@ -10,7 +10,7 @@
 - name: Check changes
   set_fact:
     updated: true
-  when: not upgrades.stdout | search("0 upgraded, 0 newly installed")
+  when: '"0 upgraded, 0 newly installed" not in upgrades.stdout'
 
 - name: Display changes
   debug:
