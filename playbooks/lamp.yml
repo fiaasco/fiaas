@@ -66,6 +66,12 @@
     - role: solr-multicore
       tags: ['solr']
 
+- hosts: solr8
+  become: true
+  roles:
+    - role: fiaasco.solr
+      tags: ['solr', 'solr8']
+
 - hosts: redis
   become: true
   roles:
