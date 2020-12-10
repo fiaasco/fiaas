@@ -4,5 +4,5 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     state: link
-  with_items: "{{ symlinks }}"
+  with_items: "{{ symlinks|default([]) }}"
   when: not item.delete|default(False)
