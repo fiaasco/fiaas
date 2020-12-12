@@ -1,8 +1,10 @@
 ---
 roles:
+  - src: fiaasco.fail2ban
+    version: 'v0.0.4'
   - src: fiaasco.chrony
   - src: fiaasco.mariadb
-    version: '0.8.2'
+    version: 'v0.8.2'
   - src: fiaasco.apache2
   - src: fiaasco.php7
   - src: fiaasco.solr
