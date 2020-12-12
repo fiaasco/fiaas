@@ -1,5 +1,6 @@
 ---
 roles:
+  - src: fiaasco.locale
   - src: fiaasco.fail2ban
     version: 'v0.0.4'
   - src: fiaasco.chrony

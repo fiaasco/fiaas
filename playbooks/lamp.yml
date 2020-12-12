@@ -9,7 +9,7 @@
         cache_valid_time: '3600'
 
   roles:
-    - role: locale
+    - role: fiaasco.locale
       tags: ['locale']
     - role: fiaasco.fail2ban
       tags: ['fail2ban']
