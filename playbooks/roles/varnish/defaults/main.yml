@@ -1,3 +1,9 @@
 ---
 acl_internal:
   - "127.0.0.0/8"
+
+# description: storage and memory size for varnish
+#              a default value will be set to 1/8 of the system RAM
+# type: string
+# varnish_storage_size: 1G
+varnish_storage_size: "{{ (ansible_memtotal_mb/8)|round|int }}M"

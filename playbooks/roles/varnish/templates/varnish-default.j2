@@ -111,7 +111,7 @@ VARNISH_THREAD_TIMEOUT=120
 # # Cache file size: in bytes, optionally using k / M / G / T suffix,
 # # or in percentage of available disk space using the % suffix.
 # VARNISH_STORAGE_SIZE=1G
-VARNISH_STORAGE_SIZE={{ (ansible_memtotal_mb/8)|round|int }}M
+VARNISH_STORAGE_SIZE={{ varnish_storage_size }}
 
 #
 # # File containing administration secret

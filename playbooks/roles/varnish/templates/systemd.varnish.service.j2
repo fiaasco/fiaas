@@ -17,7 +17,6 @@
 {%  set VARNISH_MIN_THREADS=50 %}
 {%  set VARNISH_MAX_THREADS=2000 %}
 {% endif %}
-{% set VARNISH_STORAGE_SIZE=(ansible_memtotal_mb/8)|round|int %}
 [Unit]
 Description=Varnish HTTP accelerator
 
@@ -26,7 +25,7 @@ Type=forking
 LimitNOFILE=131072
 LimitMEMLOCK=82000
 ExecStartPre=/usr/sbin/varnishd -C -f /etc/varnish/default.vcl
-ExecStart=/usr/sbin/varnishd -a :80 -T localhost:6082 -f /etc/varnish/default.vcl -S /etc/varnish/secret -s malloc,{{ VARNISH_STORAGE_SIZE }}m
+ExecStart=/usr/sbin/varnishd -a :80 -T localhost:6082 -f /etc/varnish/default.vcl -S /etc/varnish/secret -s malloc,{{ varnish_storage_size }}
 ExecReload=/usr/share/varnish/reload-vcl
 
 [Install]
