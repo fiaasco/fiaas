@@ -5,9 +5,10 @@ roles:
     version: 'v0.0.4'
   - src: fiaasco.chrony
   - src: fiaasco.mariadb
-    version: 'v0.8.2'
+    version: 'v0.8.3'
   - src: fiaasco.apache2
   - src: fiaasco.php7
+    version: 'v0.0.9'
   - src: fiaasco.solr
     version: 'v0.0.1'
 
