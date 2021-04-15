@@ -16,6 +16,6 @@ drush_launcher_url: "https://github.com/drush-ops/drush-launcher/releases/downlo
 drush_launcher_checksum: "sha256:c3f32a800a2f18470b0010cd71c49e49ef5c087f8131eecfe9b686dc1f3f3d4e"
 
 drush8: true
-drush8_version: "8.3.2"
+drush8_version: "8.3.3"
 drush8_url: "https://github.com/drush-ops/drush/releases/download/{{ drush8_version }}/drush.phar"
-drush8_checksum: "sha256:2b2170e67ccefff469ed0eb3cee9dc53a8a246f6f12d55c7f8b9af2a0ad619d1"
+drush8_checksum: "sha256:a568bf0bcad1b6f300f0d35d79cccc53f93e7e90edc9822f3a6354145e456f98"
