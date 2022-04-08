@@ -1,4 +1,10 @@
-ansible>=2.9.0,<2.10.0
-molecule==2.22
+ansible>=2.9.0,<5.0.0
+molecule
+molecule-docker
+docker
+ansible-lint
+flake8
+yamllint
+testinfra
 python-vagrant
 paramiko
