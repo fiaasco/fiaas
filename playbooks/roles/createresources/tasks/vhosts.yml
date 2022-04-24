@@ -147,7 +147,7 @@
 - name: vhosts | create logs dirs
   file:
     dest: "{{ item.basedir }}/logs"
-    owner: root
+    owner: www-data
     group: "{{ item.owner }}"
     state: directory
     mode: "0750"

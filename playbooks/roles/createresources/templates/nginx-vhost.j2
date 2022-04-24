@@ -12,6 +12,11 @@ server {
         error_log {{ item.basedir }}/logs/{{ item.url }}-ssl-error.log error;
 
 
+        # block possible proxied access to server-status page
+        location /server-status {
+          deny all;
+        }
+
         location / {
           proxy_set_header Host $host;
           proxy_set_header X-Forwarded-For $remote_addr;
