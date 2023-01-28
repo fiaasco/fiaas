@@ -47,6 +47,10 @@ http {
 	gzip off;
 	client_max_body_size {{ nginx_max_body_size }};
 
+        proxy_busy_buffers_size   512k;
+        proxy_buffers   4 512k;
+        proxy_buffer_size   256k;
+
 	##
 	# Virtual Host Configs
 	##

@@ -42,6 +42,7 @@
     state: present
     cache_valid_time: 3600
     update_cache: yes
+  notify: restart php{{ php7_version }}
 
 - name: put php.ini | {{ php7_version }}
   template:

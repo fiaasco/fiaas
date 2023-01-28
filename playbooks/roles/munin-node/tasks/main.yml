@@ -1,3 +1,2 @@
 ---
 - import_tasks: common.yml
-  when: monitoring == True

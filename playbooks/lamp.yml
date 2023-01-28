@@ -9,8 +9,6 @@
         cache_valid_time: '3600'
 
   roles:
-    - role: fiaasco.locale
-      tags: ['locale']
     - role: fiaasco.fail2ban
       tags: ['fail2ban']
     - role: system
@@ -21,8 +19,14 @@
       tags: ['ufw']
     - role: fiaasco.chrony
       tags: ['ntp']
-    - role: postfix
+    - role: fiaasco.postfix
       tags: ['postfix']
+
+- hosts: opendkim
+  become: true
+  roles:
+    - role: fiaasco.opendkim
+      tags: ['opendkim']
 
 - hosts: httpd
   become: true
@@ -55,7 +59,17 @@
   roles:
     - role: fastcgi
       tags: ['php', 'httpd']
-    - role: php7
+    - role: fiaasco.php7
+      tags: ['php']
+    - role: phpdevtools
+      tags: ['phpdevtools']
+
+- hosts: php8
+  become: true
+  roles:
+    - role: fastcgi
+      tags: ['php', 'httpd']
+    - role: fiaasco.php8
       tags: ['php']
     - role: phpdevtools
       tags: ['phpdevtools']

@@ -8,8 +8,8 @@ phptools_pkgs:
   - patch
 
 composer_url: "https://getcomposer.org/download/{{ composer_version }}/composer.phar"
-composer_version: "1.9.1"
-composer_checksum: "sha256:1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111"
+composer_version: "2.0.9"
+composer_checksum: "sha256:8e91344a5ca2fc0fb583c50f195a1f36918908561c4ea3d6f01a4ef01c3b8560"
 
 drush_launcher_version: "0.6.0"
 drush_launcher_url: "https://github.com/drush-ops/drush-launcher/releases/download/{{ drush_launcher_version }}/drush.phar"
