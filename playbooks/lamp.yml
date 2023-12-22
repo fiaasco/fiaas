@@ -68,9 +68,9 @@
   become: true
   roles:
     - role: fastcgi
-      tags: ['php', 'httpd']
+      tags: ['php8', 'php', 'httpd']
     - role: fiaasco.php8
-      tags: ['php']
+      tags: ['php8', 'php']
     - role: phpdevtools
       tags: ['phpdevtools']
 

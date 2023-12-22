@@ -2,16 +2,17 @@
 roles:
   - src: fiaasco.locale
   - src: fiaasco.fail2ban
-    version: 'v0.0.4'
+    version: v0.0.5
   - src: fiaasco.chrony
   - src: fiaasco.mariadb
-    version: 'v0.8.3'
+    version: v0.9.1
   - src: fiaasco.apache2
+    version: v0.8.0
   - src: fiaasco.php7
-    version: 'v0.0.9'
+    version: v0.0.9
   - src: fiaasco.solr
-    version: 'v0.0.1'
+    version: v0.0.1
 
 collections:
   - name: fiaasco.icinga2
-    version: '1.0.5'
+    version: v1.0.6
