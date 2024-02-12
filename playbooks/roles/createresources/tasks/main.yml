@@ -2,55 +2,56 @@
 - name: Include distribution specific vars
   include_vars: "{{ ansible_distribution_release }}.yml"
 
-- include_tasks: users.yml
+- import_tasks: users.yml
   tags:
     - users
 
-- include_tasks: directories.yml
+- import_tasks: directories.yml
   tags:
     - directories
 
-- include_tasks: symlinks.yml
+- import_tasks: symlinks.yml
   tags:
     - symlinks
 
-- include_tasks: useraccess.yml
+- import_tasks: useraccess.yml
   tags:
     - authorized_keys
     - users
 
-- include_tasks: phppools.yml
+- import_tasks: phppools.yml
   tags:
+    - php
     - phppools
 
-- include_tasks: letsencrypt.yml
+- import_tasks: letsencrypt.yml
   tags:
     - vhosts
     - letsencrypt
 
-- include_tasks: vhosts.yml
+- import_tasks: vhosts.yml
   tags:
     - vhosts
 
-- include_tasks: acls.yml
+- import_tasks: acls.yml
   tags:
     - acls
 
-- include_tasks: databases.yml
+- import_tasks: databases.yml
   tags:
     - databases
 
-- include_tasks: "solr-shared.yml"
+- import_tasks: "solr-shared.yml"
   when: solr_required|bool
   tags:
     - solr
 
-- include_tasks: "solr-cores.yml"
+- import_tasks: "solr-cores.yml"
   when: solr_required|bool
   tags:
     - solr
 
-- include_tasks: logrotate.yml
+- import_tasks: logrotate.yml
   tags:
     - vhosts
     - logrotate
