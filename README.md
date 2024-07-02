@@ -19,11 +19,11 @@ Everything is currently built to run all services in one VM.
 Environment setup
 =================
 
-Ansible = 2.9 is required for this setup.
+Ansible = 2.9 is recommended for this setup.
 
   * sudo apt-get -y install python-dev libffi-dev libssl-dev python-virtualenv virtualenv
-  * virtualenv ansible-2.9.4
-  * source ansible-2.9.4/bin/activate
+  * virtualenv ansible-2.9.x
+  * source ansible-2.9.x/bin/activate
   * pip install -r requirements.txt
   * ansible-galaxy install -r requirements.yml
   * ansible-galaxy collection install -r requirements.yml
@@ -31,7 +31,7 @@ Ansible = 2.9 is required for this setup.
 Executing (vagrant)
 ===================
 
-  * source ansible-2.9.4/bin/activate
+  * source ansible-2.9.x/bin/activate
   * cd vagrant/somevagrantsetup/
   * vagrant up --no-provision
   * provisioning:
