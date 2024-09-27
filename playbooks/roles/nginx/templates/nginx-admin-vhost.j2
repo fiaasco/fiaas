@@ -20,9 +20,9 @@ server {
 
         # certs sent to the client in SERVER HELLO are concatenated in ssl_certificate
 {% if adminhost_ssl == 'selfsigned' %}
-        ssl_certificate /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.cer;
+        ssl_certificate /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.crt;
 {% else %}
-        ssl_certificate /etc/ssl/{{ inventory_hostname }}/fullchain.cer;
+        ssl_certificate /etc/ssl/{{ inventory_hostname }}/fullchain.crt;
 {% endif %}
         ssl_certificate_key /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.key;
         ssl_session_timeout 1d;

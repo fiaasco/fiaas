@@ -79,6 +79,13 @@
     - headers # required for HSTS
   notify: reload apache2
 
+- name: enable httpd
+  apache2_module:
+    name: "http2"
+    state: present
+  notify: reload apache2
+  when: inventory_hostname not in groups.nginx|default([])
+
 - name: Apache | Enable mod_remoteip if required
   apache2_module:
     name: remoteip

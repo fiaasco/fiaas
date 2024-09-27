@@ -9,19 +9,24 @@
     and not item.delete|default(False)
 
 - name: vhosts | generate self signed certificates
-  command: openssl req -new -nodes -x509 -subj "/C=BE/ST=BXL/L=Belgium/O=IT/CN={{ ansible_fqdn }}" -days 3650 -keyout /etc/ssl/{{ item.url }}/{{ item.url }}.key -out /etc/ssl/{{ item.url }}/{{ item.url }}.crt -extensions v3_ca
-  args:
-    creates: "/etc/ssl/{{ item.url }}/{{ item.url }}.crt"
+  ansible.builtin.include_role:
+    name: fiaasco.certificates
+  vars:
+    certificate_dir: "/etc/ssl/{{ vhost.url }}"
+    certificate_name: "{{ vhost.url }}"
+    certificate_cert: "selfsigned_{{ vhost.url }}"
   when: >
-    item.ssl|default(False) == "selfsigned"
-    and not item.delete|default(False)
-  with_items: "{{ vhosts }}"
+    vhost.ssl|default(false) == "selfsigned"
+    and not vhost.delete|default(false)
+  loop: "{{ vhosts }}"
+  loop_control:
+    loop_var: vhost
 
 # letsencrypt
 - name: vhosts | generate letsencrypt certificates
   command: /root/ssl/request-{{ item.url }}.sh
   args:
-    creates: "/root/.acme.sh/{{ item.url }}/{{ item.url }}.cer"
+    creates: "/root/.acme.sh/{{ item.url }}_ecc/{{ item.url }}.cer"
   when: >
     item.ssl|default(False) == "letsencrypt"
     and not item.delete|default(False)
@@ -29,7 +34,7 @@
 
 - name: vhosts | symlink directory
   file:
-    src: "/root/.acme.sh/{{ item.url }}"
+    src: "/root/.acme.sh/{{ item.url }}_ecc"
     dest: "/etc/ssl/{{ item.url }}"
     state: link
   with_items: "{{ vhosts }}"

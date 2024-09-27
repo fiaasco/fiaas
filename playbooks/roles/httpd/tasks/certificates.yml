@@ -2,7 +2,7 @@
 - name: adminvhost | request letsencrypt cert
   command: /root/.acme.sh/acme.sh --issue --webroot /var/www/acme -d {{ inventory_hostname }}
   args:
-    creates: /root/.acme.sh/{{ inventory_hostname }}/{{ inventory_hostname }}.cer
+    creates: /root/.acme.sh/{{ inventory_hostname }}_ecc/{{ inventory_hostname }}.cer
   when: adminhost_ssl == 'letsencrypt'
 
 - name: adminvhost | test if self signed certificates exists
@@ -15,12 +15,28 @@
   shell: "mv /etc/ssl/{{ inventory_hostname }} /etc/ssl/{{ inventory_hostname }}.bak"
   when: adminhost_ssl == 'letsencrypt' and certs_check.stat.isdir | default(False)
 
+- name: adminvhost | test for new certificate directory
+  ansible.builtin.stat:
+    path: "/root/.acme.sh/{{ inventory_hostname }}_ecc"
+  register: le_new
+
 - name: adminvhost | symlink certificate directory
+  file:
+    src: "/root/.acme.sh/{{ inventory_hostname }}_ecc"
+    dest: "/etc/ssl/{{ inventory_hostname }}"
+    state: link
+  when: >
+    adminhost_ssl == 'letsencrypt'
+    and le_new.stat.isdir|default(false)
+
+- name: adminvhost | symlink certificate directory (legacy)
   file:
     src: "/root/.acme.sh/{{ inventory_hostname }}"
     dest: "/etc/ssl/{{ inventory_hostname }}"
     state: link
-  when: adminhost_ssl == 'letsencrypt'
+  when: >
+    adminhost_ssl == 'letsencrypt'
+    and not le_new.stat.isdir|default(false)
 
 - name: adminvhost | create certificates directory for selfsigned cert
   file:
@@ -29,5 +45,10 @@
   when: adminhost_ssl == 'selfsigned'
 
 - name: adminvhost | generate self signed certificate
-  command: openssl req -new -nodes -x509 -subj "/C=BE/ST=BXL/L=Belgium/O=IT/CN={{ inventory_hostname }}" -days 3650 -keyout /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.key -out /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.cer -extensions v3_ca creates=/etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.cer
+  ansible.builtin.include_role:
+    name: fiaasco.certificates
+  vars:
+    certificate_dir: "/etc/ssl/{{  inventory_hostname}}"
+    certificate_name: "{{ inventory_hostname }}"
+    certificate_cert: "selfsigned_{{ inventory_hostname }}"
   when: adminhost_ssl == 'selfsigned'
