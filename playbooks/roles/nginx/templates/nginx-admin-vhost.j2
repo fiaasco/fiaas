@@ -22,7 +22,7 @@ server {
 {% if adminhost_ssl == 'selfsigned' %}
         ssl_certificate /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.crt;
 {% else %}
-        ssl_certificate /etc/ssl/{{ inventory_hostname }}/fullchain.crt;
+        ssl_certificate /etc/ssl/{{ inventory_hostname }}/fullchain.cer;
 {% endif %}
         ssl_certificate_key /etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.key;
         ssl_session_timeout 1d;

@@ -28,8 +28,7 @@
   </Directory>
 
   ErrorLog {{ item.basedir }}/logs/{{ item.url }}-error.log
-  CustomLog {{ item.basedir }}/logs/{{ item.url }}-access.log combined{% if varnish_required|default(false) == true %}
-_xfwded{% endif %}
+  CustomLog {{ item.basedir }}/logs/{{ item.url }}-access.log combined{% if rev_proxy|default(false) == true %}_xfwded{% endif %}
 
   include extra.d/extra.{{ item.url }}.conf
   {% if item.ssl | default(False) %}

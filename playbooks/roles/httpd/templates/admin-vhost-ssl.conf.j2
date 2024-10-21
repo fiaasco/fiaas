@@ -40,7 +40,7 @@
 	# alert, emerg.
 	LogLevel warn
 
-	CustomLog ${APACHE_LOG_DIR}/ssl_access.log combined
+	CustomLog ${APACHE_LOG_DIR}/ssl_access.log combined{% if rev_proxy|default(false) == true %}_xfwded{% endif %}
 
 	SSLEngine on
 

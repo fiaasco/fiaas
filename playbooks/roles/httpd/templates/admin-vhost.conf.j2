@@ -38,7 +38,7 @@
 	# alert, emerg.
 	LogLevel warn
 
-	CustomLog ${APACHE_LOG_DIR}/access.log combined
+	CustomLog ${APACHE_LOG_DIR}/access.log combined{% if rev_proxy|default(false) == true %}_xfwded{% endif %}
 
 	{% if 'infra' not in group_names %}
 	IncludeOptional /etc/apache2/admin.d/*.conf
