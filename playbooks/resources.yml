@@ -10,4 +10,9 @@
     - removeresources
     - readme
     - icinga2_hostconfig
-    - fiaasco.solr
+
+- name: update solr cores
+  hosts: solr8
+  become: True
+  roles:
+    - role: fiaasco.solr

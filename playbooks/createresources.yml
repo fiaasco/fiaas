@@ -4,5 +4,10 @@
   become: True
   roles:
     - role: createresources
-    - role: fiaasco.solr
     - role: readme
+
+- name: update solr cores
+  hosts: solr8
+  become: True
+  roles:
+    - role: fiaasco.solr
