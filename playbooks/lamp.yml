@@ -9,8 +9,11 @@
         cache_valid_time: '3600'
 
   roles:
-    - role: fiaasco.fail2ban
-      tags: ['fail2ban']
+#    - role: fiaasco.fail2ban
+#      tags: ['fail2ban']
+    - role: fiaasco.lamp.sshguard
+      tags:
+        - sshguard
     - role: system
       tags: ['system']
     - role: users
@@ -21,6 +24,14 @@
       tags: ['ntp']
     - role: fiaasco.postfix
       tags: ['postfix']
+
+- hosts: swapfile
+  become: true
+  roles:
+    - role: fiaasco.lamp.swap
+      tags:
+        - swap
+        - swapfile
 
 - hosts: opendkim
   become: true
@@ -33,6 +44,7 @@
   roles:
     - role: letsencrypt
       tags: ['letsencrypt', 'acme']
+#    - role: fiaasco.apache2
     - role: httpd
       tags: ['httpd']
 

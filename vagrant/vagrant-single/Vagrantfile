@@ -2,10 +2,9 @@
 # vi: set ft=ruby :
 #
 
-#DEBIAN9_BOX = "debian94"
-#DEBIAN9_BOX_URL = "http://delta.exabyte.be/vagrant-boxes/debian-9.4-amd64.box"
 DEBIAN10_BOX = "debian/buster64"
-#DEBIAN10_BOX_URL = "http://delta.exabyte.be/vagrant-boxes/debian-10.2-amd64.box"
+DEBIAN11_BOX = "debian/bullseye64"
+DEBIAN12_BOX = "debian/bookworm64"
 
 Vagrant.configure("2") do |config|
 
@@ -14,9 +13,10 @@ Vagrant.configure("2") do |config|
   end
 
   config.ssh.insert_key = false
+  config.ssh.private_key_path = [ "~/.vagrant.d/insecure_private_key" ]
 
   config.vm.define "fiaas01" do |v|
-    v.vm.box = DEBIAN10_BOX
+    v.vm.box = DEBIAN12_BOX
     v.vm.hostname = "fiaas01"
     v.vm.network :private_network, ip: "192.168.131.190"
     v.vm.network :forwarded_port, guest: 22, host: 2163, id: 'ssh'
@@ -24,6 +24,7 @@ Vagrant.configure("2") do |config|
       ansible.inventory_path = "inventory/"
       ansible.playbook = "../../playbooks/lamp.yml"
       ansible.host_key_checking = "false"
+      ansible.verbose = "v"
       ansible.limit = 'all'
     end
   end

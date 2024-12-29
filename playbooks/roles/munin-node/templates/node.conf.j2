@@ -5,7 +5,7 @@
 {% if monitoring_over_ssh %}
   address ssh://{{ ansible_ssh_host }} -W localhost:4949
 {% else %}
-  address {{ ansible_ssh_host }}
+  address {{ lookup('dig', inventory_hostname) }}
 {% endif %}
   use_node_name yes
 
