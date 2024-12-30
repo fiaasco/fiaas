@@ -9,8 +9,6 @@
         cache_valid_time: '3600'
 
   roles:
-#    - role: fiaasco.fail2ban
-#      tags: ['fail2ban']
     - role: fiaasco.lamp.sshguard
       tags:
         - sshguard
@@ -44,7 +42,6 @@
   roles:
     - role: letsencrypt
       tags: ['letsencrypt', 'acme']
-#    - role: fiaasco.apache2
     - role: httpd
       tags: ['httpd']
 
