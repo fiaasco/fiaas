@@ -11,4 +11,4 @@ roles:
 
 collections:
   - name: fiaasco.icinga2
-    version: v1.0.6
+    version: "1.0.6"
