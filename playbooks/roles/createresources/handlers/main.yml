@@ -53,6 +53,18 @@
     state: reloaded
     enabled: yes
 
+- name: reload php8.3
+  service:
+    name: php8.3-fpm
+    state: reloaded
+    enabled: yes
+
+- name: reload php8.4
+  service:
+    name: php8.4-fpm
+    state: reloaded
+    enabled: yes
+
 - name: reload apache2
   service:
     name: apache2
