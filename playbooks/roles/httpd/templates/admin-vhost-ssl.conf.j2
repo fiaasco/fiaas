@@ -3,7 +3,7 @@
 <VirtualHost *:443>
 	ServerAdmin {{ admin.email }}
 	ServerName {{ inventory_hostname }}
-	ServerAlias {{ ansible_ssh_host }}
+	ServerAlias {{ ansible_host }}
 	ServerAlias localhost
         ServerAlias 127.0.0.1
 
