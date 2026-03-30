@@ -24,7 +24,7 @@ server {
           proxy_set_header X-Forwarded-For $remote_addr;
           {% endif %}
           proxy_set_header X-Forwarded-Proto "https";
-          proxy_pass http://127.0.0.1:80/;
+          proxy_pass http://127.0.0.1:80;
         }
 
         # certs sent to the client in SERVER HELLO are concatenated in ssl_certificate
@@ -43,8 +43,8 @@ server {
         ssl_dhparam /etc/ssl/certs/dhparam.pem;
 
   {% if item.hsts is defined %}
-        # HSTS (ngx_http_headers_module is required) (15768000 seconds = 6 months)
-        add_header Strict-Transport-Security max-age=15768000;
+        # HSTS (ngx_http_headers_module is required) (31536000 seconds = 1 year)
+        add_header Strict-Transport-Security max-age=31536000;
   {% endif %}
 
 

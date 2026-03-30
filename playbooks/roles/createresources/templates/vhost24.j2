@@ -104,8 +104,8 @@
     SSLCertificateKeyFile     /etc/ssl/{{ item.url }}/{{ item.url }}.key
 
   {% if item.hsts is defined %}
-    # HSTS (mod_headers is required) (15768000 seconds = 6 months)
-    Header always set Strict-Transport-Security "max-age=15768000"
+    # HSTS (mod_headers is required) (15768000 seconds = 1 year)
+    Header always set Strict-Transport-Security "max-age=31536000"
   {% endif %}
 
   include extra.d/extra.{{ item.url }}.conf
