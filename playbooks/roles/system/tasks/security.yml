@@ -5,3 +5,10 @@
     regexp: "^PermitRootLogin "
     line: "PermitRootLogin {{ system_ssh_rootlogin }}"
   notify: reload ssh
+
+- name: security | configure ssh password auth
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^#?PasswordAuthentication "
+    line: "PasswordAuthentication {{ system_password_authentication }}"
+  notify: reload ssh
