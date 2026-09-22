@@ -6,10 +6,11 @@
   with_items: "{{ systemusers }}"
 
 - name: put public key for {{ item.name }}
-  authorized_key:
+  ansible.posix.authorized_key:
     user: "{{ item.0.name }}"
     key: "{{ item.1 }}"
     state: present
+    exclusive: "{{ ssh_keys_exclusive }}"
   with_subelements:
     - "{{ systemusers }}"
     - authorized_keys

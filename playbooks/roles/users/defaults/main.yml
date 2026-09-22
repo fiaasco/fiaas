@@ -1,2 +1,4 @@
 ---
 systemusers: []
+
+ssh_keys_exclusive: true
