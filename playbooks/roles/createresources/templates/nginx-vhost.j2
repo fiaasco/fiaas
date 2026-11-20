@@ -1,8 +1,8 @@
 # {{ ansible_managed }}
 
 server {
-	listen 443 ssl http2{% if item.default is defined %} default_server{% endif %};
-	listen [::]:443 ssl http2{% if item.default is defined %} default_server{% endif %};
+	listen 443 ssl{% if item.default is defined %} default_server{% endif %};
+	listen [::]:443 ssl{% if item.default is defined %} default_server{% endif %};
 
 	server_name {{ item.url }}{% if item.alias is defined %}{% for alias in item.alias %} {{ alias }}{% endfor %}{% endif %};
 
