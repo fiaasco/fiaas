@@ -2,6 +2,7 @@
 - name: install extra packages
   apt:
     name:
+      - python3-debian
       - acl
       - atop
       - curl
