@@ -14,3 +14,8 @@
 - import_tasks: extras.yml
 
 - import_tasks: security.yml
+
+- name: remove cloud-init after initial install
+  apt:
+    name: cloud-init
+    state: absent
